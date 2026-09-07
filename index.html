@@ -22,8 +22,8 @@
         }
         .container {
             width: 100%;
-            max-width: 440px;
-            background: rgba(30, 41, 59, 0.7);
+            max-width: 450px;
+            background: rgba(30, 41, 59, 0.85);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             padding: 30px 22px;
@@ -149,35 +149,70 @@
         label {
             font-weight: 600;
             display: block;
-            margin-top: 14px;
+            margin-top: 16px;
             color: #cbd5e1;
-            font-size: 13px;
+            font-size: 14px;
         }
-        select, input {
+        
+        /* Dropdown Options Design Improvements */
+        select {
             width: 100%;
-            padding: 13px 15px;
-            margin-top: 6px;
-            border: 1px solid #334155;
+            padding: 14px 15px;
+            margin-top: 8px;
+            border: 2px solid #334155;
+            border-radius: 12px;
+            background-color: #0f172a;
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+            line-height: 1.6;
+        }
+        select:focus {
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
+        }
+        optgroup {
+            color: #facc15;
+            background-color: #020617;
+            font-size: 15px;
+            font-weight: bold;
+            padding: 10px 0;
+        }
+        option {
+            color: #ffffff;
+            background-color: #0f172a;
+            padding: 12px;
+            font-size: 14px;
+            font-weight: normal;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 15px;
+            margin-top: 8px;
+            border: 2px solid #334155;
             border-radius: 12px;
             background-color: #0f172a;
             color: #ffffff;
             font-size: 14px;
             outline: none;
         }
-        select:focus, input:focus {
+        input:focus {
             border-color: #8b5cf6;
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
         }
         .btn-pay {
             background: linear-gradient(135deg, #22c55e, #16a34a);
             color: white;
             border: none;
-            padding: 15px;
+            padding: 16px;
             border-radius: 12px;
             cursor: pointer;
             font-weight: 700;
             width: 100%;
-            margin-top: 24px;
+            margin-top: 25px;
             font-size: 16px;
             box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
             letter-spacing: 0.5px;
@@ -185,10 +220,6 @@
         .btn-pay:hover {
             transform: translateY(-2px);
             box-shadow: 0 12px 24px rgba(34, 197, 94, 0.4);
-        }
-        optgroup {
-            color: #fbbf24;
-            background-color: #0f172a;
         }
     </style>
 </head>
@@ -223,24 +254,24 @@
     <div class="form-group">
         <label for="package">Select Package:</label>
         <select id="package">
-            <optgroup label="🔥 SPECIAL COMBO OFFER">
+            <optgroup label="────── 🔥 SPECIAL OFFER ──────">
                 <option value="Mega Combo - 100K Views + 2K Likes + 50 Comments + 100 Real Followers (₹140)">
                     🔥 Mega Combo Pack - ₹140
                 </option>
             </optgroup>
 
-            <optgroup label="👥 1. Instagram Fake Followers (24 Hrs)">
+            <optgroup label="────── 👥 1. FAKE FOLLOWERS (24 Hrs) ──────">
                 <option value="Fake Followers - 200 Followers (₹20)">200 Followers - ₹20</option>
                 <option value="Fake Followers - 1K Followers (₹83)">1K Followers - ₹83</option>
                 <option value="Fake Followers - 2K Followers (₹120)">2K Followers - ₹120</option>
             </optgroup>
 
-            <optgroup label="🔥 2. Instagram Real Active (24 Hrs)">
+            <optgroup label="────── 🔥 2. REAL ACTIVE FOLLOWERS ──────">
                 <option value="Real Active - 200 Real Active (₹50)">200 Real Active - ₹50</option>
                 <option value="Real Active - 1K Real Active (₹340)">1K Real Active - ₹340</option>
             </optgroup>
 
-            <optgroup label="👁️ 3. Views (10 Mins)">
+            <optgroup label="────── 👁️ 3. INSTAGRAM VIEWS ──────">
                 <option value="Views - 5K Views (₹20)">5K Views - ₹20</option>
                 <option value="Views - 10K Views (₹30)">10K Views - ₹30</option>
                 <option value="Views - 50K Views (₹50)">50K Views - ₹50</option>
@@ -248,21 +279,21 @@
                 <option value="Views - 500K Views (₹120)">500K Views - ₹120</option>
             </optgroup>
 
-            <optgroup label="❤️ 4. Likes (10 Mins)">
+            <optgroup label="────── ❤️ 4. INSTAGRAM LIKES ──────">
                 <option value="Likes - 500 Likes (₹10)">500 Likes - ₹10</option>
                 <option value="Likes - 1K Likes (₹20)">1K Likes - ₹20</option>
                 <option value="Likes - 5K Likes (₹50)">5K Likes - ₹50</option>
                 <option value="Likes - 10K Likes (₹75)">10K Likes - ₹75</option>
             </optgroup>
 
-            <optgroup label="💬 5. Comments (10 Mins)">
+            <optgroup label="────── 💬 5. CUSTOM COMMENTS ──────">
                 <option value="Comments - 50 Comments (₹10)">50 Comments - ₹10</option>
                 <option value="Comments - 100 Comments (₹20)">100 Comments - ₹20</option>
                 <option value="Comments - 500 Comments (₹50)">500 Comments - ₹50</option>
                 <option value="Comments - 1K Comments (₹75)">1K Comments - ₹75</option>
             </optgroup>
 
-            <optgroup label="⚡ 6. Story Views & ⭐️ 7. Blue Tick">
+            <optgroup label="────── ⚡ 6. STORY VIEWS & ⭐️ BLUE TICK ──────">
                 <option value="Story Views - 200 Story Views (₹10)">200 Story Views - ₹10</option>
                 <option value="Story Views - 1K Story Views (₹25)">1K Story Views - ₹25</option>
                 <option value="Blue Tick - Permanent (₹600)">Blue Tick (Permanent) - ₹600</option>
