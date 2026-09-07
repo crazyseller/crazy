@@ -126,7 +126,7 @@
         <label for="transactionId">Payment UTR / Transaction ID (12 Digits):</label>
         <input type="text" id="transactionId" placeholder="Enter 12-digit UTR Number">
 
-        <button class="btn-pay" onclick="submitToAdmin()">Submit & Verify Order ⚡</button>
+        <button class="btn-pay" onclick="submitToWhatsApp()">Submit Order & Verify ⚡</button>
     </div>
 
     <!-- SECTION 2: TRACK ORDER STATUS -->
@@ -141,16 +141,11 @@
 </div>
 
 <script>
-    // Configuration Credentials
     const SMM_API_KEY = "59ebc87f01ec0285a4f05839ee9e2cc5"; 
     const SMM_API_URL = "https://smmaddaa.in/api/v2";
     const UPI_ID = "8124271142@naviaxis";
-    
-    // Telegram Bot Details
-    const BOT_TOKEN = "8641377433:AAFWIklwfaff6lAVHxCYwUowGHpvYCbjMYo";
-    const CHAT_ID = "8435445040";
+    const ADMIN_WHATSAPP = "918124271142"; // Unga WhatsApp Number
 
-    // Auto Dynamic QR Generator
     function updateQR() {
         var selectElem = document.getElementById("package");
         var selectedOption = selectElem.options[selectElem.selectedIndex];
@@ -163,8 +158,7 @@
     
     window.onload = updateQR;
 
-    // 1. Submit Order Details to Secret Admin Telegram Bot
-    function submitToAdmin() {
+    function submitToWhatsApp() {
         var selectElem = document.getElementById("package");
         var selectedOption = selectElem.options[selectElem.selectedIndex];
         var serviceId = selectedOption.getAttribute("data-service-id");
@@ -179,34 +173,20 @@
             return;
         }
 
-        // Direct SMMAddaa API link generator for Admin One-Click Approval
+        // Auto Start Link for SMMAddaa Panel
         var apiLink = SMM_API_URL + "?key=" + SMM_API_KEY + "&action=add&service=" + serviceId + "&link=" + encodeURIComponent(instaLink) + "&quantity=" + quantity;
 
-        // Message to Admin Telegram
-        var msgText = "🚨 *NEW ORDER VERIFICATION REQUEST* 🚨%0A%0A" +
-                      "📦 *Package:* " + packageName + "%0A" +
-                      "💰 *Amount Paid:* ₹" + price + "%0A" +
-                      "🔗 *Target Link:* " + instaLink + "%0A" +
-                      "🔢 *UTR Number:* `" + txnId + "`%0A%0A" +
-                      "👇 *Click link below to send order to SMMAddaa Panel after Payment Check:*%0A" +
-                      apiLink;
+        var waText = "🚨 *NEW ORDER VERIFICATION REQUEST* 🚨%0A%0A" +
+                     "📦 *Package:* " + encodeURIComponent(packageName) + "%0A" +
+                     "💰 *Amount Paid:* ₹" + price + "%0A" +
+                     "🔗 *Target Link:* " + encodeURIComponent(instaLink) + "%0A" +
+                     "🔢 *UTR Number:* " + encodeURIComponent(txnId) + "%0A%0A" +
+                     "👇 *Click link below to start order in SMMAddaa Panel after Payment Verification:*%0A" + 
+                     encodeURIComponent(apiLink);
 
-        // Send to Telegram Bot API
-        fetch("https://api.telegram.org/bot" + BOT_TOKEN + "/sendMessage?chat_id=" + CHAT_ID + "&text=" + msgText + "&parse_mode=Markdown")
-        .then(res => res.json())
-        .then(data => {
-            if (data.ok) {
-                alert("🎉 Order Submitted!\nYour Payment UTR is sent for instant Admin Verification.\nYour order will start in 2-5 minutes!");
-                document.getElementById("instaLink").value = "";
-                document.getElementById("transactionId").value = "";
-            } else {
-                alert("Error submitting request. Please try again.");
-            }
-        })
-        .catch(err => alert("Connection error. Try again!"));
+        window.open("https://wa.me/" + ADMIN_WHATSAPP + "?text=" + waText, "_blank");
     }
 
-    // 2. Track Order Status Function
     function checkStatus() {
         var orderId = document.getElementById("checkOrderId").value;
         var resultBox = document.getElementById("statusResult");
