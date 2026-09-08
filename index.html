@@ -65,7 +65,7 @@
     <h1>CRAZY SELLER</h1>
     <p style="color: #94a3b8; font-size: 12px; margin: 0;">Instant Instagram Growth Services</p>
 
-    <!-- SECTION 1: NEW ORDER FORM -->
+    <!-- SECTION 1: NEW ORDER FORM & PRICES -->
     <div class="card">
         <h3 style="margin: 0 0 10px 0; color: #f59e0b; font-size: 16px;">🚀 Place New Order</h3>
         
@@ -105,7 +105,7 @@
                 <option value="1K Instagram Saves (ID: 505)" data-service-id="505" data-qty="1000" data-price="15">🗳️ 1K Post Saves - ₹15</option>
                 <option value="1K Instagram Repost (ID: 2127)" data-service-id="2127" data-qty="1000" data-price="65">🔁 1K Reposts (Low Drop) - ₹65</option>
                 <option value="1K Instagram Shares (ID: 2130)" data-service-id="2130" data-qty="1000" data-price="7">↗️ 1K Shares - ₹7</option>
-                <option value="1k Instagram cheapest followers(30-50)drop (ID: 1901)" data-service-id="1901" data-qty="1000" data-price="80">🔥 Special Engagement Pack - ₹80</option>
+                <option value="1k Instagram cheapest followers(30-50)drop (ID: 1901)" data-service-id="1901" data-qty="1000" data-price="80">🔥 1k Instagram cheapest followers(30-50)drop - ₹80</option>
             </optgroup>
         </select>
 
@@ -144,7 +144,6 @@
     const SMM_API_URL = "https://smmaddaa.in/api/v2";
     const UPI_ID = "8124271142@naviaxis";
     
-    // Unga Telegram Bot Credentials
     const BOT_TOKEN = "8986935279:AAFjOyHX7fnZRKTqOZudUxyJCQjcu3_ChMk";
     const CHAT_ID = "8435445040";
 
@@ -175,15 +174,23 @@
             return;
         }
 
-        // Approval SMM API link ONLY FOR ADMIN
-        var startLink = SMM_API_URL + "?key=" + SMM_API_KEY + "&action=add&service=" + serviceId + "&link=" + encodeURIComponent(instaLink) + "&quantity=" + quantity;
+        var smmOrderUrl = SMM_API_URL + "?key=" + SMM_API_KEY + "&action=add&service=" + serviceId + "&link=" + encodeURIComponent(instaLink) + "&quantity=" + quantity;
 
-        var message = "🚨 *NEW ORDER REQUEST RECEIVED* 🚨\n\n" +
-                      "📦 *Package:* " + packageName + "\n" +
-                      "💰 *Amount Paid:* ₹" + price + "\n" +
-                      "🔗 *Target Link:* " + instaLink + "\n" +
-                      "🔢 *UTR Number:* `" + txnId + "`\n\n" +
-                      "👇 *ADMIN ONLY: Check payment & click to START ORDER:* \n" + startLink;
+        var textMessage = "🚨 *NEW ORDER RECEIVED* 🚨\n\n" +
+                          "📦 *Package:* " + packageName + "\n" +
+                          "💰 *Price:* ₹" + price + "\n" +
+                          "🔗 *Link:* " + instaLink + "\n" +
+                          "🔢 *UTR No:* `" + txnId + "`\n\n" +
+                          "Check payment in GPay/PhonePe and click Accept below:";
+
+        var keyboardMarkup = {
+            inline_keyboard: [
+                [
+                    { text: "✅ Accept & Start Order", url: smmOrderUrl },
+                    { text: "❌ Decline / Fake UTR", callback_data: "decline" }
+                ]
+            ]
+        };
 
         var telegramUrl = "https://api.telegram.org/bot" + BOT_TOKEN + "/sendMessage";
 
@@ -192,22 +199,23 @@
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 chat_id: CHAT_ID,
-                text: message,
-                parse_mode: "Markdown"
+                text: textMessage,
+                parse_mode: "Markdown",
+                reply_markup: keyboardMarkup
             })
         })
         .then(response => response.json())
         .then(data => {
             if (data.ok) {
-                alert("Order Submitted! Admin will verify payment and process soon.");
+                alert("Order Submitted Successfully! Admin will verify payment.");
                 document.getElementById("instaLink").value = "";
                 document.getElementById("transactionId").value = "";
             } else {
-                alert("Error sending request. Please try again.");
+                alert("Telegram Error: " + data.description);
             }
         })
         .catch(error => {
-            alert("Network error! Please try again.");
+            alert("Network error! Try again.");
         });
     }
 
