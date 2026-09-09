@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRAZY SELLER - Automated SMM Store</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>CRAZY SELLER - Automated SMM Store & Live Support</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; transition: all 0.3s ease; font-family: 'Poppins', sans-serif; }
         body {
@@ -14,7 +14,7 @@
                               radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.2) 0px, transparent 50%);
         }
         .container {
-            width: 100%; max-width: 460px;
+            width: 100%; max-width: 480px;
             background: rgba(17, 24, 39, 0.85); backdrop-filter: blur(20px);
             padding: 25px 20px; border-radius: 24px;
             box-shadow: 0 0 50px rgba(124, 58, 237, 0.25);
@@ -22,11 +22,11 @@
         }
         .brand-badge {
             background: linear-gradient(135deg, #8b5cf6, #ec4899);
-            padding: 5px 15px; border-radius: 20px; font-size: 10px;
+            padding: 6px 16px; border-radius: 20px; font-size: 11px;
             font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
         }
         h1 {
-            font-size: 28px; font-weight: 800; margin: 10px 0 0 0;
+            font-size: 28px; font-weight: 800; margin: 12px 0 4px 0;
             background: linear-gradient(to right, #a855f7, #ec4899, #f43f5e);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
@@ -60,16 +60,30 @@
             display: none; margin-top: 15px; padding: 12px; border-radius: 12px;
             background: #0f172a; border: 1px solid #374151; font-size: 13px; text-align: center;
         }
+        .support-banner {
+            background: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.4);
+            border-radius: 14px; padding: 12px; margin-top: 15px; text-align: center;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <span class="brand-badge">Automated Store</span>
+    <span class="brand-badge">Automated SMM Store</span>
     <h1>CRAZY SELLER</h1>
-    <p style="color: #6b7280; font-size: 11px; margin-top: 4px;">Instant Instagram Growth Services</p>
+    <p style="color: #9ca3af; font-size: 12px; margin-top: 4px;">Instant Instagram Growth Services</p>
 
-    <!-- SECTION 1: NEW ORDER FORM & PRICES -->
+    <!-- Support Banner -->
+    <div class="support-banner">
+        <p style="color: #c084fc; font-size: 12px; margin: 0; font-weight: 600;">
+            💬 Need Help or Have Doubts? 
+        </p>
+        <p style="color: #d1d5db; font-size: 11px; margin: 3px 0 0 0;">
+            Click the Chat Icon at the bottom right to talk to our AI Assistant!
+        </p>
+    </div>
+
+    <!-- SECTION 1: NEW ORDER FORM -->
     <div class="card">
         <h3 style="margin: 0 0 10px 0; color: #a855f7; font-size: 16px;">🚀 Place New Order</h3>
         
@@ -96,6 +110,7 @@
             <optgroup label="────── 👥 FOLLOWERS PACKS ──────">
                 <option value="200 Real Followers (ID: 528)" data-service-id="528" data-qty="1000" data-price="70">👥 1K Real Followers (Non-Drop) - ₹70</option>
                 <option value="1K Non Drop Followers 30Day (ID: 1731)" data-service-id="1731" data-qty="1000" data-price="320">👥 1K Non Drop Followers - ₹320</option>
+                <option value="1k Instagram cheapest followers(30-50)drop (ID: 1901)" data-service-id="1901" data-qty="1000" data-price="80">🔥 1k Instagram cheapest followers(30-50)drop - ₹80</option>
             </optgroup>
 
             <optgroup label="────── 💬 COMMENTS PACKS ──────">
@@ -111,7 +126,6 @@
                 <option value="1K Instagram Saves (ID: 505)" data-service-id="505" data-qty="1000" data-price="15">🗳️ 1K Post Saves - ₹15</option>
                 <option value="1K Instagram Repost (ID: 2127)" data-service-id="2127" data-qty="1000" data-price="65">🔁 1K Reposts (Low Drop) - ₹65</option>
                 <option value="1K Instagram Shares (ID: 2130)" data-service-id="2130" data-qty="1000" data-price="7">↗️ 1K Shares - ₹7</option>
-                <option value="1k Instagram cheapest followers(30-50)drop (ID: 1901)" data-service-id="1901" data-qty="1000" data-price="80">🔥 1k Instagram cheapest followers(30-50)drop - ₹80</option>
             </optgroup>
         </select>
 
@@ -145,9 +159,20 @@
     </div>
 </div>
 
+<!-- LIVE CHATBOT INTEGRATION (Tawk.to Free AI Chatbot) -->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/65d8a0f98d261e1b5f64b4c5/default';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+
 <script>
-    const SMM_API_KEY = "59ebc87f01ec0285a4f05839ee9e2cc5"; 
-    const SMM_API_URL = "https://smmaddaa.in/api/v2";
     const UPI_ID = "8124271142@naviaxis";
     const BACKEND_URL = "https://crazy-v97r.onrender.com/order";
 
@@ -215,22 +240,14 @@
         var resultBox = document.getElementById("statusResult");
 
         if (!orderId) {
-            alert("Please enter a valid Order ID!");
+            alert("Please enter a valid SMM Order ID!");
             return;
         }
 
         resultBox.style.display = "block";
-        resultBox.innerHTML = "Fetching status from server...";
+        resultBox.innerHTML = "Fetching live status...";
 
-        fetch(SMM_API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams({
-                'key': SMM_API_KEY,
-                'action': 'status',
-                'order': orderId
-            })
-        })
+        fetch(`https://crazy-v97r.onrender.com/status/${orderId}`)
         .then(response => response.json())
         .then(data => {
             if (data.status) {
@@ -244,11 +261,11 @@
                     <b>Remains:</b> ${data.remains || 0}
                 `;
             } else {
-                resultBox.innerHTML = `<span style="color:#ef4444;">Order ID not found or Manual Verification in progress.</span>`;
+                resultBox.innerHTML = `<span style="color:#ef4444;">Order ID not found or invalid!</span>`;
             }
         })
         .catch(err => {
-            resultBox.innerHTML = `<span style="color:#ef4444;">Error checking status.</span>`;
+            resultBox.innerHTML = `<span style="color:#ef4444;">Error checking status. Try again!</span>`;
         });
     }
 </script>
