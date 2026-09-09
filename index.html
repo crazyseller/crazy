@@ -197,7 +197,6 @@
         .btn-action:hover {
             transform: translateY(-2px);
             filter: brightness(1.15);
-            box-shadow: 0 12px 30px var(--secondary-glow);
         }
 
         .btn-secondary {
@@ -213,17 +212,9 @@
             margin-top: 10px;
         }
 
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
         .history-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 11px; }
         .history-table th, .history-table td { border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding: 10px 8px; text-align: left; }
         .history-table th { color: #a78bfa; font-weight: 700; text-transform: uppercase; font-size: 10px; }
-
-        /* ADMIN BUTTONS STYLES */
-        .btn-accept { background: #22c55e; color: white; border: none; padding: 6px 10px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-right: 4px; }
-        .btn-reject { background: #ef4444; color: white; border: none; padding: 6px 10px; border-radius: 8px; cursor: pointer; font-weight: bold; }
 
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -236,45 +227,17 @@
             max-width: 480px; width: 100%; max-height: 80vh; overflow-y: auto; padding: 22px; text-align: left;
             box-shadow: 0 20px 50px rgba(0,0,0,0.8);
         }
-
-        .chat-toggle {
-            position: fixed; bottom: 25px; right: 25px; background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center;
-            justify-content: center; font-size: 24px; cursor: pointer; box-shadow: 0 10px 30px var(--secondary-glow);
-            z-index: 1000;
-        }
-
-        .chat-toggle:hover { transform: scale(1.08); }
-
-        .chat-popup {
-            display: none; position: fixed; bottom: 95px; right: 25px; width: 340px; max-width: 90%;
-            background: #111827; border: 1px solid var(--border-color); border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.9);
-            z-index: 1000; overflow: hidden;
-        }
-
-        .chat-header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary)); padding: 16px; font-weight: bold; font-size: 13px;
-            display: flex; justify-content: space-between; align-items: center; color: white;
-        }
-
-        .chat-body { padding: 14px; height: 280px; overflow-y: auto; font-size: 12px; display: flex; flex-direction: column; gap: 10px; }
-        .msg-bot { background: rgba(31, 41, 55, 0.8); padding: 10px 14px; border-radius: 16px 16px 16px 4px; border-left: 3px solid var(--secondary); color: #f3f4f6; align-self: flex-start; max-width: 85%; }
-        .msg-user { background: var(--primary); padding: 10px 14px; border-radius: 16px 16px 4px 16px; color: white; align-self: flex-end; max-width: 85%; }
-        .chat-footer { padding: 10px; border-top: 1px solid var(--border-color); display: flex; gap: 8px; background: #030712; }
-        .chat-footer input { margin: 0; padding: 10px 12px; font-size: 12px; border-radius: 12px; }
-        .chat-footer button { background: var(--secondary); border: none; color: white; padding: 10px 14px; border-radius: 12px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="brand-badge">Automated Store</div>
+    <div class="brand-badge">Telegram Store</div>
     <h1>CRAZY SELLER</h1>
     <p class="sub-title">Instant Instagram Growth Services</p>
 
     <button class="btn-secondary" onclick="openPriceList()">📜 View Complete Price List</button>
 
-    <!-- NEW ORDER SECTION -->
     <div class="card">
         <div class="card-header">
             <h3>🚀 Place New Order</h3>
@@ -282,59 +245,54 @@
         
         <label for="package">Select Service:</label>
         <select id="package" onchange="calculatePriceAndQR()">
-            <optgroup label="👥 1. Instagram Fake Followers (24 Hrs)">
-                <option value="200 Fake Followers" data-service-id="1901" data-qty="200" data-price="20">👥 200 Followers - ₹20</option>
-                <option value="1K Fake Followers" data-service-id="1901" data-qty="1000" data-price="83">👥 1K Followers - ₹83</option>
-                <option value="2K Fake Followers" data-service-id="1901" data-qty="2000" data-price="120">👥 2K Followers - ₹120</option>
+            <optgroup label="👥 1. Instagram Fake Followers">
+                <option value="200 Fake Followers" data-price="20">👥 200 Followers - ₹20</option>
+                <option value="1K Fake Followers" data-price="83">👥 1K Followers - ₹83</option>
+                <option value="2K Fake Followers" data-price="120">👥 2K Followers - ₹120</option>
             </optgroup>
 
-            <optgroup label="🔥 2. Instagram Real Active (24 Hrs)">
-                <option value="200 Real Active Followers" data-service-id="528" data-qty="200" data-price="50">🔥 200 Real Active - ₹50</option>
-                <option value="1K Real Active Followers" data-service-id="528" data-qty="1000" data-price="340">🔥 1K Real Active - ₹340</option>
+            <optgroup label="🔥 2. Instagram Real Active">
+                <option value="200 Real Active Followers" data-price="50">🔥 200 Real Active - ₹50</option>
+                <option value="1K Real Active Followers" data-price="340">🔥 1K Real Active - ₹340</option>
             </optgroup>
 
-            <optgroup label="👁️ 3. Views (10 Mins)">
-                <option value="5K Views" data-service-id="2115" data-qty="5000" data-price="20">👁️ 5K Views - ₹20</option>
-                <option value="10K Views" data-service-id="2115" data-qty="10000" data-price="30">👁️ 10K Views - ₹30</option>
-                <option value="50K Views" data-service-id="2115" data-qty="50000" data-price="50">👁️ 50K Views - ₹50</option>
-                <option value="100K Views" data-service-id="2115" data-qty="100000" data-price="75">👁️ 100K Views - ₹75</option>
-                <option value="500K Views" data-service-id="2115" data-qty="500000" data-price="120">👁️ 500K Views - ₹120</option>
+            <optgroup label="👁️ 3. Views">
+                <option value="5K Views" data-price="20">👁️ 5K Views - ₹20</option>
+                <option value="10K Views" data-price="30">👁️ 10K Views - ₹30</option>
+                <option value="50K Views" data-price="50">👁️ 50K Views - ₹50</option>
+                <option value="100K Views" data-price="75">👁️ 100K Views - ₹75</option>
+                <option value="500K Views" data-price="120">👁️ 500K Views - ₹120</option>
             </optgroup>
 
-            <optgroup label="❤️ 4. Likes (10 Mins)">
-                <option value="500 Likes" data-service-id="1812" data-qty="500" data-price="10">❤️ 500 Likes - ₹10</option>
-                <option value="1K Likes" data-service-id="1812" data-qty="1000" data-price="20">❤️ 1K Likes - ₹20</option>
-                <option value="5K Likes" data-service-id="1812" data-qty="5000" data-price="50">❤️ 5K Likes - ₹50</option>
-                <option value="10K Likes" data-service-id="1812" data-qty="10000" data-price="75">❤️ 10K Likes - ₹75</option>
+            <optgroup label="❤️ 4. Likes">
+                <option value="500 Likes" data-price="10">❤️ 500 Likes - ₹10</option>
+                <option value="1K Likes" data-price="20">❤️ 1K Likes - ₹20</option>
+                <option value="5K Likes" data-price="50">❤️ 5K Likes - ₹50</option>
+                <option value="10K Likes" data-price="75">❤️ 10K Likes - ₹75</option>
             </optgroup>
 
-            <optgroup label="💬 5. Comments (10 Mins)">
-                <option value="50 Custom Comments" data-service-id="3001" data-qty="50" data-price="10">💬 50 Comments - ₹10</option>
-                <option value="100 Custom Comments" data-service-id="3001" data-qty="100" data-price="20">💬 100 Comments - ₹20</option>
-                <option value="500 Custom Comments" data-service-id="3001" data-qty="500" data-price="50">💬 500 Comments - ₹50</option>
-                <option value="1K Custom Comments" data-service-id="3001" data-qty="1000" data-price="75">💬 1K Comments - ₹75</option>
+            <optgroup label="💬 5. Comments">
+                <option value="50 Custom Comments" data-price="10">💬 50 Comments - ₹10</option>
+                <option value="100 Custom Comments" data-price="20">💬 100 Comments - ₹20</option>
+                <option value="500 Custom Comments" data-price="50">💬 500 Comments - ₹50</option>
+                <option value="1K Custom Comments" data-price="75">💬 1K Comments - ₹75</option>
             </optgroup>
 
             <optgroup label="⚡ 6. Story Views">
-                <option value="200 Story Views" data-service-id="4001" data-qty="200" data-price="10">⚡ 200 Story Views - ₹10</option>
-                <option value="1K Story Views" data-service-id="4001" data-qty="1000" data-price="25">⚡ 1K Story Views - ₹25</option>
+                <option value="200 Story Views" data-price="10">⚡ 200 Story Views - ₹10</option>
+                <option value="1K Story Views" data-price="25">⚡ 1K Story Views - ₹25</option>
             </optgroup>
         </select>
 
         <div class="price-badge-box">
-            <span style="font-size: 11px; color: var(--text-muted); font-weight: 700; letter-spacing: 1px;">TOTAL PRICE:</span>
+            <span style="font-size: 11px; color: var(--text-muted); font-weight: 700;">TOTAL PRICE:</span>
             <div class="price-text" id="liveCalculatedPrice">₹20</div>
         </div>
 
         <div class="qr-box">
-            <p style="color: #34d399; font-size: 11px; font-weight: 700; margin: 0 0 8px 0; letter-spacing: 0.5px;">SCAN & PAY VIA ANY UPI APP</p>
+            <p style="color: #34d399; font-size: 11px; font-weight: 700; margin: 0 0 8px 0;">SCAN & PAY VIA UPI</p>
             <img id="qrImage" src="" alt="UPI QR Code">
-            <p style="color: var(--text-muted); font-size: 11px; margin: 8px 0 0 0;">UPI ID: <b style="color:#f3f4f6;">8124271142@naviaxis</b></p>
-            <a id="upiLink" href="#" style="text-decoration: none;">
-                <p id="payAmountText" style="color: var(--accent-gold); font-size: 13px; font-weight: 700; margin-top: 4px; cursor: pointer;">
-                    Amount to Pay: ₹20 (Click to Open UPI App)
-                </p>
-            </a>
+            <p style="color: var(--text-muted); font-size: 11px; margin-top: 8px;">UPI ID: <b>8124271142@naviaxis</b></p>
         </div>
 
         <label for="instaLink">Instagram Profile / Post Link:</label>
@@ -343,27 +301,7 @@
         <label for="transactionId">Payment UTR ID (12 Digits):</label>
         <input type="text" id="transactionId" maxlength="12" placeholder="Enter 12-digit UTR Number">
 
-        <button class="btn-action" id="subBtn" onclick="submitOrder()">Submit Order Verification ⚡</button>
-    </div>
-
-    <!-- ADMIN PANEL SECTION (ACCEPT / REJECT) -->
-    <div class="card" style="border: 1px solid #f43f5e;">
-        <div class="card-header">
-            <h3 style="color: #f43f5e;">⚡ Admin Panel (Order Verification)</h3>
-        </div>
-        <div id="adminContainer" style="overflow-x:auto;">
-            <p style="color:var(--text-muted); font-size:12px;">No pending orders.</p>
-        </div>
-    </div>
-
-    <!-- ORDER HISTORY -->
-    <div class="card">
-        <div class="card-header">
-            <h3 style="color: #60a5fa;">📜 My Recent Orders</h3>
-        </div>
-        <div id="historyContainer" style="overflow-x:auto;">
-            <p style="color:var(--text-muted); font-size:12px;">No orders placed yet.</p>
-        </div>
+        <button class="btn-action" id="subBtn" onclick="sendToTelegram()">Submit Order ⚡</button>
     </div>
 </div>
 
@@ -404,30 +342,12 @@
     </div>
 </div>
 
-<!-- CHATBOT -->
-<div class="chat-toggle" onclick="toggleChat()">💬</div>
-<div class="chat-popup" id="chatWidget">
-    <div class="chat-header">
-        <span>💬 Live Admin Support</span>
-        <span style="cursor:pointer;" onclick="toggleChat()">✖</span>
-    </div>
-    <div class="chat-body" id="chatBody">
-        <div class="msg-bot">
-            Vanakkam! 👋 Need help or have doubts? Type your message below!
-        </div>
-    </div>
-    <div class="chat-footer">
-        <input type="text" id="chatInput" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
-        <button onclick="sendChatMessage()">Send</button>
-    </div>
-</div>
-
 <script>
     const UPI_ID = "8124271142@naviaxis";
-    const BACKEND_URL = "https://crazy-v97r.onrender.com";
-
-    let sessionId = localStorage.getItem("chat_session_id") || ("USER_" + Math.floor(100000 + Math.random() * 900000));
-    localStorage.setItem("chat_session_id", sessionId);
+    
+    // Telegram Bot Integration
+    const BOT_TOKEN = "8986935279:AAFjOyHX7fnZRKTqOZudUxyJCQjcu3_ChMk";
+    const CHAT_ID = "8435445040";
 
     function calculatePriceAndQR() {
         var selectElem = document.getElementById("package");
@@ -435,219 +355,78 @@
         var currentPrice = selectedOption.getAttribute("data-price");
         
         document.getElementById("liveCalculatedPrice").innerText = "₹" + currentPrice;
-        document.getElementById("payAmountText").innerText = "Amount to Pay: ₹" + currentPrice + " (Click to Pay)";
         
         var upiRawScheme = "upi://pay?pa=" + UPI_ID + "&pn=CRAZY_SELLER&am=" + currentPrice + "&cu=INR";
         var qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=" + encodeURIComponent(upiRawScheme);
-        
         document.getElementById("qrImage").src = qrUrl;
-        document.getElementById("upiLink").href = upiRawScheme;
     }
-    
+
     window.onload = function() {
         calculatePriceAndQR();
-        loadOrders();
-        syncOrderStatusWithBackend();
     };
 
-    function submitOrder() {
+    function sendToTelegram() {
         var selectElem = document.getElementById("package");
-        var selectedOption = selectElem.options[selectElem.selectedIndex];
-        var btn = document.getElementById("subBtn");
-        
-        var packageName = selectedOption.value;
-        var price = selectedOption.getAttribute("data-price");
+        var packageName = selectElem.options[selectElem.selectedIndex].value;
+        var price = selectElem.options[selectElem.selectedIndex].getAttribute("data-price");
         var link = document.getElementById("instaLink").value.trim();
         var txnId = document.getElementById("transactionId").value.trim();
 
         if (!link) {
-            alert("Please enter a valid Instagram Link or Username!");
+            alert("Please enter Instagram Link or Username!");
             return;
         }
 
         if (!txnId || txnId.length !== 12 || isNaN(txnId)) {
-            alert("Please enter a valid 12-digit Numeric Payment UTR ID!");
+            alert("Please enter valid 12-digit Numeric Payment UTR ID!");
             return;
         }
 
-        btn.innerText = "Processing...";
+        var btn = document.getElementById("subBtn");
+        btn.innerText = "Sending Order...";
         btn.disabled = true;
 
-        var payload = {
-            serviceId: selectedOption.getAttribute("data-service-id"),
-            quantity: selectedOption.getAttribute("data-qty"),
-            price: price,
-            packageName: packageName,
-            instaLink: link,
-            txnId: txnId
-        };
+        // Structured Telegram Message Format
+        var message = `🚨 *NEW CRAZY SELLER ORDER!* 🚨\n\n` +
+                      `📦 *Service:* ${packageName}\n` +
+                      `💰 *Amount:* ₹${price}\n` +
+                      `🔗 *Link:* ${link}\n` +
+                      `💳 *UTR ID:* \`${txnId}\`\n\n` +
+                      `⏰ *Time:* ${new Date().toLocaleString()}`;
 
-        fetch(`${BACKEND_URL}/order`, {
+        var telegramApiUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+
+        fetch(telegramApiUrl, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
+            body: JSON.stringify({
+                chat_id: CHAT_ID,
+                text: message,
+                parse_mode: "Markdown"
+            })
         })
         .then(res => res.json())
         .then(data => {
-            btn.innerText = "Submit Order Verification ⚡";
+            btn.innerText = "Submit Order ⚡";
             btn.disabled = false;
-            saveLocalOrder(packageName, price, txnId, data.refId || txnId);
-            alert("Order Submitted Successfully!\nRef ID: " + (data.refId || 'Saved') + "\nAdmin will verify payment UTR and start order.");
-            document.getElementById("instaLink").value = "";
-            document.getElementById("transactionId").value = "";
-        })
-        .catch(err => {
-            btn.innerText = "Submit Order Verification ⚡";
-            btn.disabled = false;
-            saveLocalOrder(packageName, price, txnId, txnId);
-            alert("Order Saved Locally! Admin will verify payment UTR and start order.");
-            document.getElementById("instaLink").value = "";
-            document.getElementById("transactionId").value = "";
-        });
-    }
 
-    function saveLocalOrder(pkg, price, utr, refId) {
-        var history = JSON.parse(localStorage.getItem("crazy_orders") || "[]");
-        history.unshift({ 
-            id: Date.now(),
-            refId: refId,
-            package: pkg, 
-            price: "₹" + price, 
-            utr: utr, 
-            status: "Pending Verification" 
-        });
-        localStorage.setItem("crazy_orders", JSON.stringify(history));
-        loadOrders();
-    }
-
-    function loadOrders() {
-        var history = JSON.parse(localStorage.getItem("crazy_orders") || "[]");
-        
-        // 1. User Order History Table
-        var container = document.getElementById("historyContainer");
-        if (history.length === 0) {
-            container.innerHTML = `<p style="color:var(--text-muted); font-size:12px;">No orders placed yet.</p>`;
-        } else {
-            var html = `<table class="history-table"><thead><tr><th>Service</th><th>Price</th><th>UTR</th><th>Status</th></tr></thead><tbody>`;
-            history.forEach(item => {
-                let statusColor = "#facc15"; 
-                if (item.status === "Approved" || item.status === "Completed") statusColor = "#22c55e"; 
-                if (item.status === "Rejected" || item.status === "Cancelled") statusColor = "#ef4444"; 
-
-                let maskedUtr = item.utr.length >= 4 ? item.utr.slice(-4) + "****" : item.utr;
-                html += `<tr><td>${item.package}</td><td>${item.price}</td><td>${maskedUtr}</td><td style="color:${statusColor}; font-weight: bold;">${item.status}</td></tr>`;
-            });
-            html += `</tbody></table>`;
-            container.innerHTML = html;
-        }
-
-        // 2. Admin Panel Table (Accept / Reject)
-        var adminContainer = document.getElementById("adminContainer");
-        var pendingOrders = history.filter(o => o.status === "Pending Verification");
-
-        if (pendingOrders.length === 0) {
-            adminContainer.innerHTML = `<p style="color:var(--text-muted); font-size:12px;">No pending orders.</p>`;
-        } else {
-            var adminHtml = `<table class="history-table"><thead><tr><th>UTR</th><th>Price</th><th>Action</th></tr></thead><tbody>`;
-            pendingOrders.forEach(item => {
-                adminHtml += `<tr>
-                    <td>${item.utr}</td>
-                    <td>${item.price}</td>
-                    <td>
-                        <button class="btn-accept" onclick="updateStatus(${item.id}, 'Approved')">Accept</button>
-                        <button class="btn-reject" onclick="updateStatus(${item.id}, 'Rejected')">Reject</button>
-                    </td>
-                </tr>`;
-            });
-            adminHtml += `</tbody></table>`;
-            adminContainer.innerHTML = adminHtml;
-        }
-    }
-
-    function updateStatus(orderId, newStatus) {
-        var history = JSON.parse(localStorage.getItem("crazy_orders") || "[]");
-        var order = history.find(o => o.id === orderId);
-        if (order) {
-            order.status = newStatus;
-            localStorage.setItem("crazy_orders", JSON.stringify(history));
-            alert("Order " + newStatus + " successfully!");
-            loadOrders();
-        }
-    }
-
-    function syncOrderStatusWithBackend() {
-        var history = JSON.parse(localStorage.getItem("crazy_orders") || "[]");
-        if (history.length === 0) return;
-
-        fetch(`${BACKEND_URL}/get-all-orders-status`)
-        .then(res => res.json())
-        .then(data => {
-            if (data.orders) {
-                let updated = false;
-                history.forEach(item => {
-                    let matchedOrder = data.orders.find(o => o.txnId === item.utr || o.refId === item.refId);
-                    if (matchedOrder && matchedOrder.status !== item.status) {
-                        item.status = matchedOrder.status;
-                        updated = true;
-                    }
-                });
-                if (updated) {
-                    localStorage.setItem("crazy_orders", JSON.stringify(history));
-                    loadOrders();
-                }
+            if(data.ok) {
+                alert("✅ Order Submitted Successfully!\nTelegram-la order details vandhuruchu.");
+                document.getElementById("instaLink").value = "";
+                document.getElementById("transactionId").value = "";
+            } else {
+                alert("❌ Telegram Error: Make sure you have started (@crazyseller786_bot) in Telegram!");
             }
         })
-        .catch(err => {});
+        .catch(err => {
+            btn.innerText = "Submit Order ⚡";
+            btn.disabled = false;
+            alert("Error sending order to Telegram!");
+        });
     }
-
-    setInterval(syncOrderStatusWithBackend, 4000);
 
     function openPriceList() { document.getElementById("priceModal").style.display = "flex"; }
     function closePriceList() { document.getElementById("priceModal").style.display = "none"; }
-
-    function toggleChat() {
-        var widget = document.getElementById("chatWidget");
-        widget.style.display = (widget.style.display === "block") ? "none" : "block";
-    }
-
-    function handleKeyPress(e) { if (e.key === 'Enter') sendChatMessage(); }
-
-    function sendChatMessage() {
-        var input = document.getElementById("chatInput");
-        var msg = input.value.trim();
-        if (!msg) return;
-        
-        var chatBody = document.getElementById("chatBody");
-        chatBody.innerHTML += `<div class="msg-user">${msg}</div>`;
-        chatBody.scrollTop = chatBody.scrollHeight;
-        input.value = "";
-
-        fetch(`${BACKEND_URL}/send-admin`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ sessionId: sessionId, name: "Website User", message: msg })
-        });
-    }
-
-    setInterval(() => {
-        fetch(`${BACKEND_URL}/get-messages/${sessionId}`)
-        .then(res => res.json())
-        .then(data => {
-            if (data.messages && data.messages.length > 0) {
-                var chatBody = document.getElementById("chatBody");
-                let html = `<div class="msg-bot">Vanakkam! 👋 Need help or have doubts? Type your message below!</div>`;
-                data.messages.forEach(m => {
-                    if (m.sender === "user") {
-                        html += `<div class="msg-user">${m.text}</div>`;
-                    } else {
-                        html += `<div class="msg-bot" style="border-left-color: #22c55e;"><b>Admin:</b> ${m.text}</div>`;
-                    }
-                });
-                chatBody.innerHTML = html;
-                chatBody.scrollTop = chatBody.scrollHeight;
-            }
-        }).catch(err => {});
-    }, 3000);
 </script>
 
 </body>
