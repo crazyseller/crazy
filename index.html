@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRAZY SELLER - Automated SMM Store</title>
+    <title>CRAZY SELLER - Dynamic Price SMM Store</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -44,6 +44,12 @@
         optgroup { color: #facc15; background-color: #020617; font-weight: bold; }
         option { color: #ffffff; background-color: #0f172a; padding: 10px; }
         
+        .price-badge-box {
+            background: rgba(168, 85, 247, 0.15); border: 1px solid #a855f7;
+            padding: 12px; border-radius: 14px; margin-top: 15px; text-align: center;
+        }
+        .price-text { font-size: 22px; font-weight: 800; color: #facc15; }
+
         .qr-box { text-align: center; margin: 16px 0; background: rgba(0, 0, 0, 0.4); padding: 16px; border-radius: 18px; border: 1px dashed #475569; }
         .qr-box img { width: 170px; height: 170px; border-radius: 14px; border: 2px solid #a855f7; }
         
@@ -59,14 +65,11 @@
             padding: 10px; border-radius: 12px; font-size: 12px; font-weight: 600;
             cursor: pointer; width: 100%; margin-top: 8px;
         }
-        .btn-secondary:hover { background: #334155; color: #fff; }
 
-        /* ORDER HISTORY TABLE */
         .history-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 11px; }
         .history-table th, .history-table td { border: 1px solid #334155; padding: 8px; text-align: left; }
         .history-table th { background: #1e293b; color: #c084fc; }
 
-        /* MODAL POPUP */
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 2000;
@@ -77,7 +80,6 @@
             max-width: 480px; width: 100%; max-height: 80vh; overflow-y: auto; padding: 20px; text-align: left;
         }
 
-        /* LIVE CHAT WIDGET */
         .chat-toggle {
             position: fixed; bottom: 20px; right: 20px; background: linear-gradient(135deg, #a855f7, #ec4899);
             color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center;
@@ -110,12 +112,12 @@
 
     <button class="btn-secondary" onclick="openPriceList()">📜 View Complete Price List</button>
 
-    <!-- SECTION 1: NEW ORDER -->
+    <!-- NEW ORDER SECTION -->
     <div class="card">
         <h3 style="margin: 0 0 10px 0; color: #c084fc; font-size: 15px;">🚀 Place New Order</h3>
         
         <label for="package">Select Service:</label>
-        <select id="package" onchange="updateQR()">
+        <select id="package" onchange="calculatePriceAndQR()">
             <optgroup label="👥 1. Instagram Fake Followers (24 Hrs)">
                 <option value="200 Fake Followers" data-service-id="1901" data-qty="200" data-price="20">👥 200 Followers - ₹20</option>
                 <option value="1K Fake Followers" data-service-id="1901" data-qty="1000" data-price="83">👥 1K Followers - ₹83</option>
@@ -155,14 +157,19 @@
             </optgroup>
         </select>
 
-        <div class="qr-box">
-            <p style="color: #34d399; font-size: 11px; font-weight: bold; margin: 0 0 6px 0;">PAY VIA PHONEPE / GPAY / PAYTM:</p>
-            <img id="qrImage" src="" alt="UPI QR Code">
-            <p style="color: #94a3b8; font-size: 11px; margin: 6px 0 0 0;">UPI ID: <b>8124271142@naviaxis</b></p>
-            <p id="payAmountText" style="color: #facc15; font-size: 14px; font-weight: bold; margin-top: 4px;"></p>
+        <div class="price-badge-box">
+            <span style="font-size: 12px; color: #cbd5e1;">TOTAL PRICE:</span>
+            <div class="price-text" id="liveCalculatedPrice">₹20</div>
         </div>
 
-        <label for="instaLink">Instagram Profile Link / Post Link:</label>
+        <div class="qr-box">
+            <p style="color: #34d399; font-size: 11px; font-weight: bold; margin: 0 0 6px 0;">SCAN & PAY VIA ANY UPI APP:</p>
+            <img id="qrImage" src="" alt="UPI QR Code">
+            <p style="color: #94a3b8; font-size: 11px; margin: 6px 0 0 0;">UPI ID: <b>8124271142@naviaxis</b></p>
+            <p id="payAmountText" style="color: #facc15; font-size: 14px; font-weight: bold; margin-top: 4px;">Amount: ₹20</p>
+        </div>
+
+        <label for="instaLink">Instagram Profile / Post Link:</label>
         <input type="text" id="instaLink" placeholder="https://instagram.com/p/xxx or @username">
 
         <label for="transactionId">Payment UTR ID (12 Digits):</label>
@@ -171,7 +178,7 @@
         <button class="btn-action" id="subBtn" onclick="submitOrder()">Submit Order Verification ⚡</button>
     </div>
 
-    <!-- SECTION 2: ORDER HISTORY -->
+    <!-- ORDER HISTORY -->
     <div class="card">
         <h3 style="margin: 0 0 10px 0; color: #60a5fa; font-size: 15px;">📜 My Recent Orders</h3>
         <div id="historyContainer" style="overflow-x:auto;">
@@ -217,9 +224,8 @@
     </div>
 </div>
 
-<!-- LIVE CHATBOT POPUP WIDGET -->
+<!-- CHATBOT -->
 <div class="chat-toggle" onclick="toggleChat()">💬</div>
-
 <div class="chat-popup" id="chatWidget">
     <div class="chat-header">
         <span>💬 Live Admin Support</span>
@@ -227,7 +233,7 @@
     </div>
     <div class="chat-body" id="chatBody">
         <div class="msg-bot">
-            Vanakkam! 👋 Need help or have doubts? Type your message below to chat with Admin directly!
+            Vanakkam! 👋 Need help or have doubts? Type your message below!
         </div>
     </div>
     <div class="chat-footer">
@@ -240,29 +246,30 @@
     const UPI_ID = "8124271142@naviaxis";
     const BACKEND_URL = "https://crazy-v97r.onrender.com";
 
-    // Unique Session ID for Two-Way Chat
-    let sessionId = localStorage.getItem("chat_session_id");
-    if (!sessionId) {
-        sessionId = "USER_" + Math.floor(100000 + Math.random() * 900000);
-        localStorage.setItem("chat_session_id", sessionId);
-    }
+    let sessionId = localStorage.getItem("chat_session_id") || ("USER_" + Math.floor(100000 + Math.random() * 900000));
+    localStorage.setItem("chat_session_id", sessionId);
 
-    function updateQR() {
+    // FIXED DYNAMIC PRICE & QR CALCULATION
+    function calculatePriceAndQR() {
         var selectElem = document.getElementById("package");
         var selectedOption = selectElem.options[selectElem.selectedIndex];
-        var price = selectedOption.getAttribute("data-price");
         
-        var qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi://pay?pa=" + UPI_ID + "%26pn=CRAZY_SELLER%26am=" + price + "%26cu=INR";
+        var currentPrice = selectedOption.getAttribute("data-price");
+        
+        // Update Live Price Text
+        document.getElementById("liveCalculatedPrice").innerText = "₹" + currentPrice;
+        document.getElementById("payAmountText").innerText = "Amount to Pay: ₹" + currentPrice;
+        
+        // Generate Dynamic QR Code with calculated price
+        var qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi://pay?pa=" + UPI_ID + "%26pn=CRAZY_SELLER%26am=" + currentPrice + "%26cu=INR";
         document.getElementById("qrImage").src = qrUrl;
-        document.getElementById("payAmountText").innerText = "Amount to Pay: ₹" + price;
     }
     
     window.onload = function() {
-        updateQR();
+        calculatePriceAndQR();
         loadOrderHistory();
     };
 
-    /* SUBMIT ORDER */
     function submitOrder() {
         var selectElem = document.getElementById("package");
         var selectedOption = selectElem.options[selectElem.selectedIndex];
@@ -312,15 +319,9 @@
         });
     }
 
-    /* LOCAL STORAGE ORDER HISTORY */
     function saveLocalOrder(pkg, price, utr) {
         var history = JSON.parse(localStorage.getItem("crazy_orders") || "[]");
-        history.unshift({
-            package: pkg,
-            price: "₹" + price,
-            utr: utr,
-            status: "Pending Verification"
-        });
+        history.unshift({ package: pkg, price: "₹" + price, utr: utr, status: "Pending Verification" });
         localStorage.setItem("crazy_orders", JSON.stringify(history));
         loadOrderHistory();
     }
@@ -328,12 +329,10 @@
     function loadOrderHistory() {
         var history = JSON.parse(localStorage.getItem("crazy_orders") || "[]");
         var container = document.getElementById("historyContainer");
-        
         if (history.length === 0) {
             container.innerHTML = `<p style="color:#64748b; font-size:12px;">No orders placed yet.</p>`;
             return;
         }
-
         var html = `<table class="history-table"><thead><tr><th>Service</th><th>Price</th><th>UTR</th><th>Status</th></tr></thead><tbody>`;
         history.forEach(item => {
             html += `<tr><td>${item.package}</td><td>${item.price}</td><td>${item.utr.slice(-4)}****</td><td style="color:#facc15;">${item.status}</td></tr>`;
@@ -342,46 +341,35 @@
         container.innerHTML = html;
     }
 
-    /* PRICE LIST MODAL */
     function openPriceList() { document.getElementById("priceModal").style.display = "flex"; }
     function closePriceList() { document.getElementById("priceModal").style.display = "none"; }
 
-    /* CHATBOT FUNCTIONS */
     function toggleChat() {
         var widget = document.getElementById("chatWidget");
         widget.style.display = (widget.style.display === "block") ? "none" : "block";
     }
 
-    function handleKeyPress(e) {
-        if (e.key === 'Enter') sendChatMessage();
-    }
+    function handleKeyPress(e) { if (e.key === 'Enter') sendChatMessage(); }
 
     function sendChatMessage() {
         var input = document.getElementById("chatInput");
         var msg = input.value.trim();
         if (!msg) return;
-
         input.value = "";
-
         fetch(`${BACKEND_URL}/send-admin`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                sessionId: sessionId,
-                name: "Website User",
-                message: msg
-            })
+            body: JSON.stringify({ sessionId: sessionId, name: "Website User", message: msg })
         });
     }
 
-    /* REALTIME POLLING FOR ADMIN REPLIES */
     setInterval(() => {
         fetch(`${BACKEND_URL}/get-messages/${sessionId}`)
         .then(res => res.json())
         .then(data => {
             if (data.messages && data.messages.length > 0) {
                 var chatBody = document.getElementById("chatBody");
-                let html = `<div class="msg-bot">Vanakkam! 👋 Need help or have doubts? Type your message below to chat with Admin directly!</div>`;
+                let html = `<div class="msg-bot">Vanakkam! 👋 Need help or have doubts? Type your message below!</div>`;
                 data.messages.forEach(m => {
                     if (m.sender === "user") {
                         html += `<div class="msg-user">${m.text}</div>`;
