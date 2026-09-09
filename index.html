@@ -4,57 +4,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CRAZY SELLER - Automated SMM Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; transition: all 0.3s ease; }
+        * { box-sizing: border-box; transition: all 0.3s ease; font-family: 'Poppins', sans-serif; }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: radial-gradient(circle at top, #1e1b4b, #0f172a, #020617);
-            color: #ffffff; margin: 0; padding: 20px 15px;
+            background: #030712; color: #ffffff; margin: 0; padding: 20px 15px;
             display: flex; justify-content: center; align-items: center; min-height: 100vh;
+            background-image: radial-gradient(at 50% 0%, rgba(124, 58, 237, 0.25) 0px, transparent 70%),
+                              radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.2) 0px, transparent 50%);
         }
         .container {
-            width: 100%; max-width: 450px;
-            background: rgba(30, 41, 59, 0.85); backdrop-filter: blur(16px);
-            padding: 30px 22px; border-radius: 24px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 20px rgba(139, 92, 246, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.1); text-align: center;
+            width: 100%; max-width: 460px;
+            background: rgba(17, 24, 39, 0.85); backdrop-filter: blur(20px);
+            padding: 25px 20px; border-radius: 24px;
+            box-shadow: 0 0 50px rgba(124, 58, 237, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.12); text-align: center;
         }
         .brand-badge {
-            background: linear-gradient(90deg, #ec4899, #8b5cf6);
-            padding: 4px 12px; border-radius: 20px; font-size: 11px;
-            font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            padding: 5px 15px; border-radius: 20px; font-size: 10px;
+            font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
         }
         h1 {
-            background: linear-gradient(to right, #fbbf24, #f59e0b, #ec4899);
+            font-size: 28px; font-weight: 800; margin: 10px 0 0 0;
+            background: linear-gradient(to right, #a855f7, #ec4899, #f43f5e);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            margin: 10px 0 5px 0; font-size: 26px; font-weight: 900;
         }
         .card {
-            background: rgba(15, 23, 42, 0.6); border: 1px solid #334155;
-            border-radius: 14px; padding: 15px; margin-top: 15px; text-align: left;
+            background: rgba(15, 23, 42, 0.9); border: 1px solid #374151;
+            border-radius: 16px; padding: 18px; margin-top: 15px; text-align: left;
         }
-        label { font-weight: 600; font-size: 13px; color: #cbd5e1; display: block; margin-top: 10px; }
+        label { font-weight: 600; font-size: 12px; color: #9ca3af; display: block; margin-top: 12px; }
         select, input {
-            width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #334155;
-            border-radius: 10px; background-color: #0f172a; color: #ffffff; font-size: 14px; outline: none;
+            width: 100%; padding: 12px 15px; margin-top: 6px; border: 1px solid #374151;
+            border-radius: 12px; background-color: #0f172a; color: #ffffff; font-size: 13px; outline: none;
         }
-        optgroup { color: #facc15; background-color: #020617; }
+        select:focus, input:focus { border-color: #a855f7; box-shadow: 0 0 15px rgba(168, 85, 247, 0.3); }
+        optgroup { color: #facc15; background-color: #020617; font-weight: bold; }
         option { color: #ffffff; background-color: #0f172a; padding: 8px; }
-        .qr-box { text-align: center; margin: 15px 0; background: rgba(0, 0, 0, 0.2); padding: 12px; border-radius: 12px; }
+        .qr-box { text-align: center; margin: 15px 0; background: rgba(0, 0, 0, 0.3); padding: 15px; border-radius: 16px; border: 1px dashed #4b5563; }
+        .qr-box img { width: 160px; height: 160px; border-radius: 12px; border: 2px solid #8b5cf6; }
         .btn-pay {
-            background: linear-gradient(135deg, #22c55e, #16a34a); color: white;
-            border: none; padding: 14px; border-radius: 10px; cursor: pointer;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white;
+            border: none; padding: 14px; border-radius: 12px; cursor: pointer;
             font-weight: 700; width: 100%; margin-top: 15px; font-size: 15px;
-            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+            box-shadow: 0 4px 20px rgba(236, 72, 153, 0.3);
         }
+        .btn-pay:hover { transform: translateY(-2px); opacity: 0.95; }
         .btn-status {
             background: linear-gradient(135deg, #3b82f6, #2563eb); color: white;
-            border: none; padding: 10px; border-radius: 8px; cursor: pointer;
+            border: none; padding: 12px; border-radius: 10px; cursor: pointer;
             font-weight: 700; width: 100%; margin-top: 10px; font-size: 13px;
         }
         .status-box {
-            display: none; margin-top: 15px; padding: 12px; border-radius: 10px;
-            background: #1e293b; border: 1px solid #475569; font-size: 14px; text-align: center;
+            display: none; margin-top: 15px; padding: 12px; border-radius: 12px;
+            background: #0f172a; border: 1px solid #374151; font-size: 13px; text-align: center;
         }
     </style>
 </head>
@@ -63,11 +67,11 @@
 <div class="container">
     <span class="brand-badge">Automated Store</span>
     <h1>CRAZY SELLER</h1>
-    <p style="color: #94a3b8; font-size: 12px; margin: 0;">Instant Instagram Growth Services</p>
+    <p style="color: #6b7280; font-size: 11px; margin-top: 4px;">Instant Instagram Growth Services</p>
 
     <!-- SECTION 1: NEW ORDER FORM & PRICES -->
     <div class="card">
-        <h3 style="margin: 0 0 10px 0; color: #f59e0b; font-size: 16px;">🚀 Place New Order</h3>
+        <h3 style="margin: 0 0 10px 0; color: #a855f7; font-size: 16px;">🚀 Place New Order</h3>
         
         <label for="package">Select Service Package:</label>
         <select id="package" onchange="updateQR()">
@@ -113,11 +117,11 @@
 
         <!-- Dynamic QR Code Display -->
         <div class="qr-box">
-            <p style="color: #4ade80; font-size: 13px; font-weight: bold; margin: 0 0 8px 0;">
-                Scan QR to Pay via PhonePe / GPay / Paytm:
+            <p style="color: #10b981; font-size: 12px; font-weight: bold; margin: 0 0 8px 0;">
+                SCAN TO PAY VIA PHONEPE / GPAY / PAYTM:
             </p>
-            <img id="qrImage" src="" alt="UPI QR Code" style="border-radius: 12px; border: 2px solid #22c55e; width: 170px; height: 170px;">
-            <p style="color: #cbd5e1; font-size: 12px; margin: 8px 0 0 0;">UPI ID: <b>8124271142@naviaxis</b></p>
+            <img id="qrImage" src="" alt="UPI QR Code">
+            <p style="color: #9ca3af; font-size: 11px; margin: 8px 0 0 0;">UPI ID: <b>8124271142@naviaxis</b></p>
             <p id="payAmountText" style="color: #facc15; font-size: 14px; font-weight: bold; margin-top: 4px;"></p>
         </div>
 
@@ -127,13 +131,13 @@
         <label for="transactionId">Payment UTR / Transaction ID (12 Digits):</label>
         <input type="text" id="transactionId" placeholder="Enter 12-digit UTR Number">
 
-        <button class="btn-pay" onclick="sendToTelegram()">Submit Order Verification ⚡</button>
+        <button class="btn-pay" id="subBtn" onclick="sendToTelegram()">Submit Order Verification ⚡</button>
     </div>
 
     <!-- SECTION 2: TRACK ORDER STATUS -->
     <div class="card" style="border-color: #3b82f6;">
         <h3 style="margin: 0 0 10px 0; color: #60a5fa; font-size: 16px;">🔍 Track Live Order Status</h3>
-        <label for="checkOrderId">Enter Order ID:</label>
+        <label for="checkOrderId">Enter SMM Order ID:</label>
         <input type="text" id="checkOrderId" placeholder="E.g., 23501">
         <button class="btn-status" onclick="checkStatus()">Check Status</button>
         
@@ -145,9 +149,7 @@
     const SMM_API_KEY = "59ebc87f01ec0285a4f05839ee9e2cc5"; 
     const SMM_API_URL = "https://smmaddaa.in/api/v2";
     const UPI_ID = "8124271142@naviaxis";
-    
-    const BOT_TOKEN = "8986935279:AAFjOyHX7fnZRKTqOZudUxyJCQjcu3_ChMk";
-    const CHAT_ID = "8435445040";
+    const BACKEND_URL = "https://crazy-v97r.onrender.com/order";
 
     function updateQR() {
         var selectElem = document.getElementById("package");
@@ -164,60 +166,47 @@
     function sendToTelegram() {
         var selectElem = document.getElementById("package");
         var selectedOption = selectElem.options[selectElem.selectedIndex];
-        var serviceId = selectedOption.getAttribute("data-service-id");
-        var quantity = selectedOption.getAttribute("data-qty");
-        var price = selectedOption.getAttribute("data-price");
-        var packageName = selectedOption.value;
-        var instaLink = document.getElementById("instaLink").value;
-        var txnId = document.getElementById("transactionId").value;
+        var btn = document.getElementById("subBtn");
+        
+        var payload = {
+            serviceId: selectedOption.getAttribute("data-service-id"),
+            quantity: selectedOption.getAttribute("data-qty"),
+            price: selectedOption.getAttribute("data-price"),
+            packageName: selectedOption.value,
+            instaLink: document.getElementById("instaLink").value,
+            txnId: document.getElementById("transactionId").value
+        };
 
-        if (!instaLink || !txnId || txnId.length < 10) {
+        if (!payload.instaLink || !payload.txnId || payload.txnId.length < 10) {
             alert("Please enter valid Instagram Link and 12-digit Payment UTR ID!");
             return;
         }
 
-        var smmOrderUrl = SMM_API_URL + "?key=" + SMM_API_KEY + "&action=add&service=" + serviceId + "&link=" + encodeURIComponent(instaLink) + "&quantity=" + quantity;
+        btn.innerText = "Processing Order...";
+        btn.disabled = true;
 
-        var textMessage = "🚨 *NEW ORDER RECEIVED* 🚨\n\n" +
-                          "📦 *Package:* " + packageName + "\n" +
-                          "💰 *Price:* ₹" + price + "\n" +
-                          "🔗 *Link:* " + instaLink + "\n" +
-                          "🔢 *UTR No:* `" + txnId + "`\n\n" +
-                          "Check payment in GPay/PhonePe and click Accept below:";
-
-        var keyboardMarkup = {
-            inline_keyboard: [
-                [
-                    { text: "✅ Accept & Start Order", url: smmOrderUrl },
-                    { text: "❌ Decline / Fake UTR", callback_data: "decline" }
-                ]
-            ]
-        };
-
-        var telegramUrl = "https://api.telegram.org/bot" + BOT_TOKEN + "/sendMessage";
-
-        fetch(telegramUrl, {
+        fetch(BACKEND_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                chat_id: CHAT_ID,
-                text: textMessage,
-                parse_mode: "Markdown",
-                reply_markup: keyboardMarkup
-            })
+            body: JSON.stringify(payload)
         })
-        .then(response => response.json())
+        .then(res => res.json())
         .then(data => {
-            if (data.ok) {
-                alert("Order Submitted Successfully! Admin will verify payment.");
+            btn.innerText = "Submit Order Verification ⚡";
+            btn.disabled = false;
+            
+            if (data.success) {
+                alert("Order Submitted Successfully! Ref ID: " + data.refId + "\nAdmin will verify profit and start order.");
                 document.getElementById("instaLink").value = "";
                 document.getElementById("transactionId").value = "";
             } else {
-                alert("Telegram Error: " + data.description);
+                alert("Error placing order. Please try again.");
             }
         })
-        .catch(error => {
-            alert("Network error! Try again.");
+        .catch(err => {
+            btn.innerText = "Submit Order Verification ⚡";
+            btn.disabled = false;
+            alert("Server warming up! Please click submit once again.");
         });
     }
 
