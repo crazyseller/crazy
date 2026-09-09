@@ -221,6 +221,10 @@
         .history-table th, .history-table td { border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding: 10px 8px; text-align: left; }
         .history-table th { color: #a78bfa; font-weight: 700; text-transform: uppercase; font-size: 10px; }
 
+        /* ADMIN BUTTONS STYLES */
+        .btn-accept { background: #22c55e; color: white; border: none; padding: 6px 10px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-right: 4px; }
+        .btn-reject { background: #ef4444; color: white; border: none; padding: 6px 10px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(3, 7, 18, 0.85); backdrop-filter: blur(12px); z-index: 2000;
@@ -342,6 +346,16 @@
         <button class="btn-action" id="subBtn" onclick="submitOrder()">Submit Order Verification ⚡</button>
     </div>
 
+    <!-- ADMIN PANEL SECTION (ACCEPT / REJECT) -->
+    <div class="card" style="border: 1px solid #f43f5e;">
+        <div class="card-header">
+            <h3 style="color: #f43f5e;">⚡ Admin Panel (Order Verification)</h3>
+        </div>
+        <div id="adminContainer" style="overflow-x:auto;">
+            <p style="color:var(--text-muted); font-size:12px;">No pending orders.</p>
+        </div>
+    </div>
+
     <!-- ORDER HISTORY -->
     <div class="card">
         <div class="card-header">
@@ -423,7 +437,6 @@
         document.getElementById("liveCalculatedPrice").innerText = "₹" + currentPrice;
         document.getElementById("payAmountText").innerText = "Amount to Pay: ₹" + currentPrice + " (Click to Pay)";
         
-        // Corrected UPI string for QR & Deep-linking
         var upiRawScheme = "upi://pay?pa=" + UPI_ID + "&pn=CRAZY_SELLER&am=" + currentPrice + "&cu=INR";
         var qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=" + encodeURIComponent(upiRawScheme);
         
@@ -433,7 +446,7 @@
     
     window.onload = function() {
         calculatePriceAndQR();
-        loadOrderHistory();
+        loadOrders();
         syncOrderStatusWithBackend();
     };
 
@@ -496,6 +509,7 @@
     function saveLocalOrder(pkg, price, utr, refId) {
         var history = JSON.parse(localStorage.getItem("crazy_orders") || "[]");
         history.unshift({ 
+            id: Date.now(),
             refId: refId,
             package: pkg, 
             price: "₹" + price, 
@@ -503,27 +517,62 @@
             status: "Pending Verification" 
         });
         localStorage.setItem("crazy_orders", JSON.stringify(history));
-        loadOrderHistory();
+        loadOrders();
     }
 
-    function loadOrderHistory() {
+    function loadOrders() {
         var history = JSON.parse(localStorage.getItem("crazy_orders") || "[]");
+        
+        // 1. User Order History Table
         var container = document.getElementById("historyContainer");
         if (history.length === 0) {
             container.innerHTML = `<p style="color:var(--text-muted); font-size:12px;">No orders placed yet.</p>`;
-            return;
-        }
-        var html = `<table class="history-table"><thead><tr><th>Service</th><th>Price</th><th>UTR</th><th>Status</th></tr></thead><tbody>`;
-        history.forEach(item => {
-            let statusColor = "#facc15"; 
-            if (item.status === "Approved" || item.status === "Completed") statusColor = "#22c55e"; 
-            if (item.status === "Rejected" || item.status === "Cancelled") statusColor = "#ef4444"; 
+        } else {
+            var html = `<table class="history-table"><thead><tr><th>Service</th><th>Price</th><th>UTR</th><th>Status</th></tr></thead><tbody>`;
+            history.forEach(item => {
+                let statusColor = "#facc15"; 
+                if (item.status === "Approved" || item.status === "Completed") statusColor = "#22c55e"; 
+                if (item.status === "Rejected" || item.status === "Cancelled") statusColor = "#ef4444"; 
 
-            let maskedUtr = item.utr.length >= 4 ? item.utr.slice(-4) + "****" : item.utr;
-            html += `<tr><td>${item.package}</td><td>${item.price}</td><td>${maskedUtr}</td><td style="color:${statusColor}; font-weight: bold;">${item.status}</td></tr>`;
-        });
-        html += `</tbody></table>`;
-        container.innerHTML = html;
+                let maskedUtr = item.utr.length >= 4 ? item.utr.slice(-4) + "****" : item.utr;
+                html += `<tr><td>${item.package}</td><td>${item.price}</td><td>${maskedUtr}</td><td style="color:${statusColor}; font-weight: bold;">${item.status}</td></tr>`;
+            });
+            html += `</tbody></table>`;
+            container.innerHTML = html;
+        }
+
+        // 2. Admin Panel Table (Accept / Reject)
+        var adminContainer = document.getElementById("adminContainer");
+        var pendingOrders = history.filter(o => o.status === "Pending Verification");
+
+        if (pendingOrders.length === 0) {
+            adminContainer.innerHTML = `<p style="color:var(--text-muted); font-size:12px;">No pending orders.</p>`;
+        } else {
+            var adminHtml = `<table class="history-table"><thead><tr><th>UTR</th><th>Price</th><th>Action</th></tr></thead><tbody>`;
+            pendingOrders.forEach(item => {
+                adminHtml += `<tr>
+                    <td>${item.utr}</td>
+                    <td>${item.price}</td>
+                    <td>
+                        <button class="btn-accept" onclick="updateStatus(${item.id}, 'Approved')">Accept</button>
+                        <button class="btn-reject" onclick="updateStatus(${item.id}, 'Rejected')">Reject</button>
+                    </td>
+                </tr>`;
+            });
+            adminHtml += `</tbody></table>`;
+            adminContainer.innerHTML = adminHtml;
+        }
+    }
+
+    function updateStatus(orderId, newStatus) {
+        var history = JSON.parse(localStorage.getItem("crazy_orders") || "[]");
+        var order = history.find(o => o.id === orderId);
+        if (order) {
+            order.status = newStatus;
+            localStorage.setItem("crazy_orders", JSON.stringify(history));
+            alert("Order " + newStatus + " successfully!");
+            loadOrders();
+        }
     }
 
     function syncOrderStatusWithBackend() {
@@ -544,7 +593,7 @@
                 });
                 if (updated) {
                     localStorage.setItem("crazy_orders", JSON.stringify(history));
-                    loadOrderHistory();
+                    loadOrders();
                 }
             }
         })
@@ -568,7 +617,6 @@
         var msg = input.value.trim();
         if (!msg) return;
         
-        // Render user message immediately
         var chatBody = document.getElementById("chatBody");
         chatBody.innerHTML += `<div class="msg-user">${msg}</div>`;
         chatBody.scrollTop = chatBody.scrollHeight;
