@@ -198,45 +198,14 @@
             transform: translateY(-2px);
             filter: brightness(1.15);
         }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            padding: 12px;
-            border-radius: 16px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 10px;
-        }
-
-        .history-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 11px; }
-        .history-table th, .history-table td { border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding: 10px 8px; text-align: left; }
-        .history-table th { color: #a78bfa; font-weight: 700; text-transform: uppercase; font-size: 10px; }
-
-        .modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(3, 7, 18, 0.85); backdrop-filter: blur(12px); z-index: 2000;
-            justify-content: center; align-items: center; padding: 15px;
-        }
-
-        .modal-content {
-            background: #111827; border: 1px solid var(--primary); border-radius: 24px;
-            max-width: 480px; width: 100%; max-height: 80vh; overflow-y: auto; padding: 22px; text-align: left;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="brand-badge">Telegram Store</div>
+    <div class="brand-badge">Official Store</div>
     <h1>CRAZY SELLER</h1>
     <p class="sub-title">Instant Instagram Growth Services</p>
-
-    <button class="btn-secondary" onclick="openPriceList()">📜 View Complete Price List</button>
 
     <div class="card">
         <div class="card-header">
@@ -301,51 +270,14 @@
         <label for="transactionId">Payment UTR ID (12 Digits):</label>
         <input type="text" id="transactionId" maxlength="12" placeholder="Enter 12-digit UTR Number">
 
-        <button class="btn-action" id="subBtn" onclick="sendToTelegram()">Submit Order ⚡</button>
-    </div>
-</div>
-
-<!-- PRICE LIST MODAL -->
-<div class="modal" id="priceModal">
-    <div class="modal-content">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <h3 style="margin: 0; color: #c084fc;">📋 Complete Price List</h3>
-            <span style="cursor: pointer; font-size: 20px; color: #f43f5e;" onclick="closePriceList()">✖</span>
-        </div>
-        <table class="history-table">
-            <thead>
-                <tr><th>Category</th><th>Service & Qty</th><th>Price</th></tr>
-            </thead>
-            <tbody>
-                <tr><td>Fake Followers</td><td>200 Followers</td><td>₹20</td></tr>
-                <tr><td>Fake Followers</td><td>1,000 Followers</td><td>₹83</td></tr>
-                <tr><td>Fake Followers</td><td>2,000 Followers</td><td>₹120</td></tr>
-                <tr><td>Real Active</td><td>200 Real Active</td><td>₹50</td></tr>
-                <tr><td>Real Active</td><td>1,000 Real Active</td><td>₹340</td></tr>
-                <tr><td>Views</td><td>5,000 Views</td><td>₹20</td></tr>
-                <tr><td>Views</td><td>10,000 Views</td><td>₹30</td></tr>
-                <tr><td>Views</td><td>50,000 Views</td><td>₹50</td></tr>
-                <tr><td>Views</td><td>100,000 Views</td><td>₹75</td></tr>
-                <tr><td>Views</td><td>500,000 Views</td><td>₹120</td></tr>
-                <tr><td>Likes</td><td>500 Likes</td><td>₹10</td></tr>
-                <tr><td>Likes</td><td>1,000 Likes</td><td>₹20</td></tr>
-                <tr><td>Likes</td><td>5,000 Likes</td><td>₹50</td></tr>
-                <tr><td>Likes</td><td>10,000 Likes</td><td>₹75</td></tr>
-                <tr><td>Comments</td><td>50 Comments</td><td>₹10</td></tr>
-                <tr><td>Comments</td><td>100 Comments</td><td>₹20</td></tr>
-                <tr><td>Comments</td><td>500 Comments</td><td>₹50</td></tr>
-                <tr><td>Comments</td><td>1,000 Comments</td><td>₹75</td></tr>
-                <tr><td>Story Views</td><td>200 Story Views</td><td>₹10</td></tr>
-                <tr><td>Story Views</td><td>1,000 Story Views</td><td>₹25</td></tr>
-            </tbody>
-        </table>
+        <button class="btn-action" id="subBtn" onclick="sendOrderToTelegram()">Submit Order ⚡</button>
     </div>
 </div>
 
 <script>
     const UPI_ID = "8124271142@naviaxis";
     
-    // Telegram Bot Integration
+    // Exact Telegram Credentials Configured Here
     const BOT_TOKEN = "8986935279:AAFjOyHX7fnZRKTqOZudUxyJCQjcu3_ChMk";
     const CHAT_ID = "8435445040";
 
@@ -365,7 +297,7 @@
         calculatePriceAndQR();
     };
 
-    function sendToTelegram() {
+    function sendOrderToTelegram() {
         var selectElem = document.getElementById("package");
         var packageName = selectElem.options[selectElem.selectedIndex].value;
         var price = selectElem.options[selectElem.selectedIndex].getAttribute("data-price");
@@ -386,47 +318,42 @@
         btn.innerText = "Sending Order...";
         btn.disabled = true;
 
-        // Structured Telegram Message Format
-        var message = `🚨 *NEW CRAZY SELLER ORDER!* 🚨\n\n` +
-                      `📦 *Service:* ${packageName}\n` +
-                      `💰 *Amount:* ₹${price}\n` +
-                      `🔗 *Link:* ${link}\n` +
-                      `💳 *UTR ID:* \`${txnId}\`\n\n` +
-                      `⏰ *Time:* ${new Date().toLocaleString()}`;
+        var messageText = "🚨 NEW CRAZY SELLER ORDER! 🚨\n\n" +
+                          "📦 Service: " + packageName + "\n" +
+                          "💰 Amount: ₹" + price + "\n" +
+                          "🔗 Link: " + link + "\n" +
+                          "💳 UTR ID: " + txnId + "\n\n" +
+                          "⏰ Time: " + new Date().toLocaleString();
 
-        var telegramApiUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+        var telegramUrl = "https://api.telegram.org/bot" + BOT_TOKEN + "/sendMessage";
 
-        fetch(telegramApiUrl, {
+        fetch(telegramUrl, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 chat_id: CHAT_ID,
-                text: message,
-                parse_mode: "Markdown"
+                text: messageText
             })
         })
-        .then(res => res.json())
-        .then(data => {
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
             btn.innerText = "Submit Order ⚡";
             btn.disabled = false;
 
             if(data.ok) {
-                alert("✅ Order Submitted Successfully!\nTelegram-la order details vandhuruchu.");
+                alert("✅ Order Submitted Successfully!\nTelegram-ku notification anuppiyaachu.");
                 document.getElementById("instaLink").value = "";
                 document.getElementById("transactionId").value = "";
             } else {
-                alert("❌ Telegram Error: Make sure you have started (@crazyseller786_bot) in Telegram!");
+                alert("❌ Telegram Error: Please start your bot @crazyseller786_bot in Telegram first!");
             }
         })
-        .catch(err => {
+        .catch(function(err) {
             btn.innerText = "Submit Order ⚡";
             btn.disabled = false;
-            alert("Error sending order to Telegram!");
+            alert("Network error! Please try again.");
         });
     }
-
-    function openPriceList() { document.getElementById("priceModal").style.display = "flex"; }
-    function closePriceList() { document.getElementById("priceModal").style.display = "none"; }
 </script>
 
 </body>
