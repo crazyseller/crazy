@@ -3,138 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRAZY SELLER - SMM Store & Instant Support</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <title>CRAZY SELLER - Automated SMM Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; transition: all 0.3s ease; font-family: 'Poppins', sans-serif; }
+        * { box-sizing: border-box; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); font-family: 'Plus Jakarta Sans', sans-serif; }
         body {
-            background: #030712; color: #ffffff; margin: 0; padding: 20px 15px 100px 15px;
+            background: #090d16; color: #f8fafc; margin: 0; padding: 20px 15px 120px 15px;
             display: flex; justify-content: center; align-items: center; min-height: 100vh;
-            background-image: radial-gradient(at 50% 0%, rgba(124, 58, 237, 0.25) 0px, transparent 70%),
-                              radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.2) 0px, transparent 50%);
+            background-image: radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.15) 0px, transparent 50%),
+                              radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.15) 0px, transparent 50%);
         }
         .container {
             width: 100%; max-width: 480px;
-            background: rgba(17, 24, 39, 0.85); backdrop-filter: blur(20px);
-            padding: 25px 20px; border-radius: 24px;
-            box-shadow: 0 0 50px rgba(124, 58, 237, 0.25);
-            border: 1px solid rgba(255, 255, 255, 0.12); text-align: center;
+            background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(16px);
+            padding: 24px 18px; border-radius: 28px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 40px rgba(139, 92, 246, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.08); text-align: center;
         }
         .brand-badge {
-            background: linear-gradient(135deg, #8b5cf6, #ec4899);
-            padding: 6px 16px; border-radius: 20px; font-size: 11px;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            padding: 6px 16px; border-radius: 50px; font-size: 11px;
             font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3); inline-size: fit-content; margin: 0 auto;
         }
         h1 {
-            font-size: 28px; font-weight: 800; margin: 12px 0 4px 0;
-            background: linear-gradient(to right, #a855f7, #ec4899, #f43f5e);
+            font-size: 30px; font-weight: 800; margin: 12px 0 2px 0; letter-spacing: -0.5px;
+            background: linear-gradient(to right, #c084fc, #f472b6, #fb7185);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
         .card {
-            background: rgba(15, 23, 42, 0.9); border: 1px solid #374151;
-            border-radius: 16px; padding: 18px; margin-top: 15px; text-align: left;
+            background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 20px; padding: 18px; margin-top: 16px; text-align: left;
         }
-        label { font-weight: 600; font-size: 12px; color: #9ca3af; display: block; margin-top: 12px; }
+        label { font-weight: 600; font-size: 12px; color: #94a3b8; display: block; margin-top: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
         select, input {
-            width: 100%; padding: 12px 15px; margin-top: 6px; border: 1px solid #374151;
-            border-radius: 12px; background-color: #0f172a; color: #ffffff; font-size: 13px; outline: none;
+            width: 100%; padding: 12px 16px; margin-top: 6px; border: 1px solid #334155;
+            border-radius: 14px; background-color: #0f172a; color: #ffffff; font-size: 13px; outline: none;
         }
-        select:focus, input:focus { border-color: #a855f7; box-shadow: 0 0 15px rgba(168, 85, 247, 0.3); }
+        select:focus, input:focus { border-color: #a855f7; box-shadow: 0 0 15px rgba(168, 85, 247, 0.25); }
         optgroup { color: #facc15; background-color: #020617; font-weight: bold; }
-        option { color: #ffffff; background-color: #0f172a; padding: 8px; }
-        .qr-box { text-align: center; margin: 15px 0; background: rgba(0, 0, 0, 0.3); padding: 15px; border-radius: 16px; border: 1px dashed #4b5563; }
-        .qr-box img { width: 160px; height: 160px; border-radius: 12px; border: 2px solid #8b5cf6; }
-        .btn-pay {
-            background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white;
-            border: none; padding: 14px; border-radius: 12px; cursor: pointer;
-            font-weight: 700; width: 100%; margin-top: 15px; font-size: 15px;
-            box-shadow: 0 4px 20px rgba(236, 72, 153, 0.3);
+        option { color: #ffffff; background-color: #0f172a; padding: 10px; }
+        
+        .qr-box { text-align: center; margin: 16px 0; background: rgba(0, 0, 0, 0.4); padding: 16px; border-radius: 18px; border: 1px dashed #475569; }
+        .qr-box img { width: 170px; height: 170px; border-radius: 14px; border: 2px solid #a855f7; }
+        
+        .btn-action {
+            background: linear-gradient(135deg, #a855f7, #ec4899); color: white;
+            border: none; padding: 14px; border-radius: 14px; cursor: pointer;
+            font-weight: 700; width: 100%; margin-top: 16px; font-size: 14px;
+            box-shadow: 0 4px 20px rgba(236, 72, 153, 0.35);
         }
-        .btn-pay:hover { transform: translateY(-2px); opacity: 0.95; }
-        .btn-status {
-            background: linear-gradient(135deg, #3b82f6, #2563eb); color: white;
-            border: none; padding: 12px; border-radius: 10px; cursor: pointer;
-            font-weight: 700; width: 100%; margin-top: 10px; font-size: 13px;
+        .btn-action:hover { transform: translateY(-2px); filter: brightness(1.1); }
+        .btn-secondary {
+            background: rgba(51, 65, 85, 0.5); border: 1px solid #475569; color: #cbd5e1;
+            padding: 10px; border-radius: 12px; font-size: 12px; font-weight: 600;
+            cursor: pointer; width: 100%; margin-top: 8px;
         }
-        .status-box {
-            display: none; margin-top: 15px; padding: 12px; border-radius: 12px;
-            background: #0f172a; border: 1px solid #374151; font-size: 13px; text-align: center;
+        .btn-secondary:hover { background: #334155; color: #fff; }
+
+        /* ORDER HISTORY TABLE */
+        .history-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 11px; }
+        .history-table th, .history-table td { border: 1px solid #334155; padding: 8px; text-align: left; }
+        .history-table th { background: #1e293b; color: #c084fc; }
+
+        /* MODAL POPUP */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 2000;
+            justify-content: center; align-items: center; padding: 15px;
+        }
+        .modal-content {
+            background: #0f172a; border: 1px solid #a855f7; border-radius: 20px;
+            max-width: 450px; width: 100%; max-height: 80vh; overflow-y: auto; padding: 20px; text-align: left;
         }
 
-        /* LIVE SUPPORT CHATBOT WIDGET STYLES */
+        /* LIVE CHAT WIDGET */
         .chat-toggle {
-            position: fixed; bottom: 20px; right: 20px; background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            position: fixed; bottom: 20px; right: 20px; background: linear-gradient(135deg, #a855f7, #ec4899);
             color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center;
-            justify-content: center; font-size: 26px; cursor: pointer; box-shadow: 0 10px 25px rgba(236, 72, 153, 0.5);
+            justify-content: center; font-size: 26px; cursor: pointer; box-shadow: 0 10px 30px rgba(236, 72, 153, 0.5);
             z-index: 1000;
         }
         .chat-popup {
-            display: none; position: fixed; bottom: 90px; right: 20px; width: 320px; max-width: 90%;
-            background: #0f172a; border: 1px solid #8b5cf6; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            display: none; position: fixed; bottom: 90px; right: 20px; width: 340px; max-width: 90%;
+            background: #0f172a; border: 1px solid #a855f7; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.9);
             z-index: 1000; overflow: hidden;
         }
         .chat-header {
-            background: linear-gradient(135deg, #8b5cf6, #ec4899); padding: 12px 15px; font-weight: bold; font-size: 14px;
+            background: linear-gradient(135deg, #a855f7, #ec4899); padding: 14px 16px; font-weight: bold; font-size: 13px;
             display: flex; justify-content: space-between; align-items: center;
         }
-        .chat-body { padding: 15px; max-height: 350px; overflow-y: auto; font-size: 12px; }
-        .bot-msg { background: #1e293b; padding: 10px; border-radius: 10px; margin-bottom: 10px; border-left: 3px solid #ec4899; }
-        .chat-option-btn {
-            background: #334155; border: none; color: white; padding: 8px; border-radius: 8px; width: 100%;
-            margin-top: 5px; cursor: pointer; text-align: left; font-size: 11px;
-        }
-        .chat-option-btn:hover { background: #8b5cf6; }
+        .chat-body { padding: 12px; height: 280px; overflow-y: auto; font-size: 12px; display: flex; flex-direction: column; gap: 10px; }
+        .msg-bot { background: #1e293b; padding: 10px 12px; border-radius: 14px 14px 14px 2px; border-left: 3px solid #ec4899; color: #f1f5f9; align-self: flex-start; max-width: 85%; }
+        .msg-user { background: #a855f7; padding: 10px 12px; border-radius: 14px 14px 2px 14px; color: white; align-self: flex-end; max-width: 85%; }
+        .chat-footer { padding: 10px; border-top: 1px solid #334155; display: flex; gap: 6px; background: #020617; }
+        .chat-footer input { margin: 0; padding: 10px 12px; font-size: 12px; border-radius: 10px; }
+        .chat-footer button { background: #ec4899; border: none; color: white; padding: 10px 14px; border-radius: 10px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <span class="brand-badge">Automated SMM Store</span>
+    <div class="brand-badge">Automated Store</div>
     <h1>CRAZY SELLER</h1>
-    <p style="color: #9ca3af; font-size: 12px; margin-top: 4px;">Instant Instagram Growth Services</p>
+    <p style="color: #94a3b8; font-size: 12px; margin-top: 2px;">Instant Instagram Growth Services</p>
 
-    <!-- SECTION 1: NEW ORDER FORM -->
+    <button class="btn-secondary" onclick="openPriceList()">📜 View Complete Price List</button>
+
+    <!-- SECTION 1: NEW ORDER -->
     <div class="card">
-        <h3 style="margin: 0 0 10px 0; color: #a855f7; font-size: 16px;">🚀 Place New Order</h3>
+        <h3 style="margin: 0 0 10px 0; color: #c084fc; font-size: 15px;">🚀 Place New Order</h3>
         
-        <label for="package">Select Service Package:</label>
+        <label for="package">Select Service:</label>
         <select id="package" onchange="updateQR()">
-            <optgroup label="────── 👁️ VIEWS PACKS ──────">
-                <option value="5K Super Fast Views (ID: 2115)" data-service-id="2115" data-qty="5000" data-price="10">🔥 5K Super Fast Views - ₹10</option>
-                <option value="1K Reels Fast Views (ID: 2071)" data-service-id="2071" data-qty="1000" data-price="6">👁️ 1K Reels Fast Views - ₹6</option>
-                <option value="1K Reels Views (ID: 2069)" data-service-id="2069" data-qty="1000" data-price="5">👁️ 1K Reels Views - ₹5</option>
-                <option value="10K Super Fast Views (ID: 2115)" data-service-id="2115" data-qty="10000" data-price="25">🔥 10K Super Fast Views - ₹25</option>
-                <option value="10K Dashboard Views (ID: 2142)" data-service-id="2142" data-qty="10000" data-price="20">📊 10K Dashboard Views - ₹20</option>
-                <option value="1K Story Views (ID: 2134)" data-service-id="2134" data-qty="1000" data-price="20">📲 1K Story Views - ₹20</option>
+            <optgroup label="────── VIEWS PACKS ──────">
+                <option value="5K Super Fast Views" data-service-id="2115" data-qty="5000" data-price="10">🔥 5K Super Fast Views - ₹10</option>
+                <option value="1K Reels Fast Views" data-service-id="2071" data-qty="1000" data-price="6">👁️ 1K Reels Fast Views - ₹6</option>
+                <option value="10K Super Fast Views" data-service-id="2115" data-qty="10000" data-price="25">🔥 10K Super Fast Views - ₹25</option>
             </optgroup>
-
-            <optgroup label="────── ❤️ LIKES PACKS ──────">
-                <option value="1K Likes 1000Day Non Drop (ID: 1774)" data-service-id="1774" data-qty="1000" data-price="20">❤️ 1K Non-Drop Likes - ₹20</option>
-                <option value="1K Likes Super Fast (ID: 1812)" data-service-id="1812" data-qty="1000" data-price="20">❤️ 1K Super Fast Likes - ₹20</option>
-                <option value="1K Super Fast Likes 365Days (ID: 2118)" data-service-id="2118" data-qty="1000" data-price="20">❤️ 1K Likes (365 Days) - ₹20</option>
+            <optgroup label="────── LIKES PACKS ──────">
+                <option value="1K Non-Drop Likes" data-service-id="1774" data-qty="1000" data-price="20">❤️ 1K Non-Drop Likes - ₹20</option>
+                <option value="1K Super Fast Likes" data-service-id="1812" data-qty="1000" data-price="20">❤️ 1K Super Fast Likes - ₹20</option>
             </optgroup>
-
-            <optgroup label="────── 👥 FOLLOWERS PACKS ──────">
-                <option value="200 Real Followers (ID: 528)" data-service-id="528" data-qty="1000" data-price="70">👥 1K Real Followers (Non-Drop) - ₹70</option>
-                <option value="1K Non Drop Followers 30Day (ID: 1731)" data-service-id="1731" data-qty="1000" data-price="320">👥 1K Non Drop Followers - ₹320</option>
-                <option value="1k Instagram cheapest followers(30-50)drop (ID: 1901)" data-service-id="1901" data-qty="1000" data-price="80">🔥 1k Instagram cheapest followers(30-50)drop - ₹80</option>
-            </optgroup>
-
-            <optgroup label="────── 💬 COMMENTS & ENGAGEMENT ──────">
-                <option value="100 Random Comments (ID: 2144)" data-service-id="2144" data-qty="100" data-price="20">💬 100 Random Comments - ₹20</option>
-                <option value="100 Custom Comments (ID: 476)" data-service-id="476" data-qty="100" data-price="25">💬 100 Custom Comments - ₹25</option>
-                <option value="1K Instagram Saves (ID: 505)" data-service-id="505" data-qty="1000" data-price="15">🗳️ 1K Post Saves - ₹15</option>
-                <option value="1K Instagram Shares (ID: 2130)" data-service-id="2130" data-qty="1000" data-price="7">↗️ 1K Shares - ₹7</option>
+            <optgroup label="────── FOLLOWERS PACKS ──────">
+                <option value="1K Real Followers (Non-Drop)" data-service-id="528" data-qty="1000" data-price="70">👥 1K Real Followers - ₹70</option>
+                <option value="1k Instagram cheapest followers" data-service-id="1901" data-qty="1000" data-price="80">🔥 1k Instagram cheapest followers - ₹80</option>
             </optgroup>
         </select>
 
-        <!-- Dynamic QR Display -->
         <div class="qr-box">
-            <p style="color: #10b981; font-size: 12px; font-weight: bold; margin: 0 0 8px 0;">
-                SCAN TO PAY VIA PHONEPE / GPAY / PAYTM:
-            </p>
+            <p style="color: #34d399; font-size: 11px; font-weight: bold; margin: 0 0 6px 0;">PAY VIA PHONEPE / GPAY / PAYTM:</p>
             <img id="qrImage" src="" alt="UPI QR Code">
-            <p style="color: #9ca3af; font-size: 11px; margin: 8px 0 0 0;">UPI ID: <b>8124271142@naviaxis</b></p>
+            <p style="color: #94a3b8; font-size: 11px; margin: 6px 0 0 0;">UPI ID: <b>8124271142@naviaxis</b></p>
             <p id="payAmountText" style="color: #facc15; font-size: 14px; font-weight: bold; margin-top: 4px;"></p>
         </div>
 
@@ -144,17 +144,38 @@
         <label for="transactionId">Payment UTR ID (12 Digits):</label>
         <input type="text" id="transactionId" placeholder="Enter 12-digit UTR Number">
 
-        <button class="btn-pay" id="subBtn" onclick="sendToTelegram()">Submit Order Verification ⚡</button>
+        <button class="btn-action" id="subBtn" onclick="submitOrder()">Submit Order Verification ⚡</button>
     </div>
 
-    <!-- SECTION 2: TRACK ORDER STATUS -->
-    <div class="card" style="border-color: #3b82f6;">
-        <h3 style="margin: 0 0 10px 0; color: #60a5fa; font-size: 16px;">🔍 Track Live Order Status</h3>
-        <label for="checkOrderId">Enter SMM Order ID:</label>
-        <input type="text" id="checkOrderId" placeholder="E.g., 23501">
-        <button class="btn-status" onclick="checkStatus()">Check Status</button>
-        
-        <div id="statusResult" class="status-box"></div>
+    <!-- SECTION 2: ORDER HISTORY -->
+    <div class="card">
+        <h3 style="margin: 0 0 10px 0; color: #60a5fa; font-size: 15px;">📜 My Recent Orders</h3>
+        <div id="historyContainer" style="overflow-x:auto;">
+            <p style="color:#64748b; font-size:12px;">No orders placed yet.</p>
+        </div>
+    </div>
+</div>
+
+<!-- PRICE LIST MODAL -->
+<div class="modal" id="priceModal">
+    <div class="modal-content">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h3 style="margin: 0; color: #c084fc;">📋 Complete Price List</h3>
+            <span style="cursor: pointer; font-size: 20px; color: #f43f5e;" onclick="closePriceList()">✖</span>
+        </div>
+        <table class="history-table">
+            <thead>
+                <tr><th>Service</th><th>Qty</th><th>Price</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>🔥 5K Super Fast Views</td><td>5,000</td><td>₹10</td></tr>
+                <tr><td>👁️ 1K Reels Fast Views</td><td>1,000</td><td>₹6</td></tr>
+                <tr><td>🔥 10K Super Fast Views</td><td>10,000</td><td>₹25</td></tr>
+                <tr><td>❤️ 1K Non-Drop Likes</td><td>1,000</td><td>₹20</td></tr>
+                <tr><td>👥 1K Real Followers</td><td>1,000</td><td>₹70</td></tr>
+                <tr><td>🔥 1K Cheapest Followers</td><td>1,000</td><td>₹80</td></tr>
+            </tbody>
+        </table>
     </div>
 </div>
 
@@ -163,23 +184,30 @@
 
 <div class="chat-popup" id="chatWidget">
     <div class="chat-header">
-        <span>🤖 CRAZY AI Assistant</span>
+        <span>💬 Live Admin Support</span>
         <span style="cursor:pointer;" onclick="toggleChat()">✖</span>
     </div>
     <div class="chat-body" id="chatBody">
-        <div class="bot-msg">
-            Hello! 👋 Enna doubt irukku bro? Keela irukkura option-ai select pannunga:
+        <div class="msg-bot">
+            Vanakkam! 👋 Need help or have doubts? Type your message below to chat with Admin directly!
         </div>
-        <button class="chat-option-btn" onclick="botAnswer(1)">❓ How to place order?</button>
-        <button class="chat-option-btn" onclick="botAnswer(2)">⏱️ Delivery timing details</button>
-        <button class="chat-option-btn" onclick="botAnswer(3)">🔍 How to find SMM Order ID?</button>
-        <button class="chat-option-btn" onclick="botAnswer(4)">💬 Talk to Admin Support</button>
+    </div>
+    <div class="chat-footer">
+        <input type="text" id="chatInput" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
+        <button onclick="sendChatMessage()">Send</button>
     </div>
 </div>
 
 <script>
     const UPI_ID = "8124271142@naviaxis";
-    const BACKEND_URL = "https://crazy-v97r.onrender.com/order";
+    const BACKEND_URL = "https://crazy-v97r.onrender.com";
+
+    // Unique Session ID for Two-Way Chat
+    let sessionId = localStorage.getItem("chat_session_id");
+    if (!sessionId) {
+        sessionId = "USER_" + Math.floor(100000 + Math.random() * 900000);
+        localStorage.setItem("chat_session_id", sessionId);
+    }
 
     function updateQR() {
         var selectElem = document.getElementById("package");
@@ -191,31 +219,40 @@
         document.getElementById("payAmountText").innerText = "Amount to Pay: ₹" + price;
     }
     
-    window.onload = updateQR;
+    window.onload = function() {
+        updateQR();
+        loadOrderHistory();
+    };
 
-    function sendToTelegram() {
+    /* SUBMIT ORDER */
+    function submitOrder() {
         var selectElem = document.getElementById("package");
         var selectedOption = selectElem.options[selectElem.selectedIndex];
         var btn = document.getElementById("subBtn");
         
-        var payload = {
-            serviceId: selectedOption.getAttribute("data-service-id"),
-            quantity: selectedOption.getAttribute("data-qty"),
-            price: selectedOption.getAttribute("data-price"),
-            packageName: selectedOption.value,
-            instaLink: document.getElementById("instaLink").value,
-            txnId: document.getElementById("transactionId").value
-        };
+        var packageName = selectedOption.value;
+        var price = selectedOption.getAttribute("data-price");
+        var link = document.getElementById("instaLink").value;
+        var txnId = document.getElementById("transactionId").value;
 
-        if (!payload.instaLink || !payload.txnId || payload.txnId.length < 10) {
-            alert("Please enter valid Instagram Link and 12-digit Payment UTR ID!");
+        if (!link || !txnId || txnId.length < 10) {
+            alert("Please enter a valid Instagram Link and 12-digit Payment UTR ID!");
             return;
         }
 
-        btn.innerText = "Processing Order...";
+        btn.innerText = "Processing...";
         btn.disabled = true;
 
-        fetch(BACKEND_URL, {
+        var payload = {
+            serviceId: selectedOption.getAttribute("data-service-id"),
+            quantity: selectedOption.getAttribute("data-qty"),
+            price: price,
+            packageName: packageName,
+            instaLink: link,
+            txnId: txnId
+        };
+
+        fetch(`${BACKEND_URL}/order`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)
@@ -224,55 +261,52 @@
         .then(data => {
             btn.innerText = "Submit Order Verification ⚡";
             btn.disabled = false;
-            if (data.success) {
-                alert("Order Submitted Successfully! Ref ID: " + data.refId + "\nAdmin will verify profit and start order.");
-                document.getElementById("instaLink").value = "";
-                document.getElementById("transactionId").value = "";
-            } else {
-                alert("Error placing order. Please try again.");
-            }
+            saveLocalOrder(packageName, price, txnId);
+            alert("Order Submitted! Ref ID: " + (data.refId || 'Saved') + "\nAdmin will verify payment UTR and start order.");
+            document.getElementById("instaLink").value = "";
+            document.getElementById("transactionId").value = "";
         })
         .catch(err => {
             btn.innerText = "Submit Order Verification ⚡";
             btn.disabled = false;
-            alert("Order Submitted! Admin will verify transaction UTR and start order.");
+            saveLocalOrder(packageName, price, txnId);
+            alert("Order Saved! Admin will verify payment UTR and start order.");
         });
     }
 
-    /* DIRECT SMM API TRACKING */
-    function checkStatus() {
-        var orderId = document.getElementById("checkOrderId").value;
-        var resultBox = document.getElementById("statusResult");
+    /* LOCAL STORAGE ORDER HISTORY */
+    function saveLocalOrder(pkg, price, utr) {
+        var history = JSON.parse(localStorage.getItem("crazy_orders") || "[]");
+        history.unshift({
+            package: pkg,
+            price: "₹" + price,
+            utr: utr,
+            status: "Pending Verification"
+        });
+        localStorage.setItem("crazy_orders", JSON.stringify(history));
+        loadOrderHistory();
+    }
 
-        if (!orderId) {
-            alert("Please enter a valid SMM Order ID!");
+    function loadOrderHistory() {
+        var history = JSON.parse(localStorage.getItem("crazy_orders") || "[]");
+        var container = document.getElementById("historyContainer");
+        
+        if (history.length === 0) {
+            container.innerHTML = `<p style="color:#64748b; font-size:12px;">No orders placed yet.</p>`;
             return;
         }
 
-        resultBox.style.display = "block";
-        resultBox.innerHTML = "Fetching status...";
-
-        fetch(`https://crazy-v97r.onrender.com/status/${orderId}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data && data.status) {
-                let statusColor = "#facc15";
-                if (data.status === "Completed") statusColor = "#22c55e";
-                if (data.status === "Canceled" || data.status === "Partial") statusColor = "#ef4444";
-
-                resultBox.innerHTML = `
-                    <b>Order ID:</b> #${orderId}<br>
-                    <b>Status:</b> <span style="color:${statusColor}; font-weight:bold;">${data.status}</span><br>
-                    <b>Remains:</b> ${data.remains || 0}
-                `;
-            } else {
-                resultBox.innerHTML = `<span style="color:#ef4444;">Order Pending Admin Approval / Invalid ID.</span>`;
-            }
-        })
-        .catch(err => {
-            resultBox.innerHTML = `<span style="color:#ef4444;">Order Under Verification / Check Order ID.</span>`;
+        var html = `<table class="history-table"><thead><tr><th>Service</th><th>Price</th><th>UTR</th><th>Status</th></tr></thead><tbody>`;
+        history.forEach(item => {
+            html += `<tr><td>${item.package}</td><td>${item.price}</td><td>${item.utr.slice(-4)}****</td><td style="color:#facc15;">${item.status}</td></tr>`;
         });
+        html += `</tbody></table>`;
+        container.innerHTML = html;
     }
+
+    /* PRICE LIST MODAL */
+    function openPriceList() { document.getElementById("priceModal").style.display = "flex"; }
+    function closePriceList() { document.getElementById("priceModal").style.display = "none"; }
 
     /* CHATBOT FUNCTIONS */
     function toggleChat() {
@@ -280,23 +314,48 @@
         widget.style.display = (widget.style.display === "block") ? "none" : "block";
     }
 
-    function botAnswer(type) {
-        var chatBody = document.getElementById("chatBody");
-        var reply = "";
-
-        if (type === 1) {
-            reply = "<b>How to Order:</b><br>1. Select Service Package.<br>2. Pay via UPI QR code.<br>3. Enter Insta Link & 12-digit UTR.<br>4. Click Submit!";
-        } else if (type === 2) {
-            reply = "<b>Delivery Time:</b><br>⚡ Views/Likes: 1 - 10 Mins<br>👥 Followers: 10 - 30 Mins";
-        } else if (type === 3) {
-            reply = "<b>Order ID:</b><br>Admin will send SMM Order ID after verifying payment to track live status.";
-        } else if (type === 4) {
-            reply = "<b>Support:</b><br>Contact Admin directly on Telegram / WhatsApp for custom queries.";
-        }
-
-        chatBody.innerHTML += `<div class="bot-msg" style="border-left-color: #8b5cf6; margin-top:10px;">${reply}</div>`;
-        chatBody.scrollTop = chatBody.scrollHeight;
+    function handleKeyPress(e) {
+        if (e.key === 'Enter') sendChatMessage();
     }
+
+    function sendChatMessage() {
+        var input = document.getElementById("chatInput");
+        var msg = input.value.trim();
+        if (!msg) return;
+
+        input.value = "";
+
+        fetch(`${BACKEND_URL}/send-admin`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                sessionId: sessionId,
+                name: "Website User",
+                message: msg
+            })
+        });
+    }
+
+    /* REALTIME POLLING FOR ADMIN REPLIES */
+    setInterval(() => {
+        fetch(`${BACKEND_URL}/get-messages/${sessionId}`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.messages && data.messages.length > 0) {
+                var chatBody = document.getElementById("chatBody");
+                let html = `<div class="msg-bot">Vanakkam! 👋 Need help or have doubts? Type your message below to chat with Admin directly!</div>`;
+                data.messages.forEach(m => {
+                    if (m.sender === "user") {
+                        html += `<div class="msg-user">${m.text}</div>`;
+                    } else {
+                        html += `<div class="msg-bot" style="border-left-color: #22c55e;"><b>Admin:</b> ${m.text}</div>`;
+                    }
+                });
+                chatBody.innerHTML = html;
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }
+        }).catch(err => {});
+    }, 3000);
 </script>
 
 </body>
