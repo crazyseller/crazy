@@ -1,92 +1,65 @@
-import os
-import requests
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import requests
+import random
 
 app = Flask(__name__)
 CORS(app)
 
-# Ungaloda Correct API Credentials
-TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "8986935279:AAFjOyHX7fnZRKTqOZudUxyJCQjcu3_ChMk")
-TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "8435445040")
-
-# In-Memory Storage for Chat Messages
-chat_messages = {} # session_id: [messages]
+BOT_TOKEN = "8986935279:AAFjOyHX7fnZRKTqOZudUxyJCQjcu3_ChMk"
+CHAT_ID = "8435445040"
 
 @app.route('/', methods=['GET'])
 def home():
     return "CRAZY SELLER Backend Running Successfully!"
 
-# Automatic Webhook Activator Route
-@app.route('/setup-webhook', methods=['GET'])
-def setup_webhook():
-    webhook_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/setWebhook?url=https://crazy-v97r.onrender.com/webhook"
-    res = requests.get(webhook_url).json()
-    return jsonify(res)
-
-# 1. WEBSITE-LA IRUNDHU MESSAGE TELEGRAM-KU ANUPPA
-@app.route('/send-admin', methods=['POST'])
-def send_to_admin():
+@app.route('/order', methods=['POST'])
+def handle_order():
+    data = request.json or {}
+    
+    package_name = data.get('packageName', 'N/A')
+    price = data.get('price', 0.0)
+    insta_link = data.get('instaLink', 'N/A')
+    txn_id = data.get('txnId', 'N/A')
+    service_id = data.get('serviceId', 'N/A')
+    
+    # Generate Random Ref ID
+    ref_id = f"CS-{random.randint(1000, 9999)}"
+    
+    # Calculations (உன் விருப்பத்திற்கு ஏற்ப மாற்றி அமைக்கலாம்)
     try:
-        data = request.json
-        session_id = data.get("sessionId")
-        user_msg = data.get("message")
-        user_name = data.get("name", "Customer")
+        cust_paid = float(price)
+    except:
+        cust_paid = 0.0
+        
+    smm_cost = round(cust_paid * 0.165, 2)  # தோராய கணக்கீடு
+    profit = round(cust_paid - smm_cost, 2)
+    smm_balance = 4.66  # SMM Panel Balance
 
-        if session_id not in chat_messages:
-            chat_messages[session_id] = []
+    message_text = (
+        f"🚨 *NEW ORDER RECEIVED* 🚨\n\n"
+        f"🆔 *Ref ID:* {ref_id}\n"
+        f"📦 *Package:* {package_name} (ID: {service_id})\n"
+        f"🔗 *Link:* {insta_link}\n"
+        f"🔢 *UTR:* `{txn_id}`\n\n"
+        f"--- 💰 *PROFIT COMPARISON* ---\n"
+        f"💵 *Customer Paid:* ₹{cust_paid:.1f}\n"
+        f"📉 *SMM Cost:* ₹{smm_cost}\n"
+        f"📈 *Your Profit:* ₹{profit}\n\n"
+        f"💳 *SMM Balance:* ₹{smm_balance}"
+    )
 
-        chat_messages[session_id].append({"sender": "user", "text": user_msg})
-
-        # Telegram Message Format with Session ID
-        tg_text = (
-            f"💬 *NEW WEBSITE MESSAGE*\n\n"
-            f"👤 *From:* {user_name}\n"
-            f"🆔 *Session ID:* `{session_id}`\n"
-            f"✉️ *Message:* {user_msg}\n\n"
-            f"⚠️ *Note:* Indha message-ku Telegram-la *REPLY* pannunga. Website-la customer-ku reply pogum!"
-        )
-
-        tg_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
-        requests.post(tg_url, json={
-            "chat_id": TELEGRAM_CHAT_ID,
-            "text": tg_text,
+    telegram_url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+    
+    try:
+        requests.post(telegram_url, json={
+            "chat_id": CHAT_ID,
+            "text": message_text,
             "parse_mode": "Markdown"
         })
-
-        return jsonify({"success": True})
-    except Exception as e:
-        return jsonify({"success": False, "error": str(e)}), 500
-
-# 2. TELEGRAM-LA NEENGA REPLY PANNA WEBSITE-KU VARA (WEBHOOK)
-@app.route('/webhook', methods=['POST'])
-def telegram_webhook():
-    try:
-        update = request.json
-        if "message" in update:
-            msg = update["message"]
-            
-            # Telegram-la neenga Reply panni irundha
-            if "reply_to_message" in msg and "text" in msg["reply_to_message"]:
-                original_text = msg["reply_to_message"]["text"]
-                admin_reply = msg["text"]
-
-                # Original Message-la irundhu Session ID-ai edukkuroom
-                if "Session ID:" in original_text:
-                    session_id = original_text.split("Session ID:")[1].split("\n")[0].strip().replace("`", "")
-
-                    if session_id in chat_messages:
-                        chat_messages[session_id].append({"sender": "admin", "text": admin_reply})
-
-        return jsonify({"status": "ok"})
+        return jsonify({"status": "success", "refId": ref_id}), 200
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
-
-# 3. WEBSITE-LA NEW MESSAGES FETCH PANNA (POLLING)
-@app.route('/get-messages/<session_id>', methods=['GET'])
-def get_messages(session_id):
-    msgs = chat_messages.get(session_id, [])
-    return jsonify({"messages": msgs})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
