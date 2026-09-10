@@ -51,7 +51,7 @@
         .price-text { font-size: 22px; font-weight: 800; color: #facc15; }
 
         .qr-box { text-align: center; margin: 16px 0; background: rgba(0, 0, 0, 0.4); padding: 16px; border-radius: 18px; border: 1px dashed #475569; }
-        .qr-box img { width: 170px; height: 170px; border-radius: 14px; border: 2px solid #a855f7; }
+        .qr-box img { width: 170px; height: 170px; border-radius: 14px; border: 2px solid #a855f7; background: #fff; }
         
         .btn-action {
             background: linear-gradient(135deg, #a855f7, #ec4899); color: white;
@@ -112,7 +112,7 @@
 
     <button class="btn-secondary" onclick="openPriceList()">📜 View Complete Price List</button>
 
-    <!-- NEW ORDER SECTION -->
+    <!-- ORDER FORM -->
     <div class="card">
         <h3 style="margin: 0 0 10px 0; color: #c084fc; font-size: 15px;">🚀 Place New Order</h3>
         
@@ -178,7 +178,7 @@
         <button class="btn-action" id="subBtn" onclick="submitOrder()">Submit Order Verification ⚡</button>
     </div>
 
-    <!-- ORDER HISTORY -->
+    <!-- RECENT ORDERS -->
     <div class="card">
         <h3 style="margin: 0 0 10px 0; color: #60a5fa; font-size: 15px;">📜 My Recent Orders</h3>
         <div id="historyContainer" style="overflow-x:auto;">
@@ -249,20 +249,17 @@
     let sessionId = localStorage.getItem("chat_session_id") || ("USER_" + Math.floor(100000 + Math.random() * 900000));
     localStorage.setItem("chat_session_id", sessionId);
 
-    // FIXED DYNAMIC PRICE & QR CALCULATION
     function calculatePriceAndQR() {
         var selectElem = document.getElementById("package");
         var selectedOption = selectElem.options[selectElem.selectedIndex];
         
         var currentPrice = selectedOption.getAttribute("data-price");
         
-        // Update Live Price Text
         document.getElementById("liveCalculatedPrice").innerText = "₹" + currentPrice;
         document.getElementById("payAmountText").innerText = "Amount to Pay: ₹" + currentPrice;
         
-        // Generate Dynamic QR Code with calculated price
-        var upiData = encodeURIComponent(`upi://pay?pa=${UPI_ID}&pn=CRAZY_SELLER&am=${currentPrice}&cu=INR`);
-        var qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${upiData}`;
+        var upiData = `upi://pay?pa=${UPI_ID}&pn=CRAZY_SELLER&am=${currentPrice}&cu=INR`;
+        var qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(upiData)}`;
         document.getElementById("qrImage").src = qrUrl;
     }
     
@@ -282,12 +279,12 @@
         var txnId = document.getElementById("transactionId").value.trim();
 
         if (!link) {
-            alert("Please enter a valid Instagram Profile Link or Username!");
+            alert("Instagram Profile Link அல்லது Username-ஐ உள்ளிடவும்!");
             return;
         }
 
-        if (!txnId || txnId.length !== 12 || isNaN(txnId)) {
-            alert("Please enter a valid 12-digit UTR/Transaction ID!");
+        if (!txnId || txnId.length < 10) {
+            alert("சரியான 12-Digit UTR நம்பரை உள்ளிடவும்!");
             return;
         }
 
@@ -303,28 +300,40 @@
             txnId: txnId
         };
 
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
+
         fetch(`${BACKEND_URL}/order`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
+            body: JSON.stringify(payload),
+            signal: controller.signal
         })
         .then(res => res.json())
         .then(data => {
-            btn.innerText = "Submit Order Verification ⚡";
-            btn.disabled = false;
-            saveLocalOrder(packageName, price, txnId);
-            alert("Order Submitted! Ref ID: " + (data.refId || 'Saved') + "\nAdmin will verify payment UTR and start order.");
-            document.getElementById("instaLink").value = "";
-            document.getElementById("transactionId").value = "";
+            clearTimeout(timeoutId);
+            finishOrderSubmission(packageName, price, txnId, data.refId);
         })
         .catch(err => {
-            btn.innerText = "Submit Order Verification ⚡";
-            btn.disabled = false;
-            saveLocalOrder(packageName, price, txnId);
-            alert("Order Saved! Admin will verify payment UTR and start order.");
-            document.getElementById("instaLink").value = "";
-            document.getElementById("transactionId").value = "";
+            clearTimeout(timeoutId);
+            finishOrderSubmission(packageName, price, txnId, null);
         });
+    }
+
+    function finishOrderSubmission(pkg, price, utr, refId) {
+        var btn = document.getElementById("subBtn");
+        btn.innerText = "Submit Order Verification ⚡";
+        btn.disabled = false;
+        
+        saveLocalOrder(pkg, price, utr);
+        
+        let msg = "Order Submitted Successfully! 🎉\n";
+        msg += refId ? ("Ref ID: " + refId + "\n") : "";
+        msg += "Admin verify செய்த பின் Order உடனடியாக தொடங்கப்படும்.";
+        alert(msg);
+
+        document.getElementById("instaLink").value = "";
+        document.getElementById("transactionId").value = "";
     }
 
     function saveLocalOrder(pkg, price, utr) {
@@ -364,7 +373,6 @@
         var msg = input.value.trim();
         if (!msg) return;
 
-        // UI Optimistic Update
         var chatBody = document.getElementById("chatBody");
         chatBody.innerHTML += `<div class="msg-user">${msg}</div>`;
         chatBody.scrollTop = chatBody.scrollHeight;
@@ -374,28 +382,31 @@
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ sessionId: sessionId, name: "Website User", message: msg })
-        }).catch(err => console.error("Chat send error:", err));
+        }).catch(err => {});
     }
 
     setInterval(() => {
-        fetch(`${BACKEND_URL}/get-messages/${sessionId}`)
-        .then(res => res.json())
-        .then(data => {
-            if (data.messages && data.messages.length > 0) {
-                var chatBody = document.getElementById("chatBody");
-                let html = `<div class="msg-bot">Vanakkam! 👋 Need help or have doubts? Type your message below!</div>`;
-                data.messages.forEach(m => {
-                    if (m.sender === "user") {
-                        html += `<div class="msg-user">${m.text}</div>`;
-                    } else {
-                        html += `<div class="msg-bot" style="border-left-color: #22c55e;"><b>Admin:</b> ${m.text}</div>`;
-                    }
-                });
-                chatBody.innerHTML = html;
-                chatBody.scrollTop = chatBody.scrollHeight;
-            }
-        }).catch(err => {});
-    }, 3000);
+        var widget = document.getElementById("chatWidget");
+        if(widget.style.display === "block") {
+            fetch(`${BACKEND_URL}/get-messages/${sessionId}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.messages && data.messages.length > 0) {
+                    var chatBody = document.getElementById("chatBody");
+                    let html = `<div class="msg-bot">Vanakkam! 👋 Need help or have doubts? Type your message below!</div>`;
+                    data.messages.forEach(m => {
+                        if (m.sender === "user") {
+                            html += `<div class="msg-user">${m.text}</div>`;
+                        } else {
+                            html += `<div class="msg-bot" style="border-left-color: #22c55e;"><b>Admin:</b> ${m.text}</div>`;
+                        }
+                    });
+                    chatBody.innerHTML = html;
+                    chatBody.scrollTop = chatBody.scrollHeight;
+                }
+            }).catch(err => {});
+        }
+    }, 4000);
 </script>
 
 </body>
