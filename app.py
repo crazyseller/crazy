@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import requests
+import random
 import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
@@ -11,25 +12,24 @@ BOT_TOKEN = "8986935279:AAFjOyHX7fnZRKTqOZudUxyJCQjcu3_ChMk"
 CHAT_ID = "8435445040"
 bot = telebot.TeleBot(BOT_TOKEN)
 
-# SMM Panel விவரங்கள் (தேவைப்பட்டால் மாற்றவும்)
-SMM_API_KEY = "YOUR_SMM_PANEL_API_KEY"  # உங்கள் SMM Panel API Key
-SMM_API_URL = "https://smm-panel-domain.com/api/v2"  # உங்கள் SMM Panel URL
+# SMM Panel விவரங்கள்
+SMM_API_KEY = "38f043592c2e479b5a70a51b7aada85c"
+SMM_API_URL = "https://your-smm-panel-domain.com/api/v2"  # உங்கள் SMM Panel URL-ஐ இங்கு போடவும்
 
-# தற்காலிகமாக Orders சேமிக்க (In-Memory Pending Orders)
+# தற்காலிகமாக Order சேமிக்கும் இடம் (Pending Orders)
 pending_orders = {}
 
-# SMM Balance அறியும் பகுதி
 def get_smm_balance():
     try:
-        res = requests.post(SMM_API_URL, data={'key': SMM_API_KEY, 'action': 'balance'})
+        res = requests.post(SMM_API_URL, data={'key': SMM_API_KEY, 'action': 'balance'}, timeout=5)
         data = res.json()
         return float(data.get('balance', 0.0))
-    except:
-        return 4.66  # API இணைப்பு இல்லையென்றால் இயல்புநிலை மதிப்பு
+    except Exception:
+        return 4.66  # Default fallback balance
 
 @app.route('/', methods=['GET'])
 def home():
-    return "CRAZY SELLER Order Control Backend Live!"
+    return "CRAZY SELLER Backend Running Successfully!"
 
 @app.route('/order', methods=['POST'])
 def handle_order():
@@ -42,14 +42,14 @@ def handle_order():
     service_id = data.get('serviceId', 'N/A')
     quantity = data.get('quantity', 1000)
     
-    ref_id = f"CS-{telebot.telebot.randint(1000, 9999)}"
+    ref_id = f"CS-{random.randint(1000, 9999)}"
 
-    # 1. உண்மையான SMM Cost மற்றும் Profit கணக்கீடு (உதாரணத்திற்கு 30% Cost எனக் கணக்கிடப்படுகிறது)
-    smm_cost = round(price * 0.30, 2)  # உங்கள் SMM அசல் விலைக்கு ஏற்ப 0.30-ஐ மாற்றிக் கொள்ளலாம்
+    # Cost & Profit கணக்கீடு
+    smm_cost = round(price * 0.165, 2)
     profit = round(price - smm_cost, 2)
     smm_balance = get_smm_balance()
 
-    # Order தகவல்களை Pending பட்டியலில் சேமிக்கிறோம் (Accept செய்யும் வரை SMM-க்கு போகாது)
+    # நீங்கள் Accept அழுத்தும் வரை Order SMM-க்கு போகாது
     pending_orders[ref_id] = {
         "service_id": service_id,
         "link": insta_link,
@@ -82,7 +82,6 @@ def handle_order():
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
 
-# Telegram-ல் Accept அல்லது Reject பட்டன் அழுத்தும் போது இயங்கும் பகுதி
 @bot.callback_query_handler(func=lambda call: True)
 def handle_callback(call):
     data = call.data
@@ -92,24 +91,28 @@ def handle_callback(call):
         order = pending_orders.get(ref_id)
         
         if order:
-            # 2. Accept அழுத்தினால் மட்டுமே SMM Panel API-க்கு Request அனுப்பப்படும்
-            smm_response = requests.post(SMM_API_URL, data={
-                'key': SMM_API_KEY,
-                'action': 'add',
-                'service': order['service_id'],
-                'link': order['link'],
-                'quantity': order['quantity']
-            }).json()
+            try:
+                # Accept பண்ணியவுடன் SMM Panel-க்கு Order செல்லும்
+                smm_response = requests.post(SMM_API_URL, data={
+                    'key': SMM_API_KEY,
+                    'action': 'add',
+                    'service': order['service_id'],
+                    'link': order['link'],
+                    'quantity': order['quantity']
+                }, timeout=5).json()
+                
+                order_id = smm_response.get('order', 'Sent Successfully')
+                status_text = f"\n\n🟢 *STATUS:* Order Accepted & Processed! (SMM Order ID: {order_id})"
+            except Exception as e:
+                status_text = f"\n\n⚠️ *STATUS:* Accepted, but SMM API Error: {str(e)}"
             
             bot.edit_message_text(
                 chat_id=call.message.chat.id,
                 message_id=call.message.message_id,
-                text=call.message.text + f"\n\n🟢 *STATUS:* Order Accepted & Sent to SMM! (Order ID: {smm_response.get('order', 'Done')})",
+                text=call.message.text + status_text,
                 parse_mode="Markdown"
             )
             del pending_orders[ref_id]
-        else:
-            bot.answer_callback_query(call.id, "Order expired or already processed!")
 
     elif data.startswith("reject_"):
         ref_id = data.replace("reject_", "")
