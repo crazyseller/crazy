@@ -12,12 +12,13 @@ BOT_TOKEN = "8986935279:AAFjOyHX7fnZRKTqOZudUxyJCQjcu3_ChMk"
 CHAT_ID = "8435445040"
 bot = telebot.TeleBot(BOT_TOKEN)
 
-# SMM Panel விவரங்கள்
+# SMM Panel API Details (smmaddaa.in)
 SMM_API_KEY = "38f043592c2e479b5a70a51b7aada85c"
-SMM_API_URL = "https://your-smm-panel-domain.com/api/v2"  # உங்கள் SMM Panel URL-ஐ இங்கு போடவும்
+SMM_API_URL = "https://smmaddaa.in/api/v2"
 
-# தற்காலிகமாக Order சேமிக்கும் இடம் (Pending Orders)
+# Pending orders temporarily stored in memory
 pending_orders = {}
+chat_messages = {}
 
 def get_smm_balance():
     try:
@@ -25,12 +26,13 @@ def get_smm_balance():
         data = res.json()
         return float(data.get('balance', 0.0))
     except Exception:
-        return 4.66  # Default fallback balance
+        return 0.0
 
 @app.route('/', methods=['GET'])
 def home():
     return "CRAZY SELLER Backend Running Successfully!"
 
+# --- ORDER HANDLING ---
 @app.route('/order', methods=['POST'])
 def handle_order():
     data = request.json or {}
@@ -44,12 +46,12 @@ def handle_order():
     
     ref_id = f"CS-{random.randint(1000, 9999)}"
 
-    # Cost & Profit கணக்கீடு
+    # Cost & Profit Calculations
     smm_cost = round(price * 0.165, 2)
     profit = round(price - smm_cost, 2)
     smm_balance = get_smm_balance()
 
-    # நீங்கள் Accept அழுத்தும் வரை Order SMM-க்கு போகாது
+    # Save to pending orders dictionary until Accept is clicked
     pending_orders[ref_id] = {
         "service_id": service_id,
         "link": insta_link,
@@ -60,7 +62,7 @@ def handle_order():
     message_text = (
         f"🚨 *NEW ORDER RECEIVED* 🚨\n\n"
         f"🆔 *Ref ID:* {ref_id}\n"
-        f"📦 *Package:* {package_name} (ID: {service_id})\n"
+        f"📦 *Package:* {package_name} (Service ID: {service_id})\n"
         f"🔗 *Link:* {insta_link}\n"
         f"🔢 *UTR:* `{txn_id}`\n\n"
         f"--- 💰 *PROFIT COMPARISON* ---\n"
@@ -78,10 +80,11 @@ def handle_order():
 
     try:
         bot.send_message(CHAT_ID, message_text, parse_mode="Markdown", reply_markup=markup)
-        return jsonify({"status": "success", "refId": ref_id, "message": "Order Pending Admin Approval"}), 200
+        return jsonify({"status": "success", "refId": ref_id}), 200
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
 
+# --- TELEGRAM CALLBACK BUTTONS (ACCEPT / REJECT) ---
 @bot.callback_query_handler(func=lambda call: True)
 def handle_callback(call):
     data = call.data
@@ -92,19 +95,23 @@ def handle_callback(call):
         
         if order:
             try:
-                # Accept பண்ணியவுடன் SMM Panel-க்கு Order செல்லும்
+                # Direct API Call to SMM Addaa Panel
                 smm_response = requests.post(SMM_API_URL, data={
                     'key': SMM_API_KEY,
                     'action': 'add',
                     'service': order['service_id'],
                     'link': order['link'],
                     'quantity': order['quantity']
-                }, timeout=5).json()
+                }, timeout=8).json()
                 
-                order_id = smm_response.get('order', 'Sent Successfully')
-                status_text = f"\n\n🟢 *STATUS:* Order Accepted & Processed! (SMM Order ID: {order_id})"
+                if 'order' in smm_response:
+                    order_id = smm_response.get('order')
+                    status_text = f"\n\n🟢 *STATUS:* Order Placed on SMM Addaa! (SMM Order ID: {order_id})"
+                else:
+                    error_msg = smm_response.get('error', 'Unknown Error')
+                    status_text = f"\n\n⚠️ *SMM API ERROR:* {error_msg}"
             except Exception as e:
-                status_text = f"\n\n⚠️ *STATUS:* Accepted, but SMM API Error: {str(e)}"
+                status_text = f"\n\n⚠️ *STATUS:* Connection Error: {str(e)}"
             
             bot.edit_message_text(
                 chat_id=call.message.chat.id,
@@ -125,6 +132,26 @@ def handle_callback(call):
             text=call.message.text + "\n\n🔴 *STATUS:* Order Rejected by Admin!",
             parse_mode="Markdown"
         )
+
+# --- CHATBOT BACKEND ENDPOINTS ---
+@app.route('/send-admin', methods=['POST'])
+def send_admin():
+    data = request.json or {}
+    session_id = data.get('sessionId')
+    message = data.get('message')
+    
+    if session_id not in chat_messages:
+        chat_messages[session_id] = []
+    
+    chat_messages[session_id].append({"sender": "user", "text": message})
+    
+    bot.send_message(CHAT_ID, f"💬 *Live Chat ({session_id}):*\n{message}", parse_mode="Markdown")
+    return jsonify({"status": "sent"})
+
+@app.route('/get-messages/<session_id>', methods=['GET'])
+def get_messages(session_id):
+    messages = chat_messages.get(session_id, [])
+    return jsonify({"messages": messages})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
