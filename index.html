@@ -24,7 +24,7 @@
             background: linear-gradient(135deg, #a855f7, #ec4899);
             padding: 6px 16px; border-radius: 50px; font-size: 11px;
             font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3); inline-size: fit-content; margin: 0 auto;
+            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3); display: inline-block; margin: 0 auto;
         }
         h1 {
             font-size: 30px; font-weight: 800; margin: 12px 0 2px 0; letter-spacing: -0.5px;
@@ -173,7 +173,7 @@
         <input type="text" id="instaLink" placeholder="https://instagram.com/p/xxx or @username">
 
         <label for="transactionId">Payment UTR ID (12 Digits):</label>
-        <input type="text" id="transactionId" placeholder="Enter 12-digit UTR Number">
+        <input type="text" id="transactionId" maxlength="12" placeholder="Enter 12-digit UTR Number">
 
         <button class="btn-action" id="subBtn" onclick="submitOrder()">Submit Order Verification ⚡</button>
     </div>
@@ -261,7 +261,8 @@
         document.getElementById("payAmountText").innerText = "Amount to Pay: ₹" + currentPrice;
         
         // Generate Dynamic QR Code with calculated price
-        var qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi://pay?pa=" + UPI_ID + "%26pn=CRAZY_SELLER%26am=" + currentPrice + "%26cu=INR";
+        var upiData = encodeURIComponent(`upi://pay?pa=${UPI_ID}&pn=CRAZY_SELLER&am=${currentPrice}&cu=INR`);
+        var qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${upiData}`;
         document.getElementById("qrImage").src = qrUrl;
     }
     
@@ -277,11 +278,16 @@
         
         var packageName = selectedOption.value;
         var price = selectedOption.getAttribute("data-price");
-        var link = document.getElementById("instaLink").value;
-        var txnId = document.getElementById("transactionId").value;
+        var link = document.getElementById("instaLink").value.trim();
+        var txnId = document.getElementById("transactionId").value.trim();
 
-        if (!link || !txnId || txnId.length < 10) {
-            alert("Please enter a valid Instagram Link/Username and 12-digit Payment UTR ID!");
+        if (!link) {
+            alert("Please enter a valid Instagram Profile Link or Username!");
+            return;
+        }
+
+        if (!txnId || txnId.length !== 12 || isNaN(txnId)) {
+            alert("Please enter a valid 12-digit UTR/Transaction ID!");
             return;
         }
 
@@ -316,6 +322,8 @@
             btn.disabled = false;
             saveLocalOrder(packageName, price, txnId);
             alert("Order Saved! Admin will verify payment UTR and start order.");
+            document.getElementById("instaLink").value = "";
+            document.getElementById("transactionId").value = "";
         });
     }
 
@@ -355,12 +363,18 @@
         var input = document.getElementById("chatInput");
         var msg = input.value.trim();
         if (!msg) return;
+
+        // UI Optimistic Update
+        var chatBody = document.getElementById("chatBody");
+        chatBody.innerHTML += `<div class="msg-user">${msg}</div>`;
+        chatBody.scrollTop = chatBody.scrollHeight;
         input.value = "";
+
         fetch(`${BACKEND_URL}/send-admin`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ sessionId: sessionId, name: "Website User", message: msg })
-        });
+        }).catch(err => console.error("Chat send error:", err));
     }
 
     setInterval(() => {
