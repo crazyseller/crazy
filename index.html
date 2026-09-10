@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRAZY SELLER - Dynamic Price SMM Store</title>
+    <title>CRAZY SELLER - SMM Store</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -24,7 +24,7 @@
             background: linear-gradient(135deg, #a855f7, #ec4899);
             padding: 6px 16px; border-radius: 50px; font-size: 11px;
             font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3); inline-size: fit-content; margin: 0 auto;
+            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3); width: fit-content; margin: 0 auto;
         }
         h1 {
             font-size: 30px; font-weight: 800; margin: 12px 0 2px 0; letter-spacing: -0.5px;
@@ -112,48 +112,31 @@
 
     <button class="btn-secondary" onclick="openPriceList()">📜 View Complete Price List</button>
 
-    <!-- NEW ORDER SECTION -->
     <div class="card">
         <h3 style="margin: 0 0 10px 0; color: #c084fc; font-size: 15px;">🚀 Place New Order</h3>
         
         <label for="package">Select Service:</label>
         <select id="package" onchange="calculatePriceAndQR()">
-            <optgroup label="👥 1. Instagram Fake Followers (24 Hrs)">
-                <option value="200 Fake Followers" data-service-id="1901" data-qty="200" data-price="20">👥 200 Followers - ₹20</option>
-                <option value="1K Fake Followers" data-service-id="1901" data-qty="1000" data-price="83">👥 1K Followers - ₹83</option>
-                <option value="2K Fake Followers" data-service-id="1901" data-qty="2000" data-price="120">👥 2K Followers - ₹120</option>
+            <optgroup label="👥 1. Instagram Followers">
+                <option value="200 Followers" data-service-id="1901" data-qty="200" data-price="20">👥 200 Followers - ₹20</option>
+                <option value="1K Followers" data-service-id="1901" data-qty="1000" data-price="83">👥 1K Followers - ₹83</option>
+                <option value="2K Followers" data-service-id="1901" data-qty="2000" data-price="120">👥 2K Followers - ₹120</option>
             </optgroup>
 
-            <optgroup label="🔥 2. Instagram Real Active (24 Hrs)">
+            <optgroup label="🔥 2. Real Active Followers">
                 <option value="200 Real Active Followers" data-service-id="528" data-qty="200" data-price="50">🔥 200 Real Active - ₹50</option>
                 <option value="1K Real Active Followers" data-service-id="528" data-qty="1000" data-price="340">🔥 1K Real Active - ₹340</option>
             </optgroup>
 
-            <optgroup label="👁️ 3. Views (10 Mins)">
+            <optgroup label="👁️ 3. Video / Reel Views">
                 <option value="5K Views" data-service-id="2115" data-qty="5000" data-price="20">👁️ 5K Views - ₹20</option>
                 <option value="10K Views" data-service-id="2115" data-qty="10000" data-price="30">👁️ 10K Views - ₹30</option>
                 <option value="50K Views" data-service-id="2115" data-qty="50000" data-price="50">👁️ 50K Views - ₹50</option>
-                <option value="100K Views" data-service-id="2115" data-qty="100000" data-price="75">👁️ 100K Views - ₹75</option>
-                <option value="500K Views" data-service-id="2115" data-qty="500000" data-price="120">👁️ 500K Views - ₹120</option>
             </optgroup>
 
-            <optgroup label="❤️ 4. Likes (10 Mins)">
+            <optgroup label="❤️ 4. Post Likes">
                 <option value="500 Likes" data-service-id="1812" data-qty="500" data-price="10">❤️ 500 Likes - ₹10</option>
                 <option value="1K Likes" data-service-id="1812" data-qty="1000" data-price="20">❤️ 1K Likes - ₹20</option>
-                <option value="5K Likes" data-service-id="1812" data-qty="5000" data-price="50">❤️ 5K Likes - ₹50</option>
-                <option value="10K Likes" data-service-id="1812" data-qty="10000" data-price="75">❤️ 10K Likes - ₹75</option>
-            </optgroup>
-
-            <optgroup label="💬 5. Comments (10 Mins)">
-                <option value="50 Custom Comments" data-service-id="3001" data-qty="50" data-price="10">💬 50 Comments - ₹10</option>
-                <option value="100 Custom Comments" data-service-id="3001" data-qty="100" data-price="20">💬 100 Comments - ₹20</option>
-                <option value="500 Custom Comments" data-service-id="3001" data-qty="500" data-price="50">💬 500 Comments - ₹50</option>
-                <option value="1K Custom Comments" data-service-id="3001" data-qty="1000" data-price="75">💬 1K Comments - ₹75</option>
-            </optgroup>
-
-            <optgroup label="⚡ 6. Story Views">
-                <option value="200 Story Views" data-service-id="4001" data-qty="200" data-price="10">⚡ 200 Story Views - ₹10</option>
-                <option value="1K Story Views" data-service-id="4001" data-qty="1000" data-price="25">⚡ 1K Story Views - ₹25</option>
             </optgroup>
         </select>
 
@@ -178,7 +161,6 @@
         <button class="btn-action" id="subBtn" onclick="submitOrder()">Submit Order Verification ⚡</button>
     </div>
 
-    <!-- ORDER HISTORY -->
     <div class="card">
         <h3 style="margin: 0 0 10px 0; color: #60a5fa; font-size: 15px;">📜 My Recent Orders</h3>
         <div id="historyContainer" style="overflow-x:auto;">
@@ -187,7 +169,6 @@
     </div>
 </div>
 
-<!-- PRICE LIST MODAL -->
 <div class="modal" id="priceModal">
     <div class="modal-content">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
@@ -199,32 +180,16 @@
                 <tr><th>Category</th><th>Service & Qty</th><th>Price</th></tr>
             </thead>
             <tbody>
-                <tr><td>Fake Followers</td><td>200 Followers</td><td>₹20</td></tr>
-                <tr><td>Fake Followers</td><td>1,000 Followers</td><td>₹83</td></tr>
-                <tr><td>Fake Followers</td><td>2,000 Followers</td><td>₹120</td></tr>
-                <tr><td>Real Active</td><td>200 Real Active</td><td>₹50</td></tr>
-                <tr><td>Real Active</td><td>1,000 Real Active</td><td>₹340</td></tr>
+                <tr><td>Followers</td><td>200 Followers</td><td>₹20</td></tr>
+                <tr><td>Followers</td><td>1,000 Followers</td><td>₹83</td></tr>
+                <tr><td>Real Active</td><td>1,000 Followers</td><td>₹340</td></tr>
                 <tr><td>Views</td><td>5,000 Views</td><td>₹20</td></tr>
-                <tr><td>Views</td><td>10,000 Views</td><td>₹30</td></tr>
-                <tr><td>Views</td><td>50,000 Views</td><td>₹50</td></tr>
-                <tr><td>Views</td><td>100,000 Views</td><td>₹75</td></tr>
-                <tr><td>Views</td><td>500,000 Views</td><td>₹120</td></tr>
-                <tr><td>Likes</td><td>500 Likes</td><td>₹10</td></tr>
                 <tr><td>Likes</td><td>1,000 Likes</td><td>₹20</td></tr>
-                <tr><td>Likes</td><td>5,000 Likes</td><td>₹50</td></tr>
-                <tr><td>Likes</td><td>10,000 Likes</td><td>₹75</td></tr>
-                <tr><td>Comments</td><td>50 Comments</td><td>₹10</td></tr>
-                <tr><td>Comments</td><td>100 Comments</td><td>₹20</td></tr>
-                <tr><td>Comments</td><td>500 Comments</td><td>₹50</td></tr>
-                <tr><td>Comments</td><td>1,000 Comments</td><td>₹75</td></tr>
-                <tr><td>Story Views</td><td>200 Story Views</td><td>₹10</td></tr>
-                <tr><td>Story Views</td><td>1,000 Story Views</td><td>₹25</td></tr>
             </tbody>
         </table>
     </div>
 </div>
 
-<!-- CHATBOT -->
 <div class="chat-toggle" onclick="toggleChat()">💬</div>
 <div class="chat-popup" id="chatWidget">
     <div class="chat-header">
@@ -249,18 +214,15 @@
     let sessionId = localStorage.getItem("chat_session_id") || ("USER_" + Math.floor(100000 + Math.random() * 900000));
     localStorage.setItem("chat_session_id", sessionId);
 
-    // FIXED DYNAMIC PRICE & QR CALCULATION
     function calculatePriceAndQR() {
         var selectElem = document.getElementById("package");
         var selectedOption = selectElem.options[selectElem.selectedIndex];
         
         var currentPrice = selectedOption.getAttribute("data-price");
         
-        // Update Live Price Text
         document.getElementById("liveCalculatedPrice").innerText = "₹" + currentPrice;
         document.getElementById("payAmountText").innerText = "Amount to Pay: ₹" + currentPrice;
         
-        // Generate Dynamic QR Code with calculated price
         var qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi://pay?pa=" + UPI_ID + "%26pn=CRAZY_SELLER%26am=" + currentPrice + "%26cu=INR";
         document.getElementById("qrImage").src = qrUrl;
     }
@@ -307,7 +269,7 @@
             btn.innerText = "Submit Order Verification ⚡";
             btn.disabled = false;
             saveLocalOrder(packageName, price, txnId);
-            alert("Order Submitted! Ref ID: " + (data.refId || 'Saved') + "\nAdmin will verify payment UTR and start order.");
+            alert("Order Submitted! Admin will verify payment UTR and start order.");
             document.getElementById("instaLink").value = "";
             document.getElementById("transactionId").value = "";
         })
