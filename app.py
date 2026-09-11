@@ -1,4 +1,4 @@
- # --- ORDER HANDLING ---
+# --- ORDER HANDLING ---
 @app.route('/order', methods=['POST'])
 def handle_order():
     data = request.json or {}
@@ -25,32 +25,32 @@ def handle_order():
         "price": price
     }
 
-    # Telegram Message Text
+    # HTML Format (இது லிங்க்குகளில் உள்ள சிறப்பு எழுத்துக்களால் உடையாது)
     message_text = (
-        f"🚨 *NEW ORDER RECEIVED* 🚨\n\n"
-        f"🆔 *Ref ID:* {ref_id}\n"
-        f"📦 *Package:* {package_name} (ID: {service_id})\n"
-        f"🔗 *Link:* {insta_link}\n"
-        f"🔢 *UTR:* `{txn_id}`\n\n"
-        f"--- 💰 *PROFIT COMPARISON* ---\n"
-        f"💵 *Customer Paid:* ₹{price:.2f}\n"
-        f"📉 *SMM Cost:* ₹{smm_cost:.2f}\n"
-        f"📈 *Your Profit:* ₹{profit:.2f}\n\n"
-        f"💳 *SMM Balance:* ₹{smm_balance:.2f}"
+        f"🚨 <b>NEW ORDER RECEIVED</b> 🚨\n\n"
+        f"🆔 <b>Ref ID:</b> {ref_id}\n"
+        f"📦 <b>Package:</b> {package_name} (ID: {service_id})\n"
+        f"🔗 <b>Link:</b> {insta_link}\n"
+        f"🔢 <b>UTR:</b> <code>{txn_id}</code>\n\n"
+        f"--- 💰 <b>PROFIT COMPARISON</b> ---\n"
+        f"💵 <b>Customer Paid:</b> ₹{price:.2f}\n"
+        f"📉 <b>SMM Cost:</b> ₹{smm_cost:.2f}\n"
+        f"📈 <b>Your Profit:</b> ₹{profit:.2f}\n\n"
+        f"💳 <b>SMM Balance:</b> ₹{smm_balance:.2f}"
     )
 
     # Inline Keyboards / Buttons Setup
-    markup = InlineKeyboardMarkup(row_width=2)
+    markup = InlineKeyboardMarkup()
     btn_accept = InlineKeyboardButton("✅ Accept", callback_data=f"accept_{ref_id}")
     btn_reject = InlineKeyboardButton("❌ Reject", callback_data=f"reject_{ref_id}")
-    markup.add(btn_accept, btn_reject)
+    markup.row(btn_accept, btn_reject)
 
     try:
-        # Send message with reply_markup
+        # Send message using HTML parse_mode
         bot.send_message(
             CHAT_ID, 
             message_text, 
-            parse_mode="Markdown", 
+            parse_mode="HTML", 
             reply_markup=markup,
             disable_web_page_preview=True
         )
