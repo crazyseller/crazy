@@ -10,7 +10,7 @@ CORS(app)
 
 BOT_TOKEN = "8986935279:AAFjOyHX7fnZRKTqOZudUxyJCQjcu3_ChMk"
 CHAT_ID = "8435445040"
-bot = telebot.TeleBot(BOT_TOKEN)
+bot = telebot.TeleBot(BOT_TOKEN, threaded=False)
 
 # SMM Panel API Details (smmaddaa.in)
 SMM_API_KEY = "38f043592c2e479b5a70a51b7aada85c"
@@ -38,9 +38,9 @@ def handle_order():
     
     package_name = data.get('packageName', 'N/A')
     price = float(data.get('price', 0.0))
-    insta_link = data.get('instaLink', 'N/A')
-    txn_id = data.get('txnId', 'N/A')
-    service_id = data.get('serviceId', 'N/A')
+    insta_link = str(data.get('instaLink', 'N/A'))
+    txn_id = str(data.get('txnId', 'N/A'))
+    service_id = str(data.get('serviceId', 'N/A'))
     quantity = data.get('quantity', 1000)
     
     ref_id = f"CS-{random.randint(1000, 9999)}"
@@ -58,7 +58,7 @@ def handle_order():
         "price": price
     }
 
-    # Clean plain-text formatting (No special syntax errors)
+    # Plain Text Message Format
     message_text = (
         f"🚨 NEW ORDER RECEIVED 🚨\n\n"
         f"🆔 Ref ID: {ref_id}\n"
@@ -72,10 +72,10 @@ def handle_order():
         f"💳 SMM Balance: ₹{smm_balance:.2f}"
     )
 
-    # Inline Keyboard Buttons
-    markup = InlineKeyboardMarkup()
-    btn_accept = InlineKeyboardButton(text="✅ Accept", callback_data=f"accept_{ref_id}")
-    btn_reject = InlineKeyboardButton(text="❌ Reject", callback_data=f"reject_{ref_id}")
+    # Inline Keyboard Buttons Setup
+    markup = InlineKeyboardMarkup(row_width=2)
+    btn_accept = InlineKeyboardButton("✅ Accept", callback_data=f"accept_{ref_id}")
+    btn_reject = InlineKeyboardButton("❌ Reject", callback_data=f"reject_{ref_id}")
     markup.add(btn_accept, btn_reject)
 
     try:
@@ -90,10 +90,21 @@ def handle_order():
         print("Telegram Send Error:", e)
         return jsonify({"status": "error", "message": str(e)}), 500
 
+# Telegram Webhook Endpoint to handle button clicks on Render
+@app.route('/telegram_webhook', methods=['POST'])
+def telegram_webhook():
+    if request.headers.get('content-type') == 'application/json':
+        json_string = request.get_data().decode('utf-8')
+        update = telebot.types.Update.de_json(json_string)
+        bot.process_new_updates([update])
+        return ''
+    return 'OK', 400
+
 # --- TELEGRAM CALLBACK BUTTONS (ACCEPT / REJECT) ---
 @bot.callback_query_handler(func=lambda call: True)
 def handle_callback(call):
     data = call.data
+    bot.answer_callback_query(call.id)  # Remove loading icon on Telegram
     
     if data.startswith("accept_"):
         ref_id = data.replace("accept_", "")
