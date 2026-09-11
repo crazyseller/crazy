@@ -2,17 +2,14 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import requests
 import random
-import telebot
-from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-app = Flask(__name__)
+app = Flask(__crazyseller__)
 CORS(app)
 
+# 🔑 Config Credentials
 BOT_TOKEN = "8986935279:AAFjOyHX7fnZRKTqOZudUxyJCQjcu3_ChMk"
 CHAT_ID = "8435445040"
-bot = telebot.TeleBot(BOT_TOKEN, threaded=False)
 
-# SMM Panel API Details (smmaddaa.in)
 SMM_API_KEY = "38f043592c2e479b5a70a51b7aada85c"
 SMM_API_URL = "https://smmaddaa.in/api/v2"
 
@@ -45,12 +42,11 @@ def handle_order():
     
     ref_id = f"CS-{random.randint(1000, 9999)}"
 
-    # Cost & Profit Calculations
+    # Profit Calculation
     smm_cost = round(price * 0.165, 2)
     profit = round(price - smm_cost, 2)
     smm_balance = get_smm_balance()
 
-    # Save to pending orders
     pending_orders[ref_id] = {
         "service_id": service_id,
         "link": insta_link,
@@ -58,8 +54,7 @@ def handle_order():
         "price": price
     }
 
-    # Plain Text Message Format
-    message_text = (
+    text = (
         f"🚨 NEW ORDER RECEIVED 🚨\n\n"
         f"🆔 Ref ID: {ref_id}\n"
         f"📦 Package: {package_name} (ID: {service_id})\n"
@@ -72,82 +67,85 @@ def handle_order():
         f"💳 SMM Balance: ₹{smm_balance:.2f}"
     )
 
-    # Inline Keyboard Buttons Setup
-    markup = InlineKeyboardMarkup(row_width=2)
-    btn_accept = InlineKeyboardButton("✅ Accept", callback_data=f"accept_{ref_id}")
-    btn_reject = InlineKeyboardButton("❌ Reject", callback_data=f"reject_{ref_id}")
-    markup.add(btn_accept, btn_reject)
+    reply_markup = {
+        "inline_keyboard": [
+            [
+                {"text": "✅ Accept", "callback_data": f"accept_{ref_id}"},
+                {"text": "❌ Reject", "callback_data": f"reject_{ref_id}"}
+            ]
+        ]
+    }
+
+    telegram_url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+    payload = {
+        "chat_id":8435445040,
+        "text":8986935279:AAFjOyHX7fnZRKTqOZudUxyJCQjcu3_ChMk,
+        "reply_markup": reply_markup,
+        "disable_web_page_preview": True
+    }
 
     try:
-        bot.send_message(
-            CHAT_ID, 
-            message_text, 
-            reply_markup=markup,
-            disable_web_page_preview=True
-        )
+        requests.post(telegram_url, json=payload, timeout=8)
         return jsonify({"status": "success", "refId": ref_id}), 200
     except Exception as e:
-        print("Telegram Send Error:", e)
         return jsonify({"status": "error", "message": str(e)}), 500
 
-# Telegram Webhook Endpoint to handle button clicks on Render
+# --- TELEGRAM WEBHOOK (ACCEPT / REJECT) ---
 @app.route('/telegram_webhook', methods=['POST'])
 def telegram_webhook():
-    if request.headers.get('content-type') == 'application/json':
-        json_string = request.get_data().decode('utf-8')
-        update = telebot.types.Update.de_json(json_string)
-        bot.process_new_updates([update])
-        return ''
-    return 'OK', 400
-
-# --- TELEGRAM CALLBACK BUTTONS (ACCEPT / REJECT) ---
-@bot.callback_query_handler(func=lambda call: True)
-def handle_callback(call):
-    data = call.data
-    bot.answer_callback_query(call.id)  # Remove loading icon on Telegram
+    update = request.json or {}
     
-    if data.startswith("accept_"):
-        ref_id = data.replace("accept_", "")
-        order = pending_orders.get(ref_id)
-        
-        if order:
-            try:
-                smm_response = requests.post(SMM_API_URL, data={
-                    'key': SMM_API_KEY,
-                    'action': 'add',
-                    'service': order['service_id'],
-                    'link': order['link'],
-                    'quantity': order['quantity']
-                }, timeout=8).json()
+    if "callback_query" in update:
+        callback = update["callback_query"]
+        data = callback.get("data", "")
+        message_id = callback["message"]["message_id"]
+        chat_id = callback["message"]["chat"]["id"]
+        original_text = callback["message"].get("text", "")
+
+        if data.startswith("accept_"):
+            ref_id = data.replace("accept_", "")
+            order = pending_orders.get(ref_id)
+            
+            status_text = "\n\n⚠️ SMM Error!"
+            if order:
+                try:
+                    smm_res = requests.post(SMM_API_URL, data={
+                        'key': SMM_API_KEY,
+                        'action': 'add',
+                        'service': order['service_id'],
+                        'link': order['link'],
+                        'quantity': order['quantity']
+                    }, timeout=8).json()
+                    
+                    if 'order' in smm_res:
+                        status_text = f"\n\n🟢 STATUS: Order Placed on SMM Addaa! (ID: {smm_res['order']})"
+                    else:
+                        status_text = f"\n\n⚠️ SMM ERROR: {smm_res.get('error', 'Failed')}"
+                except Exception as e:
+                    status_text = f"\n\n⚠️ Error: {str(e)}"
                 
-                if 'order' in smm_response:
-                    order_id = smm_response.get('order')
-                    status_text = f"\n\n🟢 STATUS: Order Placed on SMM Addaa! (SMM Order ID: {order_id})"
-                else:
-                    error_msg = smm_response.get('error', 'Unknown Error')
-                    status_text = f"\n\n⚠️ SMM API ERROR: {error_msg}"
-            except Exception as e:
-                status_text = f"\n\n⚠️ STATUS: Connection Error: {str(e)}"
-            
-            bot.edit_message_text(
-                chat_id=call.message.chat.id,
-                message_id=call.message.message_id,
-                text=call.message.text + status_text
-            )
-            del pending_orders[ref_id]
+                del pending_orders[ref_id]
 
-    elif data.startswith("reject_"):
-        ref_id = data.replace("reject_", "")
-        if ref_id in pending_orders:
-            del pending_orders[ref_id]
-            
-        bot.edit_message_text(
-            chat_id=call.message.chat.id,
-            message_id=call.message.message_id,
-            text=call.message.text + "\n\n🔴 STATUS: Order Rejected by Admin!"
-        )
+            requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/editMessageText", json={
+                "chat_id":8435445040 ,
+                "message_id":8986935279 ,
+                "text": original_text + status_text
+            })
 
-# --- CHATBOT ENDPOINTS ---
+        elif data.startswith("reject_"):
+            ref_id = data.replace("reject_", "")
+            if ref_id in pending_orders:
+                del pending_orders[ref_id]
+
+            requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/editMessageText", json={
+                "chat_id": 8435445040,
+                "message_id":8986935279:AAFjOyHX7fnZRKTqOZudUxyJCQjcu3_ChMk,
+                "text": original_text + "\n\n🔴 STATUS: Order Rejected by Admin!"
+            })
+
+    return jsonify({"status": "ok"}), 200
+
+# --- LIVE CHAT ENDPOINTS ---
 @app.route('/send-admin', methods=['POST'])
 def send_admin():
     data = request.json or {}
@@ -159,7 +157,10 @@ def send_admin():
     
     chat_messages[session_id].append({"sender": "user", "text": message})
     
-    bot.send_message(CHAT_ID, f"💬 Live Chat ({session_id}):\n{message}")
+    requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage", json={
+        "chat_id": CHAT_ID,
+        "text": f"💬 Live Chat ({session_id}):\n{message}"
+    })
     return jsonify({"status": "sent"})
 
 @app.route('/get-messages/<session_id>', methods=['GET'])
