@@ -3,16 +3,17 @@ from flask_cors import CORS
 import requests
 import random
 
-app = Flask(__crazyseller__)
+app = Flask(__name__)
 CORS(app)
 
-# 🔑 Config Credentials
+# Credentials
 BOT_TOKEN = "8986935279:AAFjOyHX7fnZRKTqOZudUxyJCQjcu3_ChMk"
 CHAT_ID = "8435445040"
 
 SMM_API_KEY = "38f043592c2e479b5a70a51b7aada85c"
 SMM_API_URL = "https://smmaddaa.in/api/v2"
 
+# In-memory storage for pending orders and chat messages
 pending_orders = {}
 chat_messages = {}
 
@@ -26,9 +27,9 @@ def get_smm_balance():
 
 @app.route('/', methods=['GET'])
 def home():
-    return "CRAZY SELLER Backend Running Successfully!"
+    return "CRAZY SELLER Backend is Active!"
 
-# --- ORDER HANDLING ---
+# --- ORDER HANDLING ENDPOINT ---
 @app.route('/order', methods=['POST'])
 def handle_order():
     data = request.json or {}
@@ -42,11 +43,12 @@ def handle_order():
     
     ref_id = f"CS-{random.randint(1000, 9999)}"
 
-    # Profit Calculation
+    # Cost and Profit Logic
     smm_cost = round(price * 0.165, 2)
     profit = round(price - smm_cost, 2)
     smm_balance = get_smm_balance()
 
+    # Save to memory for Telegram Callback Handler
     pending_orders[ref_id] = {
         "service_id": service_id,
         "link": insta_link,
@@ -54,7 +56,7 @@ def handle_order():
         "price": price
     }
 
-    text = (
+    text_msg = (
         f"🚨 NEW ORDER RECEIVED 🚨\n\n"
         f"🆔 Ref ID: {ref_id}\n"
         f"📦 Package: {package_name} (ID: {service_id})\n"
@@ -67,20 +69,18 @@ def handle_order():
         f"💳 SMM Balance: ₹{smm_balance:.2f}"
     )
 
-    reply_markup = {
-        "inline_keyboard": [
-            [
-                {"text": "✅ Accept", "callback_data": f"accept_{ref_id}"},
-                {"text": "❌ Reject", "callback_data": f"reject_{ref_id}"}
-            ]
-        ]
-    }
-
     telegram_url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
     payload = {
-        "chat_id":8435445040,
-        "text":8986935279:AAFjOyHX7fnZRKTqOZudUxyJCQjcu3_ChMk,
-        "reply_markup": reply_markup,
+        "chat_id": CHAT_ID,
+        "text": text_msg,
+        "reply_markup": {
+            "inline_keyboard": [
+                [
+                    {"text": "✅ Accept", "callback_data": f"accept_{ref_id}"},
+                    {"text": "❌ Reject", "callback_data": f"reject_{ref_id}"}
+                ]
+            ]
+        },
         "disable_web_page_preview": True
     }
 
@@ -90,7 +90,7 @@ def handle_order():
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
 
-# --- TELEGRAM WEBHOOK (ACCEPT / REJECT) ---
+# --- TELEGRAM WEBHOOK (ACCEPT / REJECT HANDLER) ---
 @app.route('/telegram_webhook', methods=['POST'])
 def telegram_webhook():
     update = request.json or {}
@@ -106,7 +106,7 @@ def telegram_webhook():
             ref_id = data.replace("accept_", "")
             order = pending_orders.get(ref_id)
             
-            status_text = "\n\n⚠️ SMM Error!"
+            status_text = "\n\n⚠️ Order processing failed or details expired!"
             if order:
                 try:
                     smm_res = requests.post(SMM_API_URL, data={
@@ -118,7 +118,7 @@ def telegram_webhook():
                     }, timeout=8).json()
                     
                     if 'order' in smm_res:
-                        status_text = f"\n\n🟢 STATUS: Order Placed on SMM Addaa! (ID: {smm_res['order']})"
+                        status_text = f"\n\n🟢 STATUS: Placed on SMM Addaa! (SMM Order ID: {smm_res['order']})"
                     else:
                         status_text = f"\n\n⚠️ SMM ERROR: {smm_res.get('error', 'Failed')}"
                 except Exception as e:
@@ -127,8 +127,8 @@ def telegram_webhook():
                 del pending_orders[ref_id]
 
             requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/editMessageText", json={
-                "chat_id":8435445040 ,
-                "message_id":8986935279 ,
+                "chat_id": chat_id,
+                "message_id": message_id,
                 "text": original_text + status_text
             })
 
@@ -138,10 +138,25 @@ def telegram_webhook():
                 del pending_orders[ref_id]
 
             requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/editMessageText", json={
-                "chat_id": 8435445040,
-                "message_id":8986935279:AAFjOyHX7fnZRKTqOZudUxyJCQjcu3_ChMk,
+                "chat_id": chat_id,
+                "message_id": message_id,
                 "text": original_text + "\n\n🔴 STATUS: Order Rejected by Admin!"
             })
+
+    # Optional: Live Chat support replies directly from Telegram
+    elif "message" in update and "reply_to_message" in update["message"]:
+        msg = update["message"]
+        reply_to = msg["reply_to_message"].get("text", "")
+        admin_text = msg.get("text", "")
+        
+        if "💬 Live Chat (" in reply_to:
+            try:
+                session_id = reply_to.split("💬 Live Chat (")[1].split(")")[0]
+                if session_id not in chat_messages:
+                    chat_messages[session_id] = []
+                chat_messages[session_id].append({"sender": "admin", "text": admin_text})
+            except Exception:
+                pass
 
     return jsonify({"status": "ok"}), 200
 
