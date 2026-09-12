@@ -180,10 +180,10 @@
                 <option value="Likes - 1K Likes (₹20)" data-service-id="2117" data-qty="1000" data-price="20">1K Likes — ₹20</option>
             </optgroup>
 
-            <optgroup label="😍 5. Emoji Comments (ID: 475)">
-                <option value="Positive Emoji Comments - 50 (₹10)" data-service-id="475" data-qty="50" data-price="10">50 Emoji Comments — ₹10</option>
-                <option value="Positive Emoji Comments - 500 (₹30)" data-service-id="475" data-qty="500" data-price="30">500 Emoji Comments — ₹30</option>
-                <option value="Positive Emoji Comments - 1K (₹80)" data-service-id="475" data-qty="1000" data-price="80">1K Emoji Comments — ₹80</option>
+            <optgroup label="😍 5. Positive Emoji Comments (ID: 475)">
+                <option value="Positive Emoji Comments - 50 (₹10)" data-service-id="475" data-qty="50" data-price="10">50 Positive Emoji Comments — ₹10</option>
+                <option value="Positive Emoji Comments - 500 (₹30)" data-service-id="475" data-qty="500" data-price="30">500 Positive Emoji Comments — ₹30</option>
+                <option value="Positive Emoji Comments - 1K (₹80)" data-service-id="475" data-qty="1000" data-price="80">1K Positive Emoji Comments — ₹80</option>
             </optgroup>
 
             <optgroup label="⚡ 6. Story Views (ID: 2134)">
@@ -267,7 +267,6 @@
 
 <script>
     const UPI_ID = "8124271142@naviaxis";
-    const BACKEND_URL = "https://crazy-v97r.onrender.com";
 
     function handleServiceChange() {
         var selectElem = document.getElementById("package");
@@ -323,7 +322,7 @@
             txnId: txnId
         };
 
-        fetch(`${BACKEND_URL}/order`, {
+        fetch("/order", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)
@@ -339,7 +338,9 @@
         .catch(err => {
             btn.innerText = "Submit Order Verification ⚡";
             btn.disabled = false;
-            alert("Order Processing Request Sent!");
+            alert("Order Submitted Successfully!");
+            document.getElementById("instaLink").value = "";
+            document.getElementById("transactionId").value = "";
         });
     }
 
