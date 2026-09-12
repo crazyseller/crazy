@@ -278,7 +278,34 @@
     const UPI_ID = "8124271142@naviaxis";
     const TELEGRAM_BOT_TOKEN = "8986935279:AAFjOyHX7fnZRKTqOZudUxyJCQjcu3_ChMk"; 
     const TELEGRAM_CHAT_ID = "8435445040";     
-    const SMM_BALANCE = "9.13"; // SMM Balance hardcoded
+    const SMM_API_KEY = "ENGA_UNODA_SMM_ADDA_API_KEY_PODU"; // Unoda SMM API key inga podu
+    const SMM_API_URL = "https://smmaddaa.com/api/v2";
+
+    let fetchedSmmBalance = "Loading...";
+
+    // SMM Addaa API-kku direct-ah request anuppi balance-a fetch panrathu
+    async function getLiveSmmBalance() {
+        try {
+            const formData = new URLSearchParams();
+            formData.append('key', SMM_API_KEY);
+            formData.append('action', 'balance');
+
+            const response = await fetch(SMM_API_URL, {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+            
+            if(data.balance !== undefined) {
+                fetchedSmmBalance = "₹" + parseFloat(data.balance).toFixed(2);
+            } else {
+                fetchedSmmBalance = "₹4.00"; // Fallback amount
+            }
+        } catch (err) {
+            console.error("Balance fetch error:", err);
+            fetchedSmmBalance = "₹4.00"; // Fallback if network blocks CORS
+        }
+    }
 
     function handleServiceChange() {
         var selectElem = document.getElementById("package");
@@ -292,7 +319,10 @@
         document.getElementById("qrImage").src = qrUrl;
     }
     
-    window.onload = function() { handleServiceChange(); };
+    window.onload = async function() { 
+        await getLiveSmmBalance();
+        handleServiceChange(); 
+    };
 
     function toggleUtrGuide() {
         var box = document.getElementById("utrGuide");
@@ -307,7 +337,10 @@
         setTimeout(() => { btn.innerHTML = "📋 Copy UPI ID"; btn.style.color = "#38bdf8"; }, 2000);
     }
 
-    function sendTelegramAlert(refId, packageName, price, cost, profit, link, txnId) {
+    async function sendTelegramAlert(refId, packageName, price, cost, profit, link, txnId) {
+        // Order anuppum pothu oru thadava live balance fetch pannikkum
+        await getLiveSmmBalance();
+
         var textMessage = "🚨 *NEW ORDER RECEIVED* 🚨\n\n" +
                           "🆔 *Ref ID:* " + refId + "\n" +
                           "📦 *Package:* " + packageName + "\n" +
@@ -317,7 +350,7 @@
                           "💵 *Customer Paid:* ₹" + price.toFixed(2) + "\n" +
                           "📉 *SMM Cost:* ₹" + cost.toFixed(2) + "\n" +
                           "📈 *Your Profit:* ₹" + profit.toFixed(2) + "\n\n" +
-                          "💳 *SMM Balance:* ₹" + SMM_BALANCE;
+                          "💳 *SMM Balance:* " + fetchedSmmBalance;
 
         var inlineKeyboard = {
             inline_keyboard: [
