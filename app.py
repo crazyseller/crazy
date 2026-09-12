@@ -11,6 +11,7 @@ CHAT_ID = "8435445040"
 SMM_API_KEY = "38f043592c2e479b5a70a51b7aada85c"
 SMM_API_URL = "https://smmaddaa.in/api/v2"
 
+# Local Storage (In-memory)
 pending_orders = {}
 chat_messages = {}
 
@@ -31,16 +32,17 @@ def handle_order():
     data = request.json or {}
     package_name = data.get('packageName', 'N/A')
     price = float(data.get('price', 0.0))
-    insta_link = str(data.get('instaLink', 'N/A'))
-    txn_id = str(data.get('txnId', 'N/A'))
-    service_id = str(data.get('serviceId', 'N/A'))
-    quantity = data.get('quantity', 1000)
+    insta_link = str(data.get('instaLink', 'N/A')).strip()
+    txn_id = str(data.get('txnId', 'N/A')).strip()
+    service_id = str(data.get('serviceId', 'N/A')).strip()
+    quantity = int(data.get('quantity', 1000))
     
-    ref_id = f"CS-{random.randint(1000, 9999)}"
+    ref_id = f"CS{random.randint(1000, 9999)}"
     smm_cost = round(price * 0.165, 2)
     profit = round(price - smm_cost, 2)
     smm_balance = get_smm_balance()
 
+    # Save details
     pending_orders[ref_id] = {
         "service_id": service_id,
         "link": insta_link,
@@ -85,17 +87,22 @@ def handle_order():
 @app.route('/telegram_webhook', methods=['POST'])
 def telegram_webhook():
     update = request.json or {}
+
+    # Handle Button Clicks
     if "callback_query" in update:
         callback = update["callback_query"]
+        callback_id = callback.get("id")
         data = callback.get("data", "")
         message_id = callback["message"]["message_id"]
         chat_id = callback["message"]["chat"]["id"]
         original_text = callback["message"].get("text", "")
 
+        # 1. First notify Telegram that button click was received (Prevents button loading error)
+        requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/answerCallbackQuery", json={"callback_query_id": callback_id})
+
         if data.startswith("accept_"):
             ref_id = data.replace("accept_", "")
             order = pending_orders.get(ref_id)
-            status_text = "\n\n⚠️ Order processing failed or details expired!"
             
             if order:
                 try:
@@ -105,16 +112,22 @@ def telegram_webhook():
                         'service': order['service_id'],
                         'link': order['link'],
                         'quantity': order['quantity']
-                    }, timeout=8).json()
+                    }, timeout=10).json()
                     
                     if 'order' in smm_res:
-                        status_text = f"\n\n🟢 STATUS: Placed on SMM Addaa! (SMM Order ID: {smm_res['order']})"
+                        status_text = f"\n\n🟢 STATUS: Approved & Placed on SMM Addaa!\n🎯 SMM Order ID: {smm_res['order']}"
                     else:
-                        status_text = f"\n\n⚠️ SMM ERROR: {smm_res.get('error', 'Failed')}"
+                        err_msg = smm_res.get('error', 'Unknown Error')
+                        status_text = f"\n\n⚠️ SMM REJECTED: {err_msg}"
                 except Exception as e:
-                    status_text = f"\n\n⚠️ Error: {str(e)}"
+                    status_text = f"\n\n⚠️ SMM Error: {str(e)}"
+                
+                # Cleanup
                 del pending_orders[ref_id]
+            else:
+                status_text = "\n\n⚠️ SERVER EXPIRED: Render app slept/restarted. Re-check on SMM manually!"
 
+            # Edit Original Telegram Message
             requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/editMessageText", json={
                 "chat_id": chat_id,
                 "message_id": message_id,
@@ -129,9 +142,10 @@ def telegram_webhook():
             requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/editMessageText", json={
                 "chat_id": chat_id,
                 "message_id": message_id,
-                "text": original_text + "\n\n🔴 STATUS: Order Rejected by Admin!"
+                "text": original_text + "\n\n🔴 STATUS: Rejected by Admin!"
             })
 
+    # Handle Live Chat Replies from Admin
     elif "message" in update and "reply_to_message" in update["message"]:
         msg = update["message"]
         reply_to = msg["reply_to_message"].get("text", "")
