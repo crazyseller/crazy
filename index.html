@@ -3,193 +3,259 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRAZY SELLER - SMM Store</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <title>CRAZY SELLER - Ultra Premium SMM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); font-family: 'Plus Jakarta Sans', sans-serif; }
-        body {
-            background: #090d16; color: #f8fafc; margin: 0; padding: 20px 15px 120px 15px;
-            display: flex; justify-content: center; align-items: center; min-height: 100vh;
-            background-image: radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.15) 0px, transparent 50%),
-                              radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.15) 0px, transparent 50%);
+        :root {
+            --primary: #c084fc;
+            --primary-glow: rgba(192, 132, 252, 0.4);
+            --secondary: #f472b6;
+            --accent: #38bdf8;
+            --bg-dark: #070913;
+            --card-bg: rgba(15, 23, 42, 0.65);
+            --border-glow: rgba(255, 255, 255, 0.1);
         }
+
+        * { box-sizing: border-box; transition: all 0.25s ease; font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        body {
+            background: var(--bg-dark); color: #f8fafc; margin: 0; padding: 20px 15px 120px 15px;
+            display: flex; justify-content: center; align-items: center; min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 10% 10%, rgba(168, 85, 247, 0.2) 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, rgba(236, 72, 153, 0.2) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.1) 0%, transparent 50%);
+            background-attachment: fixed;
+        }
+
         .container {
             width: 100%; max-width: 480px;
-            background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(16px);
-            padding: 24px 18px; border-radius: 28px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 40px rgba(139, 92, 246, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.08); text-align: center;
+            background: var(--card-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            padding: 28px 22px; border-radius: 32px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), 0 0 50px var(--primary-glow);
+            border: 1px solid var(--border-glow); text-align: center; position: relative;
         }
+
         .brand-badge {
-            background: linear-gradient(135deg, #a855f7, #ec4899);
-            padding: 6px 16px; border-radius: 50px; font-size: 11px;
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(236, 72, 153, 0.2));
+            border: 1px solid rgba(236, 72, 153, 0.4); color: #f472b6;
+            padding: 6px 18px; border-radius: 50px; font-size: 11px;
             font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3); width: fit-content; margin: 0 auto;
+            display: inline-flex; align-items: center; gap: 6px; margin-bottom: 8px;
         }
+
         h1 {
-            font-size: 30px; font-weight: 800; margin: 12px 0 2px 0; letter-spacing: -0.5px;
-            background: linear-gradient(to right, #c084fc, #f472b6, #fb7185);
+            font-size: 34px; font-weight: 800; margin: 6px 0 4px 0; letter-spacing: -1px;
+            background: linear-gradient(135deg, #ffffff 30%, #c084fc 70%, #f472b6 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-        .card {
-            background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 20px; padding: 18px; margin-top: 16px; text-align: left;
-        }
-        label { font-weight: 600; font-size: 12px; color: #94a3b8; display: block; margin-top: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
-        select, input {
-            width: 100%; padding: 12px 16px; margin-top: 6px; border: 1px solid #334155;
-            border-radius: 14px; background-color: #0f172a; color: #ffffff; font-size: 13px; outline: none;
-        }
-        select:focus, input:focus { border-color: #a855f7; box-shadow: 0 0 15px rgba(168, 85, 247, 0.25); }
-        optgroup { color: #facc15; background-color: #020617; font-weight: bold; }
-        option { color: #ffffff; background-color: #0f172a; padding: 10px; }
-        
-        .price-badge-box {
-            background: rgba(168, 85, 247, 0.15); border: 1px solid #a855f7;
-            padding: 12px; border-radius: 14px; margin-top: 15px; text-align: center;
-        }
-        .price-text { font-size: 22px; font-weight: 800; color: #facc15; }
 
-        .qr-box { text-align: center; margin: 16px 0; background: rgba(0, 0, 0, 0.4); padding: 16px; border-radius: 18px; border: 1px dashed #475569; }
-        .qr-box img { width: 170px; height: 170px; border-radius: 14px; border: 2px solid #a855f7; }
+        .subtitle { color: #94a3b8; font-size: 13px; font-weight: 500; margin: 0 0 20px 0; }
+
+        .action-nav { display: flex; gap: 10px; margin-bottom: 20px; }
         
+        .btn-secondary {
+            flex: 1; background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #cbd5e1; padding: 12px; border-radius: 16px; font-size: 12px; font-weight: 700;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
+        }
+        .btn-secondary:hover { background: rgba(51, 65, 85, 0.8); border-color: var(--accent); color: white; transform: translateY(-2px); }
+
+        .card {
+            background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px; padding: 20px; margin-top: 16px; text-align: left;
+        }
+
+        .card-header { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 700; color: #f8fafc; margin-bottom: 16px; }
+
+        label { font-weight: 700; font-size: 11px; color: #94a3b8; display: block; margin: 14px 0 6px 4px; text-transform: uppercase; letter-spacing: 0.8px; }
+
+        select, input {
+            width: 100%; padding: 14px 16px; border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px; background-color: rgba(15, 23, 42, 0.8); color: #ffffff; font-size: 13px; outline: none;
+        }
+
+        select:focus, input:focus {
+            border-color: var(--primary); box-shadow: 0 0 20px var(--primary-glow);
+            background-color: rgba(15, 23, 42, 0.95);
+        }
+
+        optgroup { color: #facc15; background-color: #090d16; font-weight: bold; }
+        option { color: #ffffff; background-color: #0f172a; padding: 10px; }
+
+        .price-badge-box {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(56, 189, 248, 0.15));
+            border: 1px solid rgba(168, 85, 247, 0.3); padding: 14px; border-radius: 18px; margin-top: 18px; text-align: center;
+        }
+
+        .price-text { font-size: 28px; font-weight: 800; color: #facc15; text-shadow: 0 0 15px rgba(250, 204, 21, 0.3); }
+
+        .qr-box {
+            text-align: center; margin: 18px 0; background: rgba(0, 0, 0, 0.5);
+            padding: 20px; border-radius: 22px; border: 1px dashed rgba(255, 255, 255, 0.15);
+            position: relative; overflow: hidden;
+        }
+
+        .qr-box img { width: 180px; height: 180px; border-radius: 16px; border: 3px solid rgba(168, 85, 247, 0.5); }
+
+        .copy-btn {
+            background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4);
+            padding: 8px 16px; border-radius: 12px; font-size: 11px; font-weight: 700;
+            cursor: pointer; margin-top: 10px; display: inline-flex; align-items: center; gap: 6px;
+        }
+        .copy-btn:hover { background: #38bdf8; color: #000; }
+
         .btn-action {
             background: linear-gradient(135deg, #a855f7, #ec4899); color: white;
-            border: none; padding: 14px; border-radius: 14px; cursor: pointer;
-            font-weight: 700; width: 100%; margin-top: 16px; font-size: 14px;
-            box-shadow: 0 4px 20px rgba(236, 72, 153, 0.35);
-        }
-        .btn-action:hover { transform: translateY(-2px); filter: brightness(1.1); }
-        .btn-secondary {
-            background: rgba(51, 65, 85, 0.5); border: 1px solid #475569; color: #cbd5e1;
-            padding: 10px; border-radius: 12px; font-size: 12px; font-weight: 600;
-            cursor: pointer; width: 100%; margin-top: 8px;
+            border: none; padding: 16px; border-radius: 18px; cursor: pointer;
+            font-weight: 800; width: 100%; margin-top: 20px; font-size: 15px; letter-spacing: 0.5px;
+            box-shadow: 0 10px 30px rgba(236, 72, 153, 0.4);
         }
 
-        .history-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 11px; }
-        .history-table th, .history-table td { border: 1px solid #334155; padding: 8px; text-align: left; }
-        .history-table th { background: #1e293b; color: #c084fc; }
+        .btn-action:hover { transform: translateY(-2px); box-shadow: 0 15px 35px rgba(236, 72, 153, 0.6); }
+
+        .history-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 11px; }
+        .history-table th, .history-table td { border: 1px solid rgba(255, 255, 255, 0.08); padding: 10px; text-align: left; }
+        .history-table th { background: rgba(30, 41, 59, 0.8); color: var(--primary); }
 
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 2000;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(12px); z-index: 2000;
             justify-content: center; align-items: center; padding: 15px;
         }
+
         .modal-content {
-            background: #0f172a; border: 1px solid #a855f7; border-radius: 20px;
-            max-width: 480px; width: 100%; max-height: 80vh; overflow-y: auto; padding: 20px; text-align: left;
+            background: #0f172a; border: 1px solid var(--primary); border-radius: 24px;
+            max-width: 480px; width: 100%; max-height: 80vh; overflow-y: auto; padding: 24px; text-align: left;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9);
         }
 
+        /* Sales Notification Popup */
+        .sales-popup {
+            position: fixed; bottom: 20px; left: 20px; background: rgba(15, 23, 42, 0.95);
+            border: 1px solid var(--secondary); padding: 12px 18px; border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 20px rgba(236, 72, 153, 0.3); z-index: 1500;
+            display: flex; align-items: center; gap: 12px; transform: translateY(150%); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .sales-popup.show { transform: translateY(0); }
+
+        /* Floating Chat Widget */
         .chat-toggle {
             position: fixed; bottom: 20px; right: 20px; background: linear-gradient(135deg, #a855f7, #ec4899);
-            color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center;
-            justify-content: center; font-size: 26px; cursor: pointer; box-shadow: 0 10px 30px rgba(236, 72, 153, 0.5);
-            z-index: 1000;
+            color: white; width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; font-size: 24px; cursor: pointer; box-shadow: 0 10px 30px rgba(236, 72, 153, 0.5);
+            z-index: 1000; border: 2px solid rgba(255,255,255,0.2);
         }
+
         .chat-popup {
-            display: none; position: fixed; bottom: 90px; right: 20px; width: 340px; max-width: 90%;
-            background: #0f172a; border: 1px solid #a855f7; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.9);
+            display: none; position: fixed; bottom: 86px; right: 20px; width: 340px; max-width: 90%;
+            background: #0f172a; border: 1px solid var(--primary); border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.9);
             z-index: 1000; overflow: hidden;
         }
         .chat-header {
-            background: linear-gradient(135deg, #a855f7, #ec4899); padding: 14px 16px; font-weight: bold; font-size: 13px;
+            background: linear-gradient(135deg, #a855f7, #ec4899); padding: 14px 18px; font-weight: bold; font-size: 13px;
             display: flex; justify-content: space-between; align-items: center;
         }
-        .chat-body { padding: 12px; height: 280px; overflow-y: auto; font-size: 12px; display: flex; flex-direction: column; gap: 10px; }
-        .msg-bot { background: #1e293b; padding: 10px 12px; border-radius: 14px 14px 14px 2px; border-left: 3px solid #ec4899; color: #f1f5f9; align-self: flex-start; max-width: 85%; }
-        .msg-user { background: #a855f7; padding: 10px 12px; border-radius: 14px 14px 2px 14px; color: white; align-self: flex-end; max-width: 85%; }
-        .chat-footer { padding: 10px; border-top: 1px solid #334155; display: flex; gap: 6px; background: #020617; }
-        .chat-footer input { margin: 0; padding: 10px 12px; font-size: 12px; border-radius: 10px; }
-        .chat-footer button { background: #ec4899; border: none; color: white; padding: 10px 14px; border-radius: 10px; cursor: pointer; font-weight: bold; }
+        .chat-body { padding: 14px; height: 260px; overflow-y: auto; font-size: 12px; display: flex; flex-direction: column; gap: 10px; }
+        .msg-bot { background: #1e293b; padding: 10px 14px; border-radius: 16px 16px 16px 4px; border-left: 3px solid var(--secondary); color: #f1f5f9; align-self: flex-start; max-width: 85%; }
+        .msg-user { background: var(--primary); padding: 10px 14px; border-radius: 16px 16px 4px 16px; color: white; align-self: flex-end; max-width: 85%; }
+        .chat-footer { padding: 12px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; gap: 8px; background: #070913; }
+        .chat-footer input { margin: 0; padding: 10px 14px; font-size: 12px; border-radius: 12px; }
+        .chat-footer button { background: var(--secondary); border: none; color: white; padding: 10px 14px; border-radius: 12px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="brand-badge">Automated Store</div>
+    <div class="brand-badge">⚡ Automated SMM Panel</div>
     <h1>CRAZY SELLER</h1>
-    <p style="color: #94a3b8; font-size: 12px; margin-top: 2px;">Instant Instagram Growth Services</p>
+    <div class="subtitle">Instant High-Quality Instagram Growth Services</div>
 
-    <button class="btn-secondary" onclick="openPriceList()">📜 View Complete Price List</button>
+    <div class="action-nav">
+        <button class="btn-secondary" onclick="openPriceList()">📜 Price List</button>
+        <button class="btn-secondary" style="border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;" onclick="openTracker()">🔍 Track Order</button>
+    </div>
 
     <div class="card">
-        <h3 style="margin: 0 0 10px 0; color: #c084fc; font-size: 15px;">🚀 Place New Order</h3>
+        <div class="card-header">🚀 Place New Order</div>
         
-        <label for="package">Select Service:</label>
+        <label for="package">Select Service Package</label>
         <select id="package" onchange="calculatePriceAndQR()">
             <optgroup label="👥 1. Instagram Followers (24 Hrs)">
-                <option value="Fake Followers - 200 Followers (₹20)" data-service-id="1901" data-qty="200" data-price="20">200 Followers - ₹20</option>
-                <option value="Fake Followers - 1K Followers (₹83)" data-service-id="1901" data-qty="1000" data-price="83">1K Followers - ₹83</option>
-                <option value="Fake Followers - 2K Followers (₹120)" data-service-id="1901" data-qty="2000" data-price="120">2K Followers - ₹120</option>
+                <option value="Fake Followers - 200 Followers (₹20)" data-service-id="1901" data-qty="200" data-price="20">200 Followers — ₹20</option>
+                <option value="Fake Followers - 1K Followers (₹83)" data-service-id="1901" data-qty="1000" data-price="83">1K Followers — ₹83</option>
+                <option value="Fake Followers - 2K Followers (₹120)" data-service-id="1901" data-qty="2000" data-price="120">2K Followers — ₹120</option>
             </optgroup>
 
             <optgroup label="🔥 2. Instagram Real Active (24 Hrs)">
-                <option value="Real Active - 200 Real Active (₹50)" data-service-id="528" data-qty="200" data-price="50">200 Real Active - ₹50</option>
-                <option value="Real Active - 1K Real Active (₹340)" data-service-id="528" data-qty="1000" data-price="340">1K Real Active - ₹340</option>
+                <option value="Real Active - 200 Real Active (₹50)" data-service-id="528" data-qty="200" data-price="50">200 Real Active — ₹50</option>
+                <option value="Real Active - 1K Real Active (₹340)" data-service-id="528" data-qty="1000" data-price="340">1K Real Active — ₹340</option>
             </optgroup>
 
-            <optgroup label="👁️ 3. Views (10 Mins)">
-                <option value="Views - 2K Views (₹20)" data-service-id="2115" data-qty="2000" data-price="20">2K Views - ₹20</option>
-                <option value="Views - 5K Views (₹25)" data-service-id="2115" data-qty="5000" data-price="25">5K Views - ₹25</option>
-                <option value="Views - 10K Views (₹30)" data-service-id="2115" data-qty="10000" data-price="30">10K Views - ₹30</option>
-                <option value="Views - 50K Views (₹50)" data-service-id="2115" data-qty="50000" data-price="50">50K Views - ₹50</option>
-                <option value="Views - 100K Views (₹75)" data-service-id="2115" data-qty="100000" data-price="75">100K Views - ₹75</option>
-                <option value="Views - 500K Views (₹120)" data-service-id="2115" data-qty="500000" data-price="120">500K Views - ₹120</option>
+            <optgroup label="👁️ 3. Instant Views (10 Mins)">
+                <option value="Views - 2K Views (₹20)" data-service-id="2115" data-qty="2000" data-price="20">2K Views — ₹20</option>
+                <option value="Views - 5K Views (₹25)" data-service-id="2115" data-qty="5000" data-price="25">5K Views — ₹25</option>
+                <option value="Views - 10K Views (₹30)" data-service-id="2115" data-qty="10000" data-price="30">10K Views — ₹30</option>
+                <option value="Views - 50K Views (₹50)" data-service-id="2115" data-qty="50000" data-price="50">50K Views — ₹50</option>
+                <option value="Views - 100K Views (₹75)" data-service-id="2115" data-qty="100000" data-price="75">100K Views — ₹75</option>
+                <option value="Views - 500K Views (₹120)" data-service-id="2115" data-qty="500000" data-price="120">500K Views — ₹120</option>
             </optgroup>
 
-            <optgroup label="❤️ 4. Likes (10 Mins)">
-                <option value="Likes - 500 Likes (₹10)" data-service-id="2117" data-qty="500" data-price="10">500 Likes - ₹10</option>
-                <option value="Likes - 1K Likes (₹20)" data-service-id="2117" data-qty="1000" data-price="20">1K Likes - ₹20</option>
-                <option value="Likes - 5K Likes (₹50)" data-service-id="2117" data-qty="5000" data-price="50">5K Likes - ₹50</option>
-                <option value="Likes - 10K Likes (₹75)" data-service-id="2117" data-qty="10000" data-price="75">10K Likes - ₹75</option>
+            <optgroup label="❤️ 4. Post Likes (10 Mins)">
+                <option value="Likes - 500 Likes (₹10)" data-service-id="2117" data-qty="500" data-price="10">500 Likes — ₹10</option>
+                <option value="Likes - 1K Likes (₹20)" data-service-id="2117" data-qty="1000" data-price="20">1K Likes — ₹20</option>
+                <option value="Likes - 5K Likes (₹50)" data-service-id="2117" data-qty="5000" data-price="50">5K Likes — ₹50</option>
+                <option value="Likes - 10K Likes (₹75)" data-service-id="2117" data-qty="10000" data-price="75">10K Likes — ₹75</option>
             </optgroup>
 
-            <optgroup label="💬 5. Comments (10 Mins)">
-                <option value="Comments - 50 Comments (₹10)" data-service-id="234" data-qty="50" data-price="10">50 Comments - ₹10</option>
-                <option value="Comments - 100 Comments (₹20)" data-service-id="234" data-qty="100" data-price="20">100 Comments - ₹20</option>
-                <option value="Comments - 500 Comments (₹50)" data-service-id="234" data-qty="500" data-price="50">500 Comments - ₹50</option>
-                <option value="Comments - 1K Comments (₹75)" data-service-id="234" data-qty="1000" data-price="75">1K Comments - ₹75</option>
+            <optgroup label="💬 5. Custom Comments (10 Mins)">
+                <option value="Comments - 50 Comments (₹10)" data-service-id="234" data-qty="50" data-price="10">50 Comments — ₹10</option>
+                <option value="Comments - 100 Comments (₹20)" data-service-id="234" data-qty="100" data-price="20">100 Comments — ₹20</option>
+                <option value="Comments - 500 Comments (₹50)" data-service-id="234" data-qty="500" data-price="50">500 Comments — ₹50</option>
+                <option value="Comments - 1K Comments (₹75)" data-service-id="234" data-qty="1000" data-price="75">1K Comments — ₹75</option>
             </optgroup>
 
             <optgroup label="⚡ 6. Story Views">
-                <option value="Story Views - 200 Story Views (₹10)" data-service-id="112" data-qty="200" data-price="10">200 Story Views - ₹10</option>
-                <option value="Story Views - 1K Story Views (₹25)" data-service-id="112" data-qty="1000" data-price="25">1K Story Views - ₹25</option>
+                <option value="Story Views - 200 Story Views (₹10)" data-service-id="112" data-qty="200" data-price="10">200 Story Views — ₹10</option>
+                <option value="Story Views - 1K Story Views (₹25)" data-service-id="112" data-qty="1000" data-price="25">1K Story Views — ₹25</option>
             </optgroup>
         </select>
 
         <div class="price-badge-box">
-            <span style="font-size: 12px; color: #cbd5e1;">TOTAL PRICE:</span>
+            <span style="font-size: 11px; font-weight: 700; color: #94a3b8; letter-spacing: 1px;">TOTAL AMOUNT DUE:</span>
             <div class="price-text" id="liveCalculatedPrice">₹20</div>
         </div>
 
         <div class="qr-box">
-            <p style="color: #34d399; font-size: 11px; font-weight: bold; margin: 0 0 6px 0;">SCAN & PAY VIA ANY UPI APP:</p>
-            <img id="qrImage" src="" alt="UPI QR Code">
-            <p style="color: #94a3b8; font-size: 11px; margin: 6px 0 0 0;">UPI ID: <b>8124271142@naviaxis</b></p>
-            <p id="payAmountText" style="color: #facc15; font-size: 14px; font-weight: bold; margin-top: 4px;">Amount: ₹20</p>
+            <p style="color: #34d399; font-size: 11px; font-weight: 800; margin: 0 0 10px 0; letter-spacing: 0.5px;">SCAN & PAY VIA ANY UPI APP</p>
+            <img id="qrImage" src="" alt="UPI QR Code"><br>
+            <button class="copy-btn" id="copyUpiBtn" onclick="copyUpiId()">📋 Copy UPI ID</button>
+            <p style="color: #94a3b8; font-size: 11px; margin: 10px 0 0 0;">UPI ID: <b style="color:#fff;">8124271142@naviaxis</b></p>
+            <p id="payAmountText" style="color: #facc15; font-size: 13px; font-weight: 700; margin-top: 4px;">Amount: ₹20</p>
         </div>
 
-        <label for="instaLink">Instagram Profile / Post Link:</label>
+        <label for="instaLink">Instagram Profile / Post Link</label>
         <input type="text" id="instaLink" placeholder="https://instagram.com/p/xxx or @username">
 
-        <label for="transactionId">Payment UTR ID (12 Digits):</label>
+        <label for="transactionId">Payment UTR / Transaction ID (12 Digits)</label>
         <input type="text" id="transactionId" placeholder="Enter 12-digit UTR Number">
 
         <button class="btn-action" id="subBtn" onclick="submitOrder()">Submit Order Verification ⚡</button>
     </div>
 
     <div class="card">
-        <h3 style="margin: 0 0 10px 0; color: #60a5fa; font-size: 15px;">📜 My Recent Orders</h3>
+        <div class="card-header" style="color: #60a5fa;">📜 Recent Order History</div>
         <div id="historyContainer" style="overflow-x:auto;">
-            <p style="color:#64748b; font-size:12px;">No orders placed yet.</p>
+            <p style="color:#64748b; font-size:12px; margin: 0;">No orders placed yet.</p>
         </div>
     </div>
 </div>
 
+<!-- Price List Modal -->
 <div class="modal" id="priceModal">
     <div class="modal-content">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <h3 style="margin: 0; color: #c084fc;">📋 Complete Price List</h3>
+            <h3 style="margin: 0; color: var(--primary);">📋 Complete Price List</h3>
             <span style="cursor: pointer; font-size: 20px; color: #f43f5e;" onclick="closePriceList()">✖</span>
         </div>
         <table class="history-table">
@@ -223,6 +289,27 @@
     </div>
 </div>
 
+<!-- Order Tracker Modal -->
+<div class="modal" id="trackerModal">
+    <div class="modal-content">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h3 style="margin: 0; color: var(--accent);">🔍 Track Order Status</h3>
+            <span style="cursor: pointer; font-size: 20px; color: #f43f5e;" onclick="closeTracker()">✖</span>
+        </div>
+        <label for="trackUtrInput">Enter 12-Digit Payment UTR ID:</label>
+        <input type="text" id="trackUtrInput" placeholder="e.g. 820136754691">
+        <button class="btn-action" style="margin-top: 14px; padding: 12px;" onclick="checkOrderStatus()">Check Status ⚡</button>
+        <div id="trackerResult" style="margin-top: 15px;"></div>
+    </div>
+</div>
+
+<!-- Sales Notification Popup Box -->
+<div class="sales-popup" id="salesPopup">
+    <div style="font-size: 20px;">⚡</div>
+    <div style="font-size: 11px; color: #f8fafc; text-align: left;" id="salesText">Someone bought 1K Likes</div>
+</div>
+
+<!-- Live Chat Widget -->
 <div class="chat-toggle" onclick="toggleChat()">💬</div>
 <div class="chat-popup" id="chatWidget">
     <div class="chat-header">
@@ -263,7 +350,21 @@
     window.onload = function() {
         calculatePriceAndQR();
         loadOrderHistory();
+        startSalesPopups();
     };
+
+    function copyUpiId() {
+        navigator.clipboard.writeText(UPI_ID);
+        var btn = document.getElementById("copyUpiBtn");
+        btn.innerHTML = "✓ Copied!";
+        btn.style.color = "#34d399";
+        btn.style.borderColor = "#34d399";
+        setTimeout(() => {
+            btn.innerHTML = "📋 Copy UPI ID";
+            btn.style.color = "#38bdf8";
+            btn.style.borderColor = "rgba(56, 189, 248, 0.4)";
+        }, 2000);
+    }
 
     function submitOrder() {
         var selectElem = document.getElementById("package");
@@ -272,11 +373,16 @@
         
         var packageName = selectedOption.value;
         var price = selectedOption.getAttribute("data-price");
-        var link = document.getElementById("instaLink").value;
-        var txnId = document.getElementById("transactionId").value;
+        var link = document.getElementById("instaLink").value.trim();
+        var txnId = document.getElementById("transactionId").value.trim();
 
-        if (!link || !txnId || txnId.length < 10) {
-            alert("Please enter a valid Instagram Link/Username and 12-digit Payment UTR ID!");
+        if (!link || (!link.includes("instagram.com") && !link.startsWith("@"))) {
+            alert("❌ Please enter a valid Instagram Link or @username!");
+            return;
+        }
+
+        if (!txnId || txnId.length < 10) {
+            alert("❌ Please enter a valid 12-digit Payment UTR ID!");
             return;
         }
 
@@ -325,7 +431,7 @@
         var history = JSON.parse(localStorage.getItem("crazy_orders") || "[]");
         var container = document.getElementById("historyContainer");
         if (history.length === 0) {
-            container.innerHTML = `<p style="color:#64748b; font-size:12px;">No orders placed yet.</p>`;
+            container.innerHTML = `<p style="color:#64748b; font-size:12px; margin:0;">No orders placed yet.</p>`;
             return;
         }
         var html = `<table class="history-table"><thead><tr><th>Service</th><th>Price</th><th>UTR</th><th>Status</th></tr></thead><tbody>`;
@@ -334,6 +440,48 @@
         });
         html += `</tbody></table>`;
         container.innerHTML = html;
+    }
+
+    function openTracker() { document.getElementById("trackerModal").style.display = "flex"; }
+    function closeTracker() { document.getElementById("trackerModal").style.display = "none"; }
+    
+    function checkOrderStatus() {
+        var utr = document.getElementById("trackUtrInput").value.trim();
+        var resultDiv = document.getElementById("trackerResult");
+        if (!utr || utr.length < 10) {
+            resultDiv.innerHTML = `<p style="color:#f43f5e; font-size:12px;">Enter a valid 12-digit UTR ID</p>`;
+            return;
+        }
+        var history = JSON.parse(localStorage.getItem("crazy_orders") || "[]");
+        var found = history.find(item => item.utr === utr);
+
+        if (found) {
+            resultDiv.innerHTML = `<div style="background:#1e293b; padding:12px; border-radius:14px; font-size:12px;">
+                <p style="margin:2px 0;">Package: <b>${found.package}</b></p>
+                <p style="margin:2px 0;">Status: <b style="color:#facc15;">${found.status}</b></p>
+            </div>`;
+        } else {
+            resultDiv.innerHTML = `<div style="background:#1e293b; padding:12px; border-radius:14px; font-size:12px;">
+                <p style="margin:2px 0;">Status: <b style="color:#34d399;">Submitted / Processing ⚡</b></p>
+                <p style="color:#94a3b8; font-size:10px; margin-top:4px;">(Order verified by Admin shortly)</p>
+            </div>`;
+        }
+    }
+
+    const fakeSales = [
+        "Suresh from Chennai bought <b style='color:#facc15;'>1K Likes</b> (2m ago)",
+        "Karthik from Madurai bought <b style='color:#facc15;'>5K Views</b> (5m ago)",
+        "Priya from Coimbatore bought <b style='color:#facc15;'>200 Followers</b> (1m ago)",
+        "Dinesh from Trichy bought <b style='color:#facc15;'>10K Views</b> (4m ago)"
+    ];
+    function startSalesPopups() {
+        setInterval(() => {
+            let popup = document.getElementById("salesPopup");
+            let randomSale = fakeSales[Math.floor(Math.random() * fakeSales.length)];
+            document.getElementById("salesText").innerHTML = randomSale;
+            popup.classList.add("show");
+            setTimeout(() => { popup.classList.remove("show"); }, 4000);
+        }, 12000);
     }
 
     function openPriceList() { document.getElementById("priceModal").style.display = "flex"; }
