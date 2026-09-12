@@ -73,14 +73,10 @@
             background-repeat: no-repeat; background-position: right 18px center; background-size: 18px;
         }
 
-        select:focus { border-color: #f472b6; box-shadow: 0 0 25px rgba(244, 114, 182, 0.5); }
-
-        input, textarea {
+        input {
             width: 100%; padding: 15px 18px; border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 16px; background-color: rgba(15, 23, 42, 0.8); color: #ffffff; font-size: 14px; outline: none;
         }
-
-        input:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 20px var(--primary-glow); }
 
         optgroup { color: #facc15; background-color: #090d16; font-weight: bold; font-size: 14px; }
         option { color: #ffffff; background-color: #0f172a; padding: 12px; font-size: 14px; font-weight: 600; }
@@ -138,8 +134,6 @@
         .history-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 11px; }
         .history-table th, .history-table td { border: 1px solid rgba(255, 255, 255, 0.08); padding: 10px; text-align: left; }
         .history-table th { background: rgba(30, 41, 59, 0.8); color: var(--primary); }
-        
-        .line-counter { font-size: 11px; color: #facc15; font-weight: 700; margin-top: 5px; text-align: right; }
     </style>
 </head>
 <body>
@@ -160,68 +154,56 @@
         <select id="package" onchange="handleServiceChange()">
             
             <optgroup label="⚠️ 1. Fake Followers (ID: 524) [Drop Aagum]">
-                <option value="Fake Followers (Drop) - 200 (₹20)" data-service-id="524" data-qty="200" data-price="20">200 Followers (Drop Aagum) — ₹20</option>
-                <option value="Fake Followers (Drop) - 1K (₹83)" data-service-id="524" data-qty="1000" data-price="83">1K Followers (Drop Aagum) — ₹83</option>
+                <option value="Fake Followers (Drop) - 200" data-price="20" data-cost="5">200 Followers (Drop Aagum) — ₹20</option>
+                <option value="Fake Followers (Drop) - 1K" data-price="83" data-cost="20">1K Followers (Drop Aagum) — ₹83</option>
             </optgroup>
 
             <optgroup label="✅ 2. Non Drop Followers (ID: 528)">
-                <option value="Non Drop Followers - 200 (₹35)" data-service-id="528" data-qty="200" data-price="35">200 Non-Drop Followers — ₹35</option>
-                <option value="Non Drop Followers - 1K (₹140)" data-service-id="528" data-qty="1000" data-price="140">1K Non-Drop Followers — ₹140</option>
+                <option value="Non Drop Followers - 200" data-price="35" data-cost="10">200 Non-Drop Followers — ₹35</option>
+                <option value="Non Drop Followers - 1K" data-price="140" data-cost="45">1K Non-Drop Followers — ₹140</option>
             </optgroup>
 
             <optgroup label="👁️ 3. Instant Views (ID: 2115)">
-                <option value="Views - 2K Views (₹20)" data-service-id="2115" data-qty="2000" data-price="20">2K Views — ₹20</option>
-                <option value="Views - 5K Views (₹25)" data-service-id="2115" data-qty="5000" data-price="25">5K Views — ₹25</option>
-                <option value="Views - 10K Views (₹30)" data-service-id="2115" data-qty="10000" data-price="30">10K Views — ₹30</option>
-                <option value="Views - 50K Views (₹60)" data-service-id="2115" data-qty="50000" data-price="60">50K Views — ₹60</option>
-                <option value="Views - 100K Views (₹110)" data-service-id="2115" data-qty="100000" data-price="110">100K Views — ₹110</option>
+                <option value="Views - 2K Views" data-price="20" data-cost="2">2K Views — ₹20</option>
+                <option value="Views - 5K Views" data-price="25" data-cost="3">5K Views — ₹25</option>
+                <option value="Views - 10K Views" data-price="30" data-cost="5">10K Views — ₹30</option>
+                <option value="Views - 50K Views" data-price="60" data-cost="15">50K Views — ₹60</option>
+                <option value="Views - 100K Views" data-price="110" data-cost="30">100K Views — ₹110</option>
             </optgroup>
 
             <optgroup label="❤️ 4. Post Likes (ID: 2117)">
-                <option value="Likes - 500 Likes (₹10)" data-service-id="2117" data-qty="500" data-price="10">500 Likes — ₹10</option>
-                <option value="Likes - 1K Likes (₹20)" data-service-id="2117" data-qty="1000" data-price="20">1K Likes — ₹20</option>
+                <option value="Likes - 500 Likes" data-price="10" data-cost="2">500 Likes — ₹10</option>
+                <option value="Likes - 1K Likes" data-price="20" data-cost="4">1K Likes — ₹20</option>
             </optgroup>
 
             <optgroup label="😍 5. Positive Emoji Comments (ID: 475)">
-                <option value="Positive Emoji Comments - 50 (₹10)" data-service-id="475" data-qty="50" data-price="10">50 Positive Emoji Comments — ₹10</option>
-                <option value="Positive Emoji Comments - 500 (₹30)" data-service-id="475" data-qty="500" data-price="30">500 Positive Emoji Comments — ₹30</option>
-                <option value="Positive Emoji Comments - 1K (₹80)" data-service-id="475" data-qty="1000" data-price="80">1K Positive Emoji Comments — ₹80</option>
+                <option value="Comments - 50 Comments" data-price="10" data-cost="3">50 Positive Emoji Comments — ₹10</option>
+                <option value="Comments - 500 Comments" data-price="30" data-cost="10">500 Positive Emoji Comments — ₹30</option>
+                <option value="Comments - 1K Comments" data-price="80" data-cost="25">1K Positive Emoji Comments — ₹80</option>
             </optgroup>
 
-            <optgroup label="💬 6. Custom Comments (ID: 476)">
-                <option value="Custom Comments - 20 (₹3)" data-service-id="476" data-qty="20" data-price="3" data-type="custom">20 Custom Comments — ₹3</option>
-                <option value="Custom Comments - 40 (₹6)" data-service-id="476" data-qty="40" data-price="6" data-type="custom">40 Custom Comments — ₹6</option>
-                <option value="Custom Comments - 100 (₹20)" data-service-id="476" data-qty="100" data-price="20" data-type="custom">100 Custom Comments — ₹20</option>
+            <optgroup label="⚡ 6. Story Views (ID: 2134)">
+                <option value="Story Views - 200" data-price="10" data-cost="2">200 Story Views — ₹10</option>
+                <option value="Story Views - 1K" data-price="25" data-cost="6">1K Story Views — ₹25</option>
             </optgroup>
 
-            <optgroup label="⚡ 7. Story Views (ID: 2134)">
-                <option value="Story Views - 200 (₹10)" data-service-id="2134" data-qty="200" data-price="10">200 Story Views — ₹10</option>
-                <option value="Story Views - 1K (₹25)" data-service-id="2134" data-qty="1000" data-price="25">1K Story Views — ₹25</option>
+            <optgroup label="📌 7. Post Saves (ID: 505)">
+                <option value="Post Saves - 500" data-price="5" data-cost="1">500 Saves — ₹5</option>
+                <option value="Post Saves - 1K" data-price="20" data-cost="4">1000 Saves — ₹20</option>
             </optgroup>
 
-            <optgroup label="📌 8. Post Saves (ID: 505)">
-                <option value="Post Saves - 500 (₹5)" data-service-id="505" data-qty="500" data-price="5">500 Saves — ₹5</option>
-                <option value="Post Saves - 1K (₹20)" data-service-id="505" data-qty="1000" data-price="20">1000 Saves — ₹20</option>
+            <optgroup label="🔄 8. Post Shares (ID: 2129)">
+                <option value="Post Shares - 1K" data-price="5" data-cost="1">1K Shares — ₹5</option>
+                <option value="Post Shares - 5K" data-price="7" data-cost="2">5K Shares — ₹7</option>
+                <option value="Post Shares - 10K" data-price="15" data-cost="4">10K Shares — ₹15</option>
             </optgroup>
 
-            <optgroup label="🔄 9. Post Shares (ID: 2129)">
-                <option value="Post Shares - 1K (₹5)" data-service-id="2129" data-qty="1000" data-price="5">1K Shares — ₹5</option>
-                <option value="Post Shares - 5K (₹7)" data-service-id="2129" data-qty="5000" data-price="7">5K Shares — ₹7</option>
-                <option value="Post Shares - 10K (₹15)" data-service-id="2129" data-qty="10000" data-price="15">10K Shares — ₹15</option>
-            </optgroup>
-
-            <optgroup label="🔁 10. Instagram Repost (ID: 2127)">
-                <option value="Repost - 500 (₹30)" data-service-id="2127" data-qty="500" data-price="30">500 Reposts — ₹30</option>
-                <option value="Repost - 1K (₹60)" data-service-id="2127" data-qty="1000" data-price="60">1K Reposts — ₹60</option>
+            <optgroup label="🔁 9. Instagram Repost (ID: 2127)">
+                <option value="Repost - 500" data-price="30" data-cost="10">500 Reposts — ₹30</option>
+                <option value="Repost - 1K" data-price="60" data-cost="20">1K Reposts — ₹60</option>
             </optgroup>
 
         </select>
-
-        <div id="customCommentsBox" style="display: none; margin-top: 10px;">
-            <label for="customCommentsInput">Type Custom Comments (1 line = 1 comment):</label>
-            <textarea id="customCommentsInput" rows="5" placeholder="Super post bro! 🔥&#10;Love this content ✨&#10;Awesome reels ❤️" oninput="updateLineCount()"></textarea>
-            <div class="line-counter" id="lineCountLabel">Lines Entered: 0 / 20</div>
-        </div>
 
         <div class="price-badge-box">
             <span style="font-size: 11px; font-weight: 700; color: #94a3b8;">TOTAL AMOUNT DUE:</span>
@@ -247,7 +229,6 @@
         <div class="utr-guide-box" id="utrGuide">
             <div class="utr-step">📱 <b>Google Pay:</b> Payment History -> Click Paid Transaction -> Check <b>"UPI Ref No"</b> (12 Digits).</div>
             <div class="utr-step">💜 <b>PhonePe:</b> History -> Click Paid Order -> Copy <b>"UTR"</b> number.</div>
-            <div class="utr-step">💙 <b>PayTM:</b> Balance & History -> Select Payment -> Copy <b>"UPI Ref ID"</b>.</div>
         </div>
 
         <button class="btn-action" id="subBtn" onclick="submitOrder()">Submit Order Verification ⚡</button>
@@ -257,24 +238,37 @@
 <div class="modal" id="priceModal">
     <div class="modal-content">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <h3 style="margin: 0; color: var(--primary);">📋 Full Price List</h3>
+            <h3 style="margin: 0; color: var(--primary);">📋 Full Price List & Profits</h3>
             <span style="cursor: pointer; font-size: 20px; color: #f43f5e;" onclick="closePriceList()">✖</span>
         </div>
         <table class="history-table">
             <thead>
-                <tr><th>Service</th><th>Qty Options</th><th>Price</th></tr>
+                <tr><th>Service</th><th>Price</th><th>Cost</th><th>Profit</th></tr>
             </thead>
             <tbody>
-                <tr><td>Fake Followers (524)</td><td>200 / 1K</td><td>₹20 / ₹83</td></tr>
-                <tr><td>Non Drop Followers (528)</td><td>200 / 1K</td><td>₹35 / ₹140</td></tr>
-                <tr><td>Views (2115)</td><td>2K / 5K / 10K / 50K / 100K</td><td>₹20 / ₹25 / ₹30 / ₹60 / ₹110</td></tr>
-                <tr><td>Likes (2117)</td><td>500 / 1K</td><td>₹10 / ₹20</td></tr>
-                <tr><td>Emoji Comments (475)</td><td>50 / 500 / 1K</td><td>₹10 / ₹30 / ₹80</td></tr>
-                <tr><td>Custom Comments (476)</td><td>20 / 40 / 100</td><td>₹3 / ₹6 / ₹20</td></tr>
-                <tr><td>Story Views (2134)</td><td>200 / 1K</td><td>₹10 / ₹25</td></tr>
-                <tr><td>Saves (505)</td><td>500 / 1K</td><td>₹5 / ₹20</td></tr>
-                <tr><td>Shares (2129)</td><td>1K / 5K / 10K</td><td>₹5 / ₹7 / ₹15</td></tr>
-                <tr><td>Repost (2127)</td><td>500 / 1K</td><td>₹30 / ₹60</td></tr>
+                <tr><td>Fake Followers (200)</td><td>₹20</td><td>₹5</td><td>₹15</td></tr>
+                <tr><td>Fake Followers (1K)</td><td>₹83</td><td>₹20</td><td>₹63</td></tr>
+                <tr><td>Non Drop (200)</td><td>₹35</td><td>₹10</td><td>₹25</td></tr>
+                <tr><td>Non Drop (1K)</td><td>₹140</td><td>₹45</td><td>₹95</td></tr>
+                <tr><td>Views (2K)</td><td>₹20</td><td>₹2</td><td>₹18</td></tr>
+                <tr><td>Views (5K)</td><td>₹25</td><td>₹3</td><td>₹22</td></tr>
+                <tr><td>Views (10K)</td><td>₹30</td><td>₹5</td><td>₹25</td></tr>
+                <tr><td>Views (50K)</td><td>₹60</td><td>₹15</td><td>₹45</td></tr>
+                <tr><td>Views (100K)</td><td>₹110</td><td>₹30</td><td>₹80</td></tr>
+                <tr><td>Likes (500)</td><td>₹10</td><td>₹2</td><td>₹8</td></tr>
+                <tr><td>Likes (1K)</td><td>₹20</td><td>₹4</td><td>₹16</td></tr>
+                <tr><td>Comments (50)</td><td>₹10</td><td>₹3</td><td>₹7</td></tr>
+                <tr><td>Comments (500)</td><td>₹30</td><td>₹10</td><td>₹20</td></tr>
+                <tr><td>Comments (1K)</td><td>₹80</td><td>₹25</td><td>₹55</td></tr>
+                <tr><td>Story Views (200)</td><td>₹10</td><td>₹2</td><td>₹8</td></tr>
+                <tr><td>Story Views (1K)</td><td>₹25</td><td>₹6</td><td>₹19</td></tr>
+                <tr><td>Saves (500)</td><td>₹5</td><td>₹1</td><td>₹4</td></tr>
+                <tr><td>Saves (1K)</td><td>₹20</td><td>₹4</td><td>₹16</td></tr>
+                <tr><td>Shares (1K)</td><td>₹5</td><td>₹1</td><td>₹4</td></tr>
+                <tr><td>Shares (5K)</td><td>₹7</td><td>₹2</td><td>₹5</td></tr>
+                <tr><td>Shares (10K)</td><td>₹15</td><td>₹4</td><td>₹11</td></tr>
+                <tr><td>Repost (500)</td><td>₹30</td><td>₹10</td><td>₹20</td></tr>
+                <tr><td>Repost (1K)</td><td>₹60</td><td>₹20</td><td>₹40</td></tr>
             </tbody>
         </table>
     </div>
@@ -282,39 +276,19 @@
 
 <script>
     const UPI_ID = "8124271142@naviaxis";
-    const BACKEND_URL = "https://crazy-v97r.onrender.com";
+    const TELEGRAM_BOT_TOKEN = "8986935279:AAFjOyHX7fnZRKTqOZudUxyJCQjcu3_ChMk"; 
+    const TELEGRAM_CHAT_ID = "8435445040";     
 
     function handleServiceChange() {
         var selectElem = document.getElementById("package");
         var selectedOption = selectElem.options[selectElem.selectedIndex];
         var currentPrice = selectedOption.getAttribute("data-price");
-        var isCustom = selectedOption.getAttribute("data-type") === "custom";
 
-        document.getElementById("customCommentsBox").style.display = isCustom ? "block" : "none";
         document.getElementById("liveCalculatedPrice").innerText = "₹" + currentPrice;
         document.getElementById("payAmountText").innerText = "Amount to Pay: ₹" + currentPrice;
         
         var qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi://pay?pa=" + UPI_ID + "%26pn=CRAZY_SELLER%26am=" + currentPrice + "%26cu=INR";
         document.getElementById("qrImage").src = qrUrl;
-        
-        if(isCustom) {
-            updateLineCount();
-        }
-    }
-
-    function updateLineCount() {
-        var selectElem = document.getElementById("package");
-        var selectedOption = selectElem.options[selectElem.selectedIndex];
-        var reqQty = parseInt(selectedOption.getAttribute("data-qty"));
-        var rawText = document.getElementById("customCommentsInput").value;
-        
-        var lines = rawText.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-        document.getElementById("lineCountLabel").innerText = `Lines Entered: ${lines.length} / ${reqQty}`;
-        if(lines.length === reqQty) {
-            document.getElementById("lineCountLabel").style.color = "#34d399";
-        } else {
-            document.getElementById("lineCountLabel").style.color = "#facc15";
-        }
     }
     
     window.onload = function() { handleServiceChange(); };
@@ -332,67 +306,75 @@
         setTimeout(() => { btn.innerHTML = "📋 Copy UPI ID"; btn.style.color = "#38bdf8"; }, 2000);
     }
 
-    function submitOrder() {
-        var selectElem = document.getElementById("package");
-        var selectedOption = selectElem.options[selectElem.selectedIndex];
-        var btn = document.getElementById("subBtn");
-        
-        var packageName = selectedOption.value;
-        var serviceId = selectedOption.getAttribute("data-service-id");
-        var targetQty = parseInt(selectedOption.getAttribute("data-qty"));
-        var price = selectedOption.getAttribute("data-price");
-        var isCustom = selectedOption.getAttribute("data-type") === "custom";
-        var link = document.getElementById("instaLink").value.trim();
-        var txnId = document.getElementById("transactionId").value.trim();
-        var rawComments = document.getElementById("customCommentsInput").value;
+    function sendTelegramAlert(packageName, price, cost, profit, link, txnId) {
+        var textMessage = "🚨 *NEW SMM ORDER RECEIVED!* 🚨\n\n" +
+                          "📦 *Package:* " + packageName + "\n" +
+                          "💰 *Selling Price:* ₹" + price + "\n" +
+                          "📉 *Cost Price:* ₹" + cost + "\n" +
+                          "📈 *Profit:* ₹" + profit + "\n" +
+                          "🔗 *Target Link:* " + link + "\n" +
+                          "💳 *UTR / Ref No:* `" + txnId + "`";
 
-        if (!link) { alert("❌ Please enter a valid Instagram Link or Username!"); return; }
-
-        var cleanedCommentsText = "";
-
-        if (isCustom) {
-            var lines = rawComments.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-            if (lines.length !== targetQty) {
-                alert(`❌ You selected ${targetQty} Custom Comments. But found ${lines.length} lines!\n\nPlease paste exactly ${targetQty} lines (1 comment per line).`);
-                return;
-            }
-            cleanedCommentsText = lines.join('\n');
-        }
-
-        if (!txnId || txnId.length < 10) { alert("❌ Please enter a valid 12-digit Payment UTR ID!"); return; }
-
-        btn.innerText = "Processing Order...";
-        btn.disabled = true;
-
-        var payload = {
-            serviceId: serviceId,
-            quantity: targetQty,
-            price: price,
-            packageName: packageName,
-            instaLink: link,
-            txnId: txnId,
-            comments: isCustom ? cleanedCommentsText : ""
+        var inlineKeyboard = {
+            inline_keyboard: [
+                [
+                    { text: "✅ Accept Order", callback_data: "accept_" + txnId },
+                    { text: "❌ Reject Order", callback_data: "reject_" + txnId }
+                ]
+            ]
         };
 
-        fetch(`${BACKEND_URL}/order`, {
+        var telegramApiUrl = "https://api.telegram.org/bot" + TELEGRAM_BOT_TOKEN + "/sendMessage";
+
+        fetch(telegramApiUrl, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
+            body: JSON.stringify({
+                chat_id: TELEGRAM_CHAT_ID,
+                text: textMessage,
+                parse_mode: "Markdown",
+                reply_markup: inlineKeyboard
+            })
         })
         .then(res => res.json())
         .then(data => {
+            if(data.ok) {
+                alert("✅ Order Submitted! Telegram-la Accept/Reject buttons-oda alert vanthuruchu.");
+            } else {
+                alert("❌ Telegram Error: Bot kitta poi /start anuppunga!");
+                console.error(data);
+            }
+        })
+        .catch(err => alert("Error: " + err));
+    }
+
+    function submitOrder() {
+        var selectElem = document.getElementById("package");
+        var selectedOption = selectElem.options[selectElem.selectedIndex];
+        
+        var packageName = selectedOption.value;
+        var price = parseFloat(selectedOption.getAttribute("data-price"));
+        var cost = parseFloat(selectedOption.getAttribute("data-cost"));
+        var profit = price - cost; 
+        
+        var link = document.getElementById("instaLink").value.trim();
+        var txnId = document.getElementById("transactionId").value.trim();
+
+        if (!link) { alert("❌ Please enter Instagram Link!"); return; }
+        if (!txnId || txnId.length < 10) { alert("❌ Please enter valid 12-digit UTR ID!"); return; }
+
+        var btn = document.getElementById("subBtn");
+        btn.innerText = "Processing...";
+        btn.disabled = true;
+
+        sendTelegramAlert(packageName, price, cost, profit, link, txnId);
+
+        setTimeout(() => {
             btn.innerText = "Submit Order Verification ⚡";
             btn.disabled = false;
-            alert("Order Submitted Successfully!");
             document.getElementById("instaLink").value = "";
             document.getElementById("transactionId").value = "";
-            document.getElementById("customCommentsInput").value = "";
-        })
-        .catch(err => {
-            btn.innerText = "Submit Order Verification ⚡";
-            btn.disabled = false;
-            alert("Order Processing Request Sent!");
-        });
+        }, 2000);
     }
 
     function openPriceList() { document.getElementById("priceModal").style.display = "flex"; }
