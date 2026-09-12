@@ -75,12 +75,12 @@
 
         select:focus { border-color: #f472b6; box-shadow: 0 0 25px rgba(244, 114, 182, 0.5); }
 
-        input, textarea {
+        input {
             width: 100%; padding: 15px 18px; border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 16px; background-color: rgba(15, 23, 42, 0.8); color: #ffffff; font-size: 14px; outline: none;
         }
 
-        input:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 20px var(--primary-glow); }
+        input:focus { border-color: var(--primary); box-shadow: 0 0 20px var(--primary-glow); }
 
         optgroup { color: #facc15; background-color: #090d16; font-weight: bold; font-size: 14px; }
         option { color: #ffffff; background-color: #0f172a; padding: 12px; font-size: 14px; font-weight: 600; }
@@ -138,8 +138,6 @@
         .history-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 11px; }
         .history-table th, .history-table td { border: 1px solid rgba(255, 255, 255, 0.08); padding: 10px; text-align: left; }
         .history-table th { background: rgba(30, 41, 59, 0.8); color: var(--primary); }
-        
-        .line-counter { font-size: 11px; color: #facc15; font-weight: 700; margin-top: 5px; text-align: right; }
     </style>
 </head>
 <body>
@@ -150,7 +148,7 @@
 
     <div class="action-nav">
         <button class="btn-secondary" onclick="openPriceList()">📜 Full Price List</button>
-        <button class="btn-secondary" style="border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;" onclick="openTracker()">🔍 Track Order</button>
+        <button class="btn-secondary" style="border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;" onclick="alert('Tracking Feature Active')">🔍 Track Order</button>
     </div>
 
     <div class="card">
@@ -182,46 +180,34 @@
                 <option value="Likes - 1K Likes (₹20)" data-service-id="2117" data-qty="1000" data-price="20">1K Likes — ₹20</option>
             </optgroup>
 
-            <optgroup label="😍 5. Positive Emoji Comments (ID: 475)">
-                <option value="Positive Emoji Comments - 50 (₹10)" data-service-id="475" data-qty="50" data-price="10">50 Positive Emoji Comments — ₹10</option>
-                <option value="Positive Emoji Comments - 500 (₹30)" data-service-id="475" data-qty="500" data-price="30">500 Positive Emoji Comments — ₹30</option>
-                <option value="Positive Emoji Comments - 1K (₹80)" data-service-id="475" data-qty="1000" data-price="80">1K Positive Emoji Comments — ₹80</option>
+            <optgroup label="😍 5. Emoji Comments (ID: 475)">
+                <option value="Positive Emoji Comments - 50 (₹10)" data-service-id="475" data-qty="50" data-price="10">50 Emoji Comments — ₹10</option>
+                <option value="Positive Emoji Comments - 500 (₹30)" data-service-id="475" data-qty="500" data-price="30">500 Emoji Comments — ₹30</option>
+                <option value="Positive Emoji Comments - 1K (₹80)" data-service-id="475" data-qty="1000" data-price="80">1K Emoji Comments — ₹80</option>
             </optgroup>
 
-            <optgroup label="💬 6. Custom Comments (ID: 476)">
-                <option value="Custom Comments - 20 (₹3)" data-service-id="476" data-qty="20" data-price="3" data-type="custom">20 Custom Comments — ₹3</option>
-                <option value="Custom Comments - 40 (₹6)" data-service-id="476" data-qty="40" data-price="6" data-type="custom">40 Custom Comments — ₹6</option>
-                <option value="Custom Comments - 100 (₹20)" data-service-id="476" data-qty="100" data-price="20" data-type="custom">100 Custom Comments — ₹20</option>
-            </optgroup>
-
-            <optgroup label="⚡ 7. Story Views (ID: 2134)">
+            <optgroup label="⚡ 6. Story Views (ID: 2134)">
                 <option value="Story Views - 200 (₹10)" data-service-id="2134" data-qty="200" data-price="10">200 Story Views — ₹10</option>
                 <option value="Story Views - 1K (₹25)" data-service-id="2134" data-qty="1000" data-price="25">1K Story Views — ₹25</option>
             </optgroup>
 
-            <optgroup label="📌 8. Post Saves (ID: 505)">
+            <optgroup label="📌 7. Post Saves (ID: 505)">
                 <option value="Post Saves - 500 (₹5)" data-service-id="505" data-qty="500" data-price="5">500 Saves — ₹5</option>
                 <option value="Post Saves - 1K (₹20)" data-service-id="505" data-qty="1000" data-price="20">1000 Saves — ₹20</option>
             </optgroup>
 
-            <optgroup label="🔄 9. Post Shares (ID: 2129)">
+            <optgroup label="🔄 8. Post Shares (ID: 2129)">
                 <option value="Post Shares - 1K (₹5)" data-service-id="2129" data-qty="1000" data-price="5">1K Shares — ₹5</option>
                 <option value="Post Shares - 5K (₹7)" data-service-id="2129" data-qty="5000" data-price="7">5K Shares — ₹7</option>
                 <option value="Post Shares - 10K (₹15)" data-service-id="2129" data-qty="10000" data-price="15">10K Shares — ₹15</option>
             </optgroup>
 
-            <optgroup label="🔁 10. Instagram Repost (ID: 2127)">
+            <optgroup label="🔁 9. Instagram Repost (ID: 2127)">
                 <option value="Repost - 500 (₹30)" data-service-id="2127" data-qty="500" data-price="30">500 Reposts — ₹30</option>
                 <option value="Repost - 1K (₹60)" data-service-id="2127" data-qty="1000" data-price="60">1K Reposts — ₹60</option>
             </optgroup>
 
         </select>
-
-        <div id="customCommentsBox" style="display: none; margin-top: 10px;">
-            <label for="customCommentsInput">Type Custom Comments (1 line = 1 comment):</label>
-            <textarea id="customCommentsInput" rows="5" placeholder="Super post bro! 🔥&#10;Love this content ✨&#10;Awesome reels ❤️" oninput="updateLineCount()"></textarea>
-            <div class="line-counter" id="lineCountLabel">Lines Entered: 0 / 20</div>
-        </div>
 
         <div class="price-badge-box">
             <span style="font-size: 11px; font-weight: 700; color: #94a3b8;">TOTAL AMOUNT DUE:</span>
@@ -270,7 +256,6 @@
                 <tr><td>Views (2115)</td><td>2K / 5K / 10K / 50K / 100K</td><td>₹20 / ₹25 / ₹30 / ₹60 / ₹110</td></tr>
                 <tr><td>Likes (2117)</td><td>500 / 1K</td><td>₹10 / ₹20</td></tr>
                 <tr><td>Emoji Comments (475)</td><td>50 / 500 / 1K</td><td>₹10 / ₹30 / ₹80</td></tr>
-                <tr><td>Custom Comments (476)</td><td>20 / 40 / 100</td><td>₹3 / ₹6 / ₹20</td></tr>
                 <tr><td>Story Views (2134)</td><td>200 / 1K</td><td>₹10 / ₹25</td></tr>
                 <tr><td>Saves (505)</td><td>500 / 1K</td><td>₹5 / ₹20</td></tr>
                 <tr><td>Shares (2129)</td><td>1K / 5K / 10K</td><td>₹5 / ₹7 / ₹15</td></tr>
@@ -288,33 +273,12 @@
         var selectElem = document.getElementById("package");
         var selectedOption = selectElem.options[selectElem.selectedIndex];
         var currentPrice = selectedOption.getAttribute("data-price");
-        var isCustom = selectedOption.getAttribute("data-type") === "custom";
 
-        document.getElementById("customCommentsBox").style.display = isCustom ? "block" : "none";
         document.getElementById("liveCalculatedPrice").innerText = "₹" + currentPrice;
         document.getElementById("payAmountText").innerText = "Amount to Pay: ₹" + currentPrice;
         
         var qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi://pay?pa=" + UPI_ID + "%26pn=CRAZY_SELLER%26am=" + currentPrice + "%26cu=INR";
         document.getElementById("qrImage").src = qrUrl;
-        
-        if(isCustom) {
-            updateLineCount();
-        }
-    }
-
-    function updateLineCount() {
-        var selectElem = document.getElementById("package");
-        var selectedOption = selectElem.options[selectElem.selectedIndex];
-        var reqQty = parseInt(selectedOption.getAttribute("data-qty"));
-        var text = document.getElementById("customCommentsInput").value;
-        
-        var lines = text.split('\n').filter(line => line.trim() !== "");
-        document.getElementById("lineCountLabel").innerText = `Lines Entered: ${lines.length} / ${reqQty}`;
-        if(lines.length === reqQty) {
-            document.getElementById("lineCountLabel").style.color = "#34d399";
-        } else {
-            document.getElementById("lineCountLabel").style.color = "#facc15";
-        }
     }
     
     window.onload = function() { handleServiceChange(); };
@@ -341,21 +305,10 @@
         var serviceId = selectedOption.getAttribute("data-service-id");
         var targetQty = parseInt(selectedOption.getAttribute("data-qty"));
         var price = selectedOption.getAttribute("data-price");
-        var isCustom = selectedOption.getAttribute("data-type") === "custom";
         var link = document.getElementById("instaLink").value.trim();
         var txnId = document.getElementById("transactionId").value.trim();
-        var commentsText = document.getElementById("customCommentsInput").value.trim();
 
         if (!link) { alert("❌ Please enter a valid Instagram Link or Username!"); return; }
-
-        if (isCustom) {
-            var lines = commentsText.split('\n').filter(line => line.trim() !== "");
-            if (lines.length !== targetQty) {
-                alert(`❌ You selected ${targetQty} Custom Comments. But you entered ${lines.length} lines!\n\nPlease enter exactly ${targetQty} lines of comments (1 per line).`);
-                return;
-            }
-        }
-
         if (!txnId || txnId.length < 10) { alert("❌ Please enter a valid 12-digit Payment UTR ID!"); return; }
 
         btn.innerText = "Processing Order...";
@@ -367,8 +320,7 @@
             price: price,
             packageName: packageName,
             instaLink: link,
-            txnId: txnId,
-            comments: isCustom ? commentsText : ""
+            txnId: txnId
         };
 
         fetch(`${BACKEND_URL}/order`, {
@@ -383,7 +335,6 @@
             alert("Order Submitted Successfully!");
             document.getElementById("instaLink").value = "";
             document.getElementById("transactionId").value = "";
-            document.getElementById("customCommentsInput").value = "";
         })
         .catch(err => {
             btn.innerText = "Submit Order Verification ⚡";
