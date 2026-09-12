@@ -64,7 +64,6 @@
 
         label { font-weight: 700; font-size: 11px; color: #94a3b8; display: block; margin: 16px 0 6px 4px; text-transform: uppercase; letter-spacing: 0.8px; }
 
-        /* 🚀 NEW BOLD & BIG SELECT DESIGN */
         select {
             width: 100%; padding: 18px 20px; border: 2px solid rgba(192, 132, 252, 0.4);
             border-radius: 20px; background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.9));
@@ -74,18 +73,14 @@
             background-repeat: no-repeat; background-position: right 18px center; background-size: 18px;
         }
 
-        select:focus {
-            border-color: #f472b6; box-shadow: 0 0 25px rgba(244, 114, 182, 0.5);
-        }
+        select:focus { border-color: #f472b6; box-shadow: 0 0 25px rgba(244, 114, 182, 0.5); }
 
         input, textarea {
             width: 100%; padding: 15px 18px; border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 16px; background-color: rgba(15, 23, 42, 0.8); color: #ffffff; font-size: 14px; outline: none;
         }
 
-        input:focus, textarea:focus {
-            border-color: var(--primary); box-shadow: 0 0 20px var(--primary-glow);
-        }
+        input:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 20px var(--primary-glow); }
 
         optgroup { color: #facc15; background-color: #090d16; font-weight: bold; font-size: 14px; }
         option { color: #ffffff; background-color: #0f172a; padding: 12px; font-size: 14px; font-weight: 600; }
@@ -143,6 +138,8 @@
         .history-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 11px; }
         .history-table th, .history-table td { border: 1px solid rgba(255, 255, 255, 0.08); padding: 10px; text-align: left; }
         .history-table th { background: rgba(30, 41, 59, 0.8); color: var(--primary); }
+        
+        .line-counter { font-size: 11px; color: #facc15; font-weight: 700; margin-top: 5px; text-align: right; }
     </style>
 </head>
 <body>
@@ -186,9 +183,9 @@
             </optgroup>
 
             <optgroup label="😍 5. Positive Emoji Comments (ID: 475)">
-                <option value="Positive Emoji Comments - 50 (₹10)" data-service-id="475" data-qty="50" data-price="10" data-type="custom">50 Positive Emoji Comments — ₹10</option>
-                <option value="Positive Emoji Comments - 500 (₹30)" data-service-id="475" data-qty="500" data-price="30" data-type="custom">500 Positive Emoji Comments — ₹30</option>
-                <option value="Positive Emoji Comments - 1K (₹80)" data-service-id="475" data-qty="1000" data-price="80" data-type="custom">1K Positive Emoji Comments — ₹80</option>
+                <option value="Positive Emoji Comments - 50 (₹10)" data-service-id="475" data-qty="50" data-price="10">50 Positive Emoji Comments — ₹10</option>
+                <option value="Positive Emoji Comments - 500 (₹30)" data-service-id="475" data-qty="500" data-price="30">500 Positive Emoji Comments — ₹30</option>
+                <option value="Positive Emoji Comments - 1K (₹80)" data-service-id="475" data-qty="1000" data-price="80">1K Positive Emoji Comments — ₹80</option>
             </optgroup>
 
             <optgroup label="💬 6. Custom Comments (ID: 476)">
@@ -221,8 +218,9 @@
         </select>
 
         <div id="customCommentsBox" style="display: none; margin-top: 10px;">
-            <label for="customCommentsInput">Type Your Custom Comments (1 line = 1 comment):</label>
-            <textarea id="customCommentsInput" rows="4" placeholder="Super post bro! 🔥&#10;Love this content ✨&#10;Awesome reels ❤️"></textarea>
+            <label for="customCommentsInput">Type Custom Comments (1 line = 1 comment):</label>
+            <textarea id="customCommentsInput" rows="5" placeholder="Super post bro! 🔥&#10;Love this content ✨&#10;Awesome reels ❤️" oninput="updateLineCount()"></textarea>
+            <div class="line-counter" id="lineCountLabel">Lines Entered: 0 / 20</div>
         </div>
 
         <div class="price-badge-box">
@@ -298,6 +296,25 @@
         
         var qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi://pay?pa=" + UPI_ID + "%26pn=CRAZY_SELLER%26am=" + currentPrice + "%26cu=INR";
         document.getElementById("qrImage").src = qrUrl;
+        
+        if(isCustom) {
+            updateLineCount();
+        }
+    }
+
+    function updateLineCount() {
+        var selectElem = document.getElementById("package");
+        var selectedOption = selectElem.options[selectElem.selectedIndex];
+        var reqQty = parseInt(selectedOption.getAttribute("data-qty"));
+        var text = document.getElementById("customCommentsInput").value;
+        
+        var lines = text.split('\n').filter(line => line.trim() !== "");
+        document.getElementById("lineCountLabel").innerText = `Lines Entered: ${lines.length} / ${reqQty}`;
+        if(lines.length === reqQty) {
+            document.getElementById("lineCountLabel").style.color = "#34d399";
+        } else {
+            document.getElementById("lineCountLabel").style.color = "#facc15";
+        }
     }
     
     window.onload = function() { handleServiceChange(); };
@@ -322,6 +339,7 @@
         
         var packageName = selectedOption.value;
         var serviceId = selectedOption.getAttribute("data-service-id");
+        var targetQty = parseInt(selectedOption.getAttribute("data-qty"));
         var price = selectedOption.getAttribute("data-price");
         var isCustom = selectedOption.getAttribute("data-type") === "custom";
         var link = document.getElementById("instaLink").value.trim();
@@ -329,7 +347,15 @@
         var commentsText = document.getElementById("customCommentsInput").value.trim();
 
         if (!link) { alert("❌ Please enter a valid Instagram Link or Username!"); return; }
-        if (isCustom && !commentsText) { alert("❌ Please enter your comments in the box!"); return; }
+
+        if (isCustom) {
+            var lines = commentsText.split('\n').filter(line => line.trim() !== "");
+            if (lines.length !== targetQty) {
+                alert(`❌ You selected ${targetQty} Custom Comments. But you entered ${lines.length} lines!\n\nPlease enter exactly ${targetQty} lines of comments (1 per line).`);
+                return;
+            }
+        }
+
         if (!txnId || txnId.length < 10) { alert("❌ Please enter a valid 12-digit Payment UTR ID!"); return; }
 
         btn.innerText = "Processing Order...";
@@ -337,7 +363,7 @@
 
         var payload = {
             serviceId: serviceId,
-            quantity: selectedOption.getAttribute("data-qty"),
+            quantity: targetQty,
             price: price,
             packageName: packageName,
             instaLink: link,
