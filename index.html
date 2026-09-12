@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRAZY SELLER - Ultra Premium SMM</title>
+    <title>CRAZY SELLER - SMM Store</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -23,8 +23,7 @@
             display: flex; justify-content: center; align-items: center; min-height: 100vh;
             background-image: 
                 radial-gradient(circle at 10% 10%, rgba(168, 85, 247, 0.2) 0%, transparent 40%),
-                radial-gradient(circle at 90% 90%, rgba(236, 72, 153, 0.2) 0%, transparent 40%),
-                radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.1) 0%, transparent 50%);
+                radial-gradient(circle at 90% 90%, rgba(236, 72, 153, 0.2) 0%, transparent 40%);
             background-attachment: fixed;
         }
 
@@ -33,7 +32,7 @@
             background: var(--card-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
             padding: 28px 22px; border-radius: 32px;
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), 0 0 50px var(--primary-glow);
-            border: 1px solid var(--border-glow); text-align: center; position: relative;
+            border: 1px solid var(--border-glow); text-align: center;
         }
 
         .brand-badge {
@@ -41,7 +40,7 @@
             border: 1px solid rgba(236, 72, 153, 0.4); color: #f472b6;
             padding: 6px 18px; border-radius: 50px; font-size: 11px;
             font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
-            display: inline-flex; align-items: center; gap: 6px; margin-bottom: 8px;
+            display: inline-flex; margin-bottom: 8px;
         }
 
         h1 {
@@ -50,34 +49,28 @@
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        .subtitle { color: #94a3b8; font-size: 13px; font-weight: 500; margin: 0 0 20px 0; }
-
-        .action-nav { display: flex; gap: 10px; margin-bottom: 20px; }
+        .action-nav { display: flex; gap: 10px; margin: 15px 0 20px 0; }
         
         .btn-secondary {
             flex: 1; background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(255, 255, 255, 0.08);
-            color: #cbd5e1; padding: 12px; border-radius: 16px; font-size: 12px; font-weight: 700;
-            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
+            color: #cbd5e1; padding: 12px; border-radius: 16px; font-size: 12px; font-weight: 700; cursor: pointer;
         }
-        .btn-secondary:hover { background: rgba(51, 65, 85, 0.8); border-color: var(--accent); color: white; transform: translateY(-2px); }
+        .btn-secondary:hover { background: rgba(51, 65, 85, 0.8); border-color: var(--accent); color: white; }
 
         .card {
             background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 24px; padding: 20px; margin-top: 16px; text-align: left;
         }
 
-        .card-header { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 700; color: #f8fafc; margin-bottom: 16px; }
-
         label { font-weight: 700; font-size: 11px; color: #94a3b8; display: block; margin: 14px 0 6px 4px; text-transform: uppercase; letter-spacing: 0.8px; }
 
-        select, input {
+        select, input, textarea {
             width: 100%; padding: 14px 16px; border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 16px; background-color: rgba(15, 23, 42, 0.8); color: #ffffff; font-size: 13px; outline: none;
         }
 
-        select:focus, input:focus {
+        select:focus, input:focus, textarea:focus {
             border-color: var(--primary); box-shadow: 0 0 20px var(--primary-glow);
-            background-color: rgba(15, 23, 42, 0.95);
         }
 
         optgroup { color: #facc15; background-color: #090d16; font-weight: bold; }
@@ -88,35 +81,39 @@
             border: 1px solid rgba(168, 85, 247, 0.3); padding: 14px; border-radius: 18px; margin-top: 18px; text-align: center;
         }
 
-        .price-text { font-size: 28px; font-weight: 800; color: #facc15; text-shadow: 0 0 15px rgba(250, 204, 21, 0.3); }
+        .price-text { font-size: 28px; font-weight: 800; color: #facc15; }
 
         .qr-box {
             text-align: center; margin: 18px 0; background: rgba(0, 0, 0, 0.5);
             padding: 20px; border-radius: 22px; border: 1px dashed rgba(255, 255, 255, 0.15);
-            position: relative; overflow: hidden;
         }
 
-        .qr-box img { width: 180px; height: 180px; border-radius: 16px; border: 3px solid rgba(168, 85, 247, 0.5); }
+        .qr-box img { width: 170px; height: 170px; border-radius: 16px; border: 3px solid rgba(168, 85, 247, 0.5); }
 
         .copy-btn {
             background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4);
-            padding: 8px 16px; border-radius: 12px; font-size: 11px; font-weight: 700;
-            cursor: pointer; margin-top: 10px; display: inline-flex; align-items: center; gap: 6px;
+            padding: 8px 16px; border-radius: 12px; font-size: 11px; font-weight: 700; cursor: pointer; margin-top: 10px;
         }
-        .copy-btn:hover { background: #38bdf8; color: #000; }
 
         .btn-action {
             background: linear-gradient(135deg, #a855f7, #ec4899); color: white;
             border: none; padding: 16px; border-radius: 18px; cursor: pointer;
-            font-weight: 800; width: 100%; margin-top: 20px; font-size: 15px; letter-spacing: 0.5px;
+            font-weight: 800; width: 100%; margin-top: 20px; font-size: 15px;
             box-shadow: 0 10px 30px rgba(236, 72, 153, 0.4);
         }
 
-        .btn-action:hover { transform: translateY(-2px); box-shadow: 0 15px 35px rgba(236, 72, 153, 0.6); }
+        .utr-help-link {
+            display: inline-flex; align-items: center; gap: 4px; color: #38bdf8;
+            font-size: 11px; font-weight: 700; text-decoration: underline; cursor: pointer; margin-top: 6px; margin-left: 4px;
+        }
 
-        .history-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 11px; }
-        .history-table th, .history-table td { border: 1px solid rgba(255, 255, 255, 0.08); padding: 10px; text-align: left; }
-        .history-table th { background: rgba(30, 41, 59, 0.8); color: var(--primary); }
+        .utr-guide-box {
+            display: none; background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 16px; padding: 14px; margin-top: 8px; font-size: 11px; color: #cbd5e1;
+        }
+        .utr-step { margin-bottom: 8px; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 6px; }
+        .utr-step:last-child { border: none; margin: 0; padding: 0; }
+        .utr-step b { color: #facc15; }
 
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -127,41 +124,11 @@
         .modal-content {
             background: #0f172a; border: 1px solid var(--primary); border-radius: 24px;
             max-width: 480px; width: 100%; max-height: 80vh; overflow-y: auto; padding: 24px; text-align: left;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.9);
         }
 
-        /* Sales Notification Popup */
-        .sales-popup {
-            position: fixed; bottom: 20px; left: 20px; background: rgba(15, 23, 42, 0.95);
-            border: 1px solid var(--secondary); padding: 12px 18px; border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 20px rgba(236, 72, 153, 0.3); z-index: 1500;
-            display: flex; align-items: center; gap: 12px; transform: translateY(150%); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .sales-popup.show { transform: translateY(0); }
-
-        /* Floating Chat Widget */
-        .chat-toggle {
-            position: fixed; bottom: 20px; right: 20px; background: linear-gradient(135deg, #a855f7, #ec4899);
-            color: white; width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center;
-            justify-content: center; font-size: 24px; cursor: pointer; box-shadow: 0 10px 30px rgba(236, 72, 153, 0.5);
-            z-index: 1000; border: 2px solid rgba(255,255,255,0.2);
-        }
-
-        .chat-popup {
-            display: none; position: fixed; bottom: 86px; right: 20px; width: 340px; max-width: 90%;
-            background: #0f172a; border: 1px solid var(--primary); border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.9);
-            z-index: 1000; overflow: hidden;
-        }
-        .chat-header {
-            background: linear-gradient(135deg, #a855f7, #ec4899); padding: 14px 18px; font-weight: bold; font-size: 13px;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .chat-body { padding: 14px; height: 260px; overflow-y: auto; font-size: 12px; display: flex; flex-direction: column; gap: 10px; }
-        .msg-bot { background: #1e293b; padding: 10px 14px; border-radius: 16px 16px 16px 4px; border-left: 3px solid var(--secondary); color: #f1f5f9; align-self: flex-start; max-width: 85%; }
-        .msg-user { background: var(--primary); padding: 10px 14px; border-radius: 16px 16px 4px 16px; color: white; align-self: flex-end; max-width: 85%; }
-        .chat-footer { padding: 12px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; gap: 8px; background: #070913; }
-        .chat-footer input { margin: 0; padding: 10px 14px; font-size: 12px; border-radius: 12px; }
-        .chat-footer button { background: var(--secondary); border: none; color: white; padding: 10px 14px; border-radius: 12px; cursor: pointer; font-weight: bold; }
+        .history-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 11px; }
+        .history-table th, .history-table td { border: 1px solid rgba(255, 255, 255, 0.08); padding: 10px; text-align: left; }
+        .history-table th { background: rgba(30, 41, 59, 0.8); color: var(--primary); }
     </style>
 </head>
 <body>
@@ -169,161 +136,125 @@
 <div class="container">
     <div class="brand-badge">⚡ Automated SMM Panel</div>
     <h1>CRAZY SELLER</h1>
-    <div class="subtitle">Instant High-Quality Instagram Growth Services</div>
 
     <div class="action-nav">
-        <button class="btn-secondary" onclick="openPriceList()">📜 Price List</button>
+        <button class="btn-secondary" onclick="openPriceList()">📜 Full Price List</button>
         <button class="btn-secondary" style="border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;" onclick="openTracker()">🔍 Track Order</button>
     </div>
 
     <div class="card">
-        <div class="card-header">🚀 Place New Order</div>
+        <div style="font-size: 16px; font-weight: 700; color: #f8fafc; margin-bottom: 16px;">🚀 Place New Order</div>
         
-        <label for="package">Select Service Package</label>
-        <select id="package" onchange="calculatePriceAndQR()">
-            <optgroup label="👥 1. Instagram Followers (24 Hrs)">
-                <option value="Fake Followers - 200 Followers (₹20)" data-service-id="1901" data-qty="200" data-price="20">200 Followers — ₹20</option>
-                <option value="Fake Followers - 1K Followers (₹83)" data-service-id="1901" data-qty="1000" data-price="83">1K Followers — ₹83</option>
-                <option value="Fake Followers - 2K Followers (₹120)" data-service-id="1901" data-qty="2000" data-price="120">2K Followers — ₹120</option>
+        <label for="package">Select Service Package:</label>
+        <select id="package" onchange="handleServiceChange()">
+            
+            <optgroup label="⚠️ 1. Fake Followers (ID: 524) [Drop Aagum]">
+                <option value="Fake Followers (Drop) - 200 (₹20)" data-service-id="524" data-qty="200" data-price="20">200 Followers (Drop Aagum) — ₹20</option>
+                <option value="Fake Followers (Drop) - 1K (₹83)" data-service-id="524" data-qty="1000" data-price="83">1K Followers (Drop Aagum) — ₹83</option>
             </optgroup>
 
-            <optgroup label="🔥 2. Instagram Real Active (24 Hrs)">
-                <option value="Real Active - 200 Real Active (₹50)" data-service-id="528" data-qty="200" data-price="50">200 Real Active — ₹50</option>
-                <option value="Real Active - 1K Real Active (₹340)" data-service-id="528" data-qty="1000" data-price="340">1K Real Active — ₹340</option>
+            <optgroup label="✅ 2. Non Drop Followers (ID: 528)">
+                <option value="Non Drop Followers - 200 (₹35)" data-service-id="528" data-qty="200" data-price="35">200 Non-Drop Followers — ₹35</option>
+                <option value="Non Drop Followers - 1K (₹140)" data-service-id="528" data-qty="1000" data-price="140">1K Non-Drop Followers — ₹140</option>
             </optgroup>
 
-            <optgroup label="👁️ 3. Instant Views (10 Mins)">
+            <optgroup label="👁️ 3. Instant Views (ID: 2115)">
                 <option value="Views - 2K Views (₹20)" data-service-id="2115" data-qty="2000" data-price="20">2K Views — ₹20</option>
                 <option value="Views - 5K Views (₹25)" data-service-id="2115" data-qty="5000" data-price="25">5K Views — ₹25</option>
                 <option value="Views - 10K Views (₹30)" data-service-id="2115" data-qty="10000" data-price="30">10K Views — ₹30</option>
-                <option value="Views - 50K Views (₹50)" data-service-id="2115" data-qty="50000" data-price="50">50K Views — ₹50</option>
-                <option value="Views - 100K Views (₹75)" data-service-id="2115" data-qty="100000" data-price="75">100K Views — ₹75</option>
-                <option value="Views - 500K Views (₹120)" data-service-id="2115" data-qty="500000" data-price="120">500K Views — ₹120</option>
             </optgroup>
 
-            <optgroup label="❤️ 4. Post Likes (10 Mins)">
+            <optgroup label="❤️ 4. Post Likes (ID: 2117)">
                 <option value="Likes - 500 Likes (₹10)" data-service-id="2117" data-qty="500" data-price="10">500 Likes — ₹10</option>
                 <option value="Likes - 1K Likes (₹20)" data-service-id="2117" data-qty="1000" data-price="20">1K Likes — ₹20</option>
-                <option value="Likes - 5K Likes (₹50)" data-service-id="2117" data-qty="5000" data-price="50">5K Likes — ₹50</option>
-                <option value="Likes - 10K Likes (₹75)" data-service-id="2117" data-qty="10000" data-price="75">10K Likes — ₹75</option>
             </optgroup>
 
-            <optgroup label="💬 5. Custom Comments (10 Mins)">
-                <option value="Comments - 50 Comments (₹10)" data-service-id="234" data-qty="50" data-price="10">50 Comments — ₹10</option>
-                <option value="Comments - 100 Comments (₹20)" data-service-id="234" data-qty="100" data-price="20">100 Comments — ₹20</option>
-                <option value="Comments - 500 Comments (₹50)" data-service-id="234" data-qty="500" data-price="50">500 Comments — ₹50</option>
-                <option value="Comments - 1K Comments (₹75)" data-service-id="234" data-qty="1000" data-price="75">1K Comments — ₹75</option>
+            <optgroup label="💬 5. Comments Section">
+                <option value="Positive Emoji Comments (₹10)" data-service-id="475" data-qty="10" data-price="10" data-type="custom">10 Positive Emoji Comments — ₹10</option>
+                <option value="Custom Comments (₹15)" data-service-id="476" data-qty="10" data-price="15" data-type="custom">10 Custom Comments — ₹15</option>
             </optgroup>
 
-            <optgroup label="⚡ 6. Story Views">
-                <option value="Story Views - 200 Story Views (₹10)" data-service-id="112" data-qty="200" data-price="10">200 Story Views — ₹10</option>
-                <option value="Story Views - 1K Story Views (₹25)" data-service-id="112" data-qty="1000" data-price="25">1K Story Views — ₹25</option>
+            <optgroup label="⚡ 6. Story Views (ID: 2134)">
+                <option value="Story Views - 200 (₹10)" data-service-id="2134" data-qty="200" data-price="10">200 Story Views — ₹10</option>
+                <option value="Story Views - 1K (₹25)" data-service-id="2134" data-qty="1000" data-price="25">1K Story Views — ₹25</option>
             </optgroup>
+
+            <optgroup label="📌 7. Post Saves (ID: 505)">
+                <option value="Post Saves - 500 (₹5)" data-service-id="505" data-qty="500" data-price="5">500 Saves — ₹5</option>
+                <option value="Post Saves - 1K (₹20)" data-service-id="505" data-qty="1000" data-price="20">1000 Saves — ₹20</option>
+            </optgroup>
+
+            <optgroup label="🔄 8. Post Shares (ID: 2129)">
+                <option value="Post Shares - 1K (₹5)" data-service-id="2129" data-qty="1000" data-price="5">1K Shares — ₹5</option>
+                <option value="Post Shares - 5K (₹7)" data-service-id="2129" data-qty="5000" data-price="7">5K Shares — ₹7</option>
+                <option value="Post Shares - 10K (₹15)" data-service-id="2129" data-qty="10000" data-price="15">10K Shares — ₹15</option>
+            </optgroup>
+
+            <optgroup label="🔁 9. Instagram Repost (ID: 2127)">
+                <option value="Repost - 500 (₹30)" data-service-id="2127" data-qty="500" data-price="30">500 Reposts — ₹30</option>
+                <option value="Repost - 1K (₹60)" data-service-id="2127" data-qty="1000" data-price="60">1K Reposts — ₹60</option>
+            </optgroup>
+
         </select>
 
+        <div id="customCommentsBox" style="display: none;">
+            <label for="customCommentsInput">Enter Custom Comments (1 comment per line):</label>
+            <textarea id="customCommentsInput" rows="4" placeholder="Super post bro! 🔥&#10;Love this ✨&#10;Awesome content ❤️"></textarea>
+        </div>
+
         <div class="price-badge-box">
-            <span style="font-size: 11px; font-weight: 700; color: #94a3b8; letter-spacing: 1px;">TOTAL AMOUNT DUE:</span>
+            <span style="font-size: 11px; font-weight: 700; color: #94a3b8;">TOTAL AMOUNT DUE:</span>
             <div class="price-text" id="liveCalculatedPrice">₹20</div>
         </div>
 
         <div class="qr-box">
-            <p style="color: #34d399; font-size: 11px; font-weight: 800; margin: 0 0 10px 0; letter-spacing: 0.5px;">SCAN & PAY VIA ANY UPI APP</p>
+            <p style="color: #34d399; font-size: 11px; font-weight: 800; margin: 0 0 10px 0;">SCAN & PAY VIA ANY UPI APP</p>
             <img id="qrImage" src="" alt="UPI QR Code"><br>
             <button class="copy-btn" id="copyUpiBtn" onclick="copyUpiId()">📋 Copy UPI ID</button>
             <p style="color: #94a3b8; font-size: 11px; margin: 10px 0 0 0;">UPI ID: <b style="color:#fff;">8124271142@naviaxis</b></p>
             <p id="payAmountText" style="color: #facc15; font-size: 13px; font-weight: 700; margin-top: 4px;">Amount: ₹20</p>
         </div>
 
-        <label for="instaLink">Instagram Profile / Post Link</label>
+        <label for="instaLink">Instagram Link / @username</label>
         <input type="text" id="instaLink" placeholder="https://instagram.com/p/xxx or @username">
 
-        <label for="transactionId">Payment UTR / Transaction ID (12 Digits)</label>
+        <label for="transactionId">Payment UTR ID / Ref No (12 Digits)</label>
         <input type="text" id="transactionId" placeholder="Enter 12-digit UTR Number">
+        
+        <span class="utr-help-link" onclick="toggleUtrGuide()">❓ How to find UTR ID / Ref No?</span>
+        
+        <div class="utr-guide-box" id="utrGuide">
+            <div class="utr-step">📱 <b>Google Pay:</b> Payment History -> Click Paid Transaction -> Check <b>"UPI Ref No"</b> (12 Digits).</div>
+            <div class="utr-step">💜 <b>PhonePe:</b> History -> Click Paid Order -> Copy <b>"UTR"</b> number.</div>
+            <div class="utr-step">💙 <b>PayTM:</b> Balance & History -> Select Payment -> Copy <b>"UPI Ref ID"</b>.</div>
+        </div>
 
         <button class="btn-action" id="subBtn" onclick="submitOrder()">Submit Order Verification ⚡</button>
     </div>
-
-    <div class="card">
-        <div class="card-header" style="color: #60a5fa;">📜 Recent Order History</div>
-        <div id="historyContainer" style="overflow-x:auto;">
-            <p style="color:#64748b; font-size:12px; margin: 0;">No orders placed yet.</p>
-        </div>
-    </div>
 </div>
 
-<!-- Price List Modal -->
 <div class="modal" id="priceModal">
     <div class="modal-content">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <h3 style="margin: 0; color: var(--primary);">📋 Complete Price List</h3>
+            <h3 style="margin: 0; color: var(--primary);">📋 Price List</h3>
             <span style="cursor: pointer; font-size: 20px; color: #f43f5e;" onclick="closePriceList()">✖</span>
         </div>
         <table class="history-table">
             <thead>
-                <tr><th>Category</th><th>Service & Qty</th><th>Price</th></tr>
+                <tr><th>Category</th><th>Qty</th><th>Price</th></tr>
             </thead>
             <tbody>
-                <tr><td>Followers</td><td>200 Followers</td><td>₹20</td></tr>
-                <tr><td>Followers</td><td>1,000 Followers</td><td>₹83</td></tr>
-                <tr><td>Followers</td><td>2,000 Followers</td><td>₹120</td></tr>
-                <tr><td>Real Active</td><td>200 Real Active</td><td>₹50</td></tr>
-                <tr><td>Real Active</td><td>1,000 Real Active</td><td>₹340</td></tr>
-                <tr><td>Views</td><td>2,000 Views</td><td>₹20</td></tr>
-                <tr><td>Views</td><td>5,000 Views</td><td>₹25</td></tr>
-                <tr><td>Views</td><td>10,000 Views</td><td>₹30</td></tr>
-                <tr><td>Views</td><td>50,000 Views</td><td>₹50</td></tr>
-                <tr><td>Views</td><td>100,000 Views</td><td>₹75</td></tr>
-                <tr><td>Views</td><td>500,000 Views</td><td>₹120</td></tr>
-                <tr><td>Likes</td><td>500 Likes</td><td>₹10</td></tr>
-                <tr><td>Likes</td><td>1,000 Likes</td><td>₹20</td></tr>
-                <tr><td>Likes</td><td>5,000 Likes</td><td>₹50</td></tr>
-                <tr><td>Likes</td><td>10,000 Likes</td><td>₹75</td></tr>
-                <tr><td>Comments</td><td>50 Comments</td><td>₹10</td></tr>
-                <tr><td>Comments</td><td>100 Comments</td><td>₹20</td></tr>
-                <tr><td>Comments</td><td>500 Comments</td><td>₹50</td></tr>
-                <tr><td>Comments</td><td>1,000 Comments</td><td>₹75</td></tr>
-                <tr><td>Story Views</td><td>200 Story Views</td><td>₹10</td></tr>
-                <tr><td>Story Views</td><td>1,000 Story Views</td><td>₹25</td></tr>
+                <tr><td>Fake Followers (524)</td><td>200 / 1K</td><td>₹20 / ₹83</td></tr>
+                <tr><td>Non Drop Followers (528)</td><td>200 / 1K</td><td>₹35 / ₹140</td></tr>
+                <tr><td>Views (2115)</td><td>2K / 5K / 10K</td><td>₹20 / ₹25 / ₹30</td></tr>
+                <tr><td>Likes (2117)</td><td>500 / 1K</td><td>₹10 / ₹20</td></tr>
+                <tr><td>Comments (475 / 476)</td><td>10 Emoji / Custom</td><td>₹10 / ₹15</td></tr>
+                <tr><td>Story Views (2134)</td><td>200 / 1K</td><td>₹10 / ₹25</td></tr>
+                <tr><td>Saves (505)</td><td>500 / 1K</td><td>₹5 / ₹20</td></tr>
+                <tr><td>Shares (2129)</td><td>1K / 5K / 10K</td><td>₹5 / ₹7 / ₹15</td></tr>
+                <tr><td>Repost (2127)</td><td>500 / 1K</td><td>₹30 / ₹60</td></tr>
             </tbody>
         </table>
-    </div>
-</div>
-
-<!-- Order Tracker Modal -->
-<div class="modal" id="trackerModal">
-    <div class="modal-content">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <h3 style="margin: 0; color: var(--accent);">🔍 Track Order Status</h3>
-            <span style="cursor: pointer; font-size: 20px; color: #f43f5e;" onclick="closeTracker()">✖</span>
-        </div>
-        <label for="trackUtrInput">Enter 12-Digit Payment UTR ID:</label>
-        <input type="text" id="trackUtrInput" placeholder="e.g. 820136754691">
-        <button class="btn-action" style="margin-top: 14px; padding: 12px;" onclick="checkOrderStatus()">Check Status ⚡</button>
-        <div id="trackerResult" style="margin-top: 15px;"></div>
-    </div>
-</div>
-
-<!-- Sales Notification Popup Box -->
-<div class="sales-popup" id="salesPopup">
-    <div style="font-size: 20px;">⚡</div>
-    <div style="font-size: 11px; color: #f8fafc; text-align: left;" id="salesText">Someone bought 1K Likes</div>
-</div>
-
-<!-- Live Chat Widget -->
-<div class="chat-toggle" onclick="toggleChat()">💬</div>
-<div class="chat-popup" id="chatWidget">
-    <div class="chat-header">
-        <span>💬 Live Admin Support</span>
-        <span style="cursor:pointer;" onclick="toggleChat()">✖</span>
-    </div>
-    <div class="chat-body" id="chatBody">
-        <div class="msg-bot">
-            Vanakkam! 👋 Need help or have doubts? Type your message below!
-        </div>
-    </div>
-    <div class="chat-footer">
-        <input type="text" id="chatInput" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
-        <button onclick="sendChatMessage()">Send</button>
     </div>
 </div>
 
@@ -331,15 +262,13 @@
     const UPI_ID = "8124271142@naviaxis";
     const BACKEND_URL = "https://crazy-v97r.onrender.com";
 
-    let sessionId = localStorage.getItem("chat_session_id") || ("USER_" + Math.floor(100000 + Math.random() * 900000));
-    localStorage.setItem("chat_session_id", sessionId);
-
-    function calculatePriceAndQR() {
+    function handleServiceChange() {
         var selectElem = document.getElementById("package");
         var selectedOption = selectElem.options[selectElem.selectedIndex];
-        
         var currentPrice = selectedOption.getAttribute("data-price");
-        
+        var isCustom = selectedOption.getAttribute("data-type") === "custom";
+
+        document.getElementById("customCommentsBox").style.display = isCustom ? "block" : "none";
         document.getElementById("liveCalculatedPrice").innerText = "₹" + currentPrice;
         document.getElementById("payAmountText").innerText = "Amount to Pay: ₹" + currentPrice;
         
@@ -347,23 +276,19 @@
         document.getElementById("qrImage").src = qrUrl;
     }
     
-    window.onload = function() {
-        calculatePriceAndQR();
-        loadOrderHistory();
-        startSalesPopups();
-    };
+    window.onload = function() { handleServiceChange(); };
+
+    function toggleUtrGuide() {
+        var box = document.getElementById("utrGuide");
+        box.style.display = (box.style.display === "block") ? "none" : "block";
+    }
 
     function copyUpiId() {
         navigator.clipboard.writeText(UPI_ID);
         var btn = document.getElementById("copyUpiBtn");
         btn.innerHTML = "✓ Copied!";
         btn.style.color = "#34d399";
-        btn.style.borderColor = "#34d399";
-        setTimeout(() => {
-            btn.innerHTML = "📋 Copy UPI ID";
-            btn.style.color = "#38bdf8";
-            btn.style.borderColor = "rgba(56, 189, 248, 0.4)";
-        }, 2000);
+        setTimeout(() => { btn.innerHTML = "📋 Copy UPI ID"; btn.style.color = "#38bdf8"; }, 2000);
     }
 
     function submitOrder() {
@@ -372,30 +297,28 @@
         var btn = document.getElementById("subBtn");
         
         var packageName = selectedOption.value;
+        var serviceId = selectedOption.getAttribute("data-service-id");
         var price = selectedOption.getAttribute("data-price");
+        var isCustom = selectedOption.getAttribute("data-type") === "custom";
         var link = document.getElementById("instaLink").value.trim();
         var txnId = document.getElementById("transactionId").value.trim();
+        var commentsText = document.getElementById("customCommentsInput").value.trim();
 
-        if (!link || (!link.includes("instagram.com") && !link.startsWith("@"))) {
-            alert("❌ Please enter a valid Instagram Link or @username!");
-            return;
-        }
+        if (!link) { alert("❌ Please enter a valid Instagram Link or Username!"); return; }
+        if (isCustom && !commentsText) { alert("❌ Please enter your comments in the box!"); return; }
+        if (!txnId || txnId.length < 10) { alert("❌ Please enter a valid 12-digit Payment UTR ID!"); return; }
 
-        if (!txnId || txnId.length < 10) {
-            alert("❌ Please enter a valid 12-digit Payment UTR ID!");
-            return;
-        }
-
-        btn.innerText = "Processing...";
+        btn.innerText = "Processing Order...";
         btn.disabled = true;
 
         var payload = {
-            serviceId: selectedOption.getAttribute("data-service-id"),
+            serviceId: serviceId,
             quantity: selectedOption.getAttribute("data-qty"),
             price: price,
             packageName: packageName,
             instaLink: link,
-            txnId: txnId
+            txnId: txnId,
+            comments: isCustom ? commentsText : ""
         };
 
         fetch(`${BACKEND_URL}/order`, {
@@ -407,124 +330,20 @@
         .then(data => {
             btn.innerText = "Submit Order Verification ⚡";
             btn.disabled = false;
-            saveLocalOrder(packageName, price, txnId);
-            alert("Order Submitted! Admin will verify payment UTR and start order.");
+            alert("Order Submitted Successfully!");
             document.getElementById("instaLink").value = "";
             document.getElementById("transactionId").value = "";
+            document.getElementById("customCommentsInput").value = "";
         })
         .catch(err => {
             btn.innerText = "Submit Order Verification ⚡";
             btn.disabled = false;
-            saveLocalOrder(packageName, price, txnId);
-            alert("Order Saved! Admin will verify payment UTR and start order.");
+            alert("Order Processing Request Sent!");
         });
-    }
-
-    function saveLocalOrder(pkg, price, utr) {
-        var history = JSON.parse(localStorage.getItem("crazy_orders") || "[]");
-        history.unshift({ package: pkg, price: "₹" + price, utr: utr, status: "Pending Verification" });
-        localStorage.setItem("crazy_orders", JSON.stringify(history));
-        loadOrderHistory();
-    }
-
-    function loadOrderHistory() {
-        var history = JSON.parse(localStorage.getItem("crazy_orders") || "[]");
-        var container = document.getElementById("historyContainer");
-        if (history.length === 0) {
-            container.innerHTML = `<p style="color:#64748b; font-size:12px; margin:0;">No orders placed yet.</p>`;
-            return;
-        }
-        var html = `<table class="history-table"><thead><tr><th>Service</th><th>Price</th><th>UTR</th><th>Status</th></tr></thead><tbody>`;
-        history.forEach(item => {
-            html += `<tr><td>${item.package}</td><td>${item.price}</td><td>${item.utr.slice(-4)}****</td><td style="color:#facc15;">${item.status}</td></tr>`;
-        });
-        html += `</tbody></table>`;
-        container.innerHTML = html;
-    }
-
-    function openTracker() { document.getElementById("trackerModal").style.display = "flex"; }
-    function closeTracker() { document.getElementById("trackerModal").style.display = "none"; }
-    
-    function checkOrderStatus() {
-        var utr = document.getElementById("trackUtrInput").value.trim();
-        var resultDiv = document.getElementById("trackerResult");
-        if (!utr || utr.length < 10) {
-            resultDiv.innerHTML = `<p style="color:#f43f5e; font-size:12px;">Enter a valid 12-digit UTR ID</p>`;
-            return;
-        }
-        var history = JSON.parse(localStorage.getItem("crazy_orders") || "[]");
-        var found = history.find(item => item.utr === utr);
-
-        if (found) {
-            resultDiv.innerHTML = `<div style="background:#1e293b; padding:12px; border-radius:14px; font-size:12px;">
-                <p style="margin:2px 0;">Package: <b>${found.package}</b></p>
-                <p style="margin:2px 0;">Status: <b style="color:#facc15;">${found.status}</b></p>
-            </div>`;
-        } else {
-            resultDiv.innerHTML = `<div style="background:#1e293b; padding:12px; border-radius:14px; font-size:12px;">
-                <p style="margin:2px 0;">Status: <b style="color:#34d399;">Submitted / Processing ⚡</b></p>
-                <p style="color:#94a3b8; font-size:10px; margin-top:4px;">(Order verified by Admin shortly)</p>
-            </div>`;
-        }
-    }
-
-    const fakeSales = [
-        "Suresh from Chennai bought <b style='color:#facc15;'>1K Likes</b> (2m ago)",
-        "Karthik from Madurai bought <b style='color:#facc15;'>5K Views</b> (5m ago)",
-        "Priya from Coimbatore bought <b style='color:#facc15;'>200 Followers</b> (1m ago)",
-        "Dinesh from Trichy bought <b style='color:#facc15;'>10K Views</b> (4m ago)"
-    ];
-    function startSalesPopups() {
-        setInterval(() => {
-            let popup = document.getElementById("salesPopup");
-            let randomSale = fakeSales[Math.floor(Math.random() * fakeSales.length)];
-            document.getElementById("salesText").innerHTML = randomSale;
-            popup.classList.add("show");
-            setTimeout(() => { popup.classList.remove("show"); }, 4000);
-        }, 12000);
     }
 
     function openPriceList() { document.getElementById("priceModal").style.display = "flex"; }
     function closePriceList() { document.getElementById("priceModal").style.display = "none"; }
-
-    function toggleChat() {
-        var widget = document.getElementById("chatWidget");
-        widget.style.display = (widget.style.display === "block") ? "none" : "block";
-    }
-
-    function handleKeyPress(e) { if (e.key === 'Enter') sendChatMessage(); }
-
-    function sendChatMessage() {
-        var input = document.getElementById("chatInput");
-        var msg = input.value.trim();
-        if (!msg) return;
-        input.value = "";
-        fetch(`${BACKEND_URL}/send-admin`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ sessionId: sessionId, name: "Website User", message: msg })
-        });
-    }
-
-    setInterval(() => {
-        fetch(`${BACKEND_URL}/get-messages/${sessionId}`)
-        .then(res => res.json())
-        .then(data => {
-            if (data.messages && data.messages.length > 0) {
-                var chatBody = document.getElementById("chatBody");
-                let html = `<div class="msg-bot">Vanakkam! 👋 Need help or have doubts? Type your message below!</div>`;
-                data.messages.forEach(m => {
-                    if (m.sender === "user") {
-                        html += `<div class="msg-user">${m.text}</div>`;
-                    } else {
-                        html += `<div class="msg-bot" style="border-left-color: #22c55e;"><b>Admin:</b> ${m.text}</div>`;
-                    }
-                });
-                chatBody.innerHTML = html;
-                chatBody.scrollTop = chatBody.scrollHeight;
-            }
-        }).catch(err => {});
-    }, 3000);
 </script>
 
 </body>
