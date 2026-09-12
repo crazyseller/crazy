@@ -120,17 +120,36 @@
         .utr-step:last-child { border: none; margin: 0; padding: 0; }
         .utr-step b { color: #facc15; }
 
+        /* Floating Live Chat Box Styles */
+        .chat-toggle-btn {
+            position: fixed; bottom: 25px; right: 25px; background: linear-gradient(135deg, #a855f7, #ec4899);
+            color: white; border: none; width: 60px; height: 60px; border-radius: 50%;
+            font-size: 24px; cursor: pointer; box-shadow: 0 10px 25px rgba(236, 72, 153, 0.5); z-index: 1000;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .chat-box-container {
+            display: none; position: fixed; bottom: 95px; right: 25px; width: 340px; max-height: 450px;
+            background: #0f172a; border: 1px solid rgba(192, 132, 252, 0.4); border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8); z-index: 1000; flex-direction: column; overflow: hidden;
+        }
+        .chat-header { background: linear-gradient(135deg, #a855f7, #ec4899); color: white; padding: 12px 16px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
+        .chat-body { flex: 1; padding: 15px; overflow-y: auto; max-height: 300px; display: flex; flex-direction: column; gap: 10px; font-size: 12px; }
+        .chat-msg { padding: 10px 14px; border-radius: 14px; max-width: 80%; line-height: 1.4; }
+        .chat-msg.user { background: rgba(168, 85, 247, 0.2); color: #fff; align-self: flex-end; border: 1px solid rgba(168, 85, 247, 0.4); }
+        .chat-msg.admin { background: rgba(56, 189, 248, 0.2); color: #38bdf8; align-self: flex-start; border: 1px solid rgba(56, 189, 248, 0.4); }
+        .chat-footer { padding: 10px; background: rgba(30, 41, 59, 0.8); display: flex; gap: 8px; border-top: 1px solid rgba(255,255,255,0.08); }
+        .chat-footer input { flex: 1; padding: 10px; font-size: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: #070913; color: white; }
+        .chat-footer button { background: #a855f7; color: white; border: none; padding: 0 16px; border-radius: 12px; font-weight: 700; cursor: pointer; }
+
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(12px); z-index: 2000;
             justify-content: center; align-items: center; padding: 15px;
         }
-
         .modal-content {
             background: #0f172a; border: 1px solid var(--primary); border-radius: 24px;
             max-width: 480px; width: 100%; max-height: 80vh; overflow-y: auto; padding: 24px; text-align: left;
         }
-
         .history-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 11px; }
         .history-table th, .history-table td { border: 1px solid rgba(255, 255, 255, 0.08); padding: 10px; text-align: left; }
         .history-table th { background: rgba(30, 41, 59, 0.8); color: var(--primary); }
@@ -152,17 +171,14 @@
         
         <label for="package">Choose Service & Quantity:</label>
         <select id="package" onchange="handleServiceChange()">
-            
             <optgroup label="⚠️ 1. Fake Followers (ID: 524) [Drop Aagum]">
                 <option value="Fake Followers (Drop) - 200" data-price="20" data-cost="5">200 Followers (Drop Aagum) — ₹20</option>
                 <option value="Fake Followers (Drop) - 1K" data-price="83" data-cost="20">1K Followers (Drop Aagum) — ₹83</option>
             </optgroup>
-
             <optgroup label="✅ 2. Non Drop Followers (ID: 528)">
                 <option value="Non Drop Followers - 200" data-price="35" data-cost="10">200 Non-Drop Followers — ₹35</option>
                 <option value="Non Drop Followers - 1K" data-price="140" data-cost="45">1K Non-Drop Followers — ₹140</option>
             </optgroup>
-
             <optgroup label="👁️ 3. Instant Views (ID: 2115)">
                 <option value="Views - 2K Views" data-price="20" data-cost="2">2K Views — ₹20</option>
                 <option value="Views - 5K Views" data-price="25" data-cost="3">5K Views — ₹25</option>
@@ -170,39 +186,32 @@
                 <option value="Views - 50K Views" data-price="60" data-cost="15">50K Views — ₹60</option>
                 <option value="Views - 100K Views" data-price="110" data-cost="30">100K Views — ₹110</option>
             </optgroup>
-
             <optgroup label="❤️ 4. Post Likes (ID: 2117)">
                 <option value="Likes - 500 Likes" data-price="10" data-cost="2">500 Likes — ₹10</option>
                 <option value="Likes - 1K Likes" data-price="20" data-cost="3.30">1K Likes — ₹20</option>
             </optgroup>
-
             <optgroup label="😍 5. Positive Emoji Comments (ID: 475)">
                 <option value="Comments - 50 Comments" data-price="10" data-cost="3">50 Positive Emoji Comments — ₹10</option>
                 <option value="Comments - 500 Comments" data-price="30" data-cost="10">500 Positive Emoji Comments — ₹30</option>
                 <option value="Comments - 1K Comments" data-price="80" data-cost="25">1K Positive Emoji Comments — ₹80</option>
             </optgroup>
-
             <optgroup label="⚡ 6. Story Views (ID: 2134)">
                 <option value="Story Views - 200" data-price="10" data-cost="2">200 Story Views — ₹10</option>
                 <option value="Story Views - 1K" data-price="25" data-cost="6">1K Story Views — ₹25</option>
             </optgroup>
-
             <optgroup label="📌 7. Post Saves (ID: 505)">
                 <option value="Post Saves - 500" data-price="5" data-cost="1">500 Saves — ₹5</option>
                 <option value="Post Saves - 1K" data-price="20" data-cost="4">1000 Saves — ₹20</option>
             </optgroup>
-
             <optgroup label="🔄 8. Post Shares (ID: 2129)">
                 <option value="Post Shares - 1K" data-price="5" data-cost="1">1K Shares — ₹5</option>
                 <option value="Post Shares - 5K" data-price="7" data-cost="2">5K Shares — ₹7</option>
                 <option value="Post Shares - 10K" data-price="15" data-cost="4">10K Shares — ₹15</option>
             </optgroup>
-
             <optgroup label="🔁 9. Instagram Repost (ID: 2127)">
                 <option value="Repost - 500" data-price="30" data-cost="10">500 Reposts — ₹30</option>
                 <option value="Repost - 1K" data-price="60" data-cost="20">1K Reposts — ₹60</option>
             </optgroup>
-
         </select>
 
         <div class="price-badge-box">
@@ -232,6 +241,22 @@
         </div>
 
         <button class="btn-action" id="subBtn" onclick="submitOrder()">Submit Order Verification ⚡</button>
+    </div>
+</div>
+
+<!-- Floating Live Chat Widget -->
+<button class="chat-toggle-btn" onclick="toggleChatBox()">💬</button>
+<div class="chat-box-container" id="chatBox">
+    <div class="chat-header">
+        <span>Live Support Chat</span>
+        <span style="cursor: pointer; font-size: 16px;" onclick="toggleChatBox()">✖</span>
+    </div>
+    <div class="chat-body" id="chatBody">
+        <div class="chat-msg admin">Hello! How can I help you today? Type your message below.</div>
+    </div>
+    <div class="chat-footer">
+        <input type="text" id="chatInput" placeholder="Type a message..." onkeypress="handleChatKey(event)">
+        <button onclick="sendChatMessage()">Send</button>
     </div>
 </div>
 
@@ -278,32 +303,23 @@
     const UPI_ID = "8124271142@naviaxis";
     const TELEGRAM_BOT_TOKEN = "8986935279:AAFjOyHX7fnZRKTqOZudUxyJCQjcu3_ChMk"; 
     const TELEGRAM_CHAT_ID = "8435445040";     
-    const SMM_API_KEY = "ENGA_UNODA_SMM_ADDA_API_KEY_PODU"; // Unoda SMM API key inga podu
+    const SMM_API_KEY = "UNODA_SMM_ADDA_API_KEY_INGA_PODU"; // Unoda SMM API key inga podu
     const SMM_API_URL = "https://smmaddaa.com/api/v2";
 
-    let fetchedSmmBalance = "Loading...";
+    let fetchedSmmBalance = "₹4.00";
 
-    // SMM Addaa API-kku direct-ah request anuppi balance-a fetch panrathu
     async function getLiveSmmBalance() {
         try {
             const formData = new URLSearchParams();
             formData.append('key', SMM_API_KEY);
             formData.append('action', 'balance');
-
-            const response = await fetch(SMM_API_URL, {
-                method: 'POST',
-                body: formData
-            });
+            const response = await fetch(SMM_API_URL, { method: 'POST', body: formData });
             const data = await response.json();
-            
             if(data.balance !== undefined) {
                 fetchedSmmBalance = "₹" + parseFloat(data.balance).toFixed(2);
-            } else {
-                fetchedSmmBalance = "₹4.00"; // Fallback amount
             }
         } catch (err) {
-            console.error("Balance fetch error:", err);
-            fetchedSmmBalance = "₹4.00"; // Fallback if network blocks CORS
+            fetchedSmmBalance = "₹4.00";
         }
     }
 
@@ -337,8 +353,36 @@
         setTimeout(() => { btn.innerHTML = "📋 Copy UPI ID"; btn.style.color = "#38bdf8"; }, 2000);
     }
 
+    // Chat Box Functionality
+    function toggleChatBox() {
+        var box = document.getElementById("chatBox");
+        box.style.display = (box.style.display === "flex") ? "none" : "flex";
+    }
+
+    function handleChatKey(e) {
+        if (e.key === "Enter") { sendChatMessage(); }
+    }
+
+    function sendChatMessage() {
+        var input = document.getElementById("chatInput");
+        var text = input.value.trim();
+        if(!text) return;
+
+        var chatBody = document.getElementById("chatBody");
+        chatBody.innerHTML += `<div class="chat-msg user">${text}</div>`;
+        input.value = "";
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        // Send customer chat directly to your Telegram Bot
+        var chatMsgAlert = "💬 *NEW CUSTOMER CHAT* 💬\n\n" + text;
+        fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: chatMsgAlert, parse_mode: "Markdown" })
+        });
+    }
+
     async function sendTelegramAlert(refId, packageName, price, cost, profit, link, txnId) {
-        // Order anuppum pothu oru thadava live balance fetch pannikkum
         await getLiveSmmBalance();
 
         var textMessage = "🚨 *NEW ORDER RECEIVED* 🚨\n\n" +
@@ -352,15 +396,6 @@
                           "📈 *Your Profit:* ₹" + profit.toFixed(2) + "\n\n" +
                           "💳 *SMM Balance:* " + fetchedSmmBalance;
 
-        var inlineKeyboard = {
-            inline_keyboard: [
-                [
-                    { text: "✅ Accept Order", callback_data: "accept_" + txnId },
-                    { text: "❌ Reject Order", callback_data: "reject_" + txnId }
-                ]
-            ]
-        };
-
         var telegramApiUrl = "https://api.telegram.org/bot" + TELEGRAM_BOT_TOKEN + "/sendMessage";
 
         fetch(telegramApiUrl, {
@@ -369,8 +404,7 @@
             body: JSON.stringify({
                 chat_id: TELEGRAM_CHAT_ID,
                 text: textMessage,
-                parse_mode: "Markdown",
-                reply_markup: inlineKeyboard
+                parse_mode: "Markdown"
             })
         })
         .then(res => res.json())
@@ -378,11 +412,9 @@
             if(data.ok) {
                 alert("✅ Order Submitted Successfully! Telegram alert sent.");
             } else {
-                alert("❌ Telegram Error: Bot kitta poi /start anuppunga!");
-                console.error(data);
+                alert("❌ Telegram Error!");
             }
-        })
-        .catch(err => alert("Error: " + err));
+        });
     }
 
     function submitOrder() {
@@ -400,8 +432,7 @@
         if (!link) { alert("❌ Please enter Instagram Link!"); return; }
         if (!txnId || txnId.length < 10) { alert("❌ Please enter valid 12-digit UTR ID!"); return; }
 
-        var randomNum = Math.floor(1000 + Math.random() * 9000);
-        var refId = "CS" + randomNum;
+        var refId = "CS" + Math.floor(1000 + Math.random() * 9000);
 
         var btn = document.getElementById("subBtn");
         btn.innerText = "Processing...";
