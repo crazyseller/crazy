@@ -12,8 +12,8 @@
             --secondary: #f472b6;
             --accent: #38bdf8;
             --bg-dark: #070913;
-            --card-bg: rgba(15, 23, 42, 0.65);
-            --border-glow: rgba(255, 255, 255, 0.1);
+            --card-bg: rgba(15, 23, 42, 0.75);
+            --border-glow: rgba(255, 255, 255, 0.12);
         }
 
         * { box-sizing: border-box; transition: all 0.25s ease; font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -22,21 +22,21 @@
             background: var(--bg-dark); color: #f8fafc; margin: 0; padding: 20px 15px 120px 15px;
             display: flex; justify-content: center; align-items: center; min-height: 100vh;
             background-image: 
-                radial-gradient(circle at 10% 10%, rgba(168, 85, 247, 0.2) 0%, transparent 40%),
-                radial-gradient(circle at 90% 90%, rgba(236, 72, 153, 0.2) 0%, transparent 40%);
+                radial-gradient(circle at 10% 10%, rgba(168, 85, 247, 0.25) 0%, transparent 45%),
+                radial-gradient(circle at 90% 90%, rgba(236, 72, 153, 0.25) 0%, transparent 45%);
             background-attachment: fixed;
         }
 
         .container {
-            width: 100%; max-width: 480px;
+            width: 100%; max-width: 500px;
             background: var(--card-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-            padding: 28px 22px; border-radius: 32px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), 0 0 50px var(--primary-glow);
+            padding: 30px 24px; border-radius: 32px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), 0 0 50px var(--primary-glow);
             border: 1px solid var(--border-glow); text-align: center;
         }
 
         .brand-badge {
-            background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(236, 72, 153, 0.2));
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.25), rgba(236, 72, 153, 0.25));
             border: 1px solid rgba(236, 72, 153, 0.4); color: #f472b6;
             padding: 6px 18px; border-radius: 50px; font-size: 11px;
             font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
@@ -59,29 +59,43 @@
 
         .card {
             background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 24px; padding: 20px; margin-top: 16px; text-align: left;
+            border-radius: 24px; padding: 22px; margin-top: 16px; text-align: left;
         }
 
-        label { font-weight: 700; font-size: 11px; color: #94a3b8; display: block; margin: 14px 0 6px 4px; text-transform: uppercase; letter-spacing: 0.8px; }
+        label { font-weight: 700; font-size: 11px; color: #94a3b8; display: block; margin: 16px 0 6px 4px; text-transform: uppercase; letter-spacing: 0.8px; }
 
-        select, input, textarea {
-            width: 100%; padding: 14px 16px; border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px; background-color: rgba(15, 23, 42, 0.8); color: #ffffff; font-size: 13px; outline: none;
+        /* 🚀 NEW BOLD & BIG SELECT DESIGN */
+        select {
+            width: 100%; padding: 18px 20px; border: 2px solid rgba(192, 132, 252, 0.4);
+            border-radius: 20px; background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.9));
+            color: #ffffff; font-size: 15px; font-weight: 700; outline: none; cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(192, 132, 252, 0.1);
+            appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c084fc' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat; background-position: right 18px center; background-size: 18px;
         }
 
-        select:focus, input:focus, textarea:focus {
+        select:focus {
+            border-color: #f472b6; box-shadow: 0 0 25px rgba(244, 114, 182, 0.5);
+        }
+
+        input, textarea {
+            width: 100%; padding: 15px 18px; border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px; background-color: rgba(15, 23, 42, 0.8); color: #ffffff; font-size: 14px; outline: none;
+        }
+
+        input:focus, textarea:focus {
             border-color: var(--primary); box-shadow: 0 0 20px var(--primary-glow);
         }
 
-        optgroup { color: #facc15; background-color: #090d16; font-weight: bold; }
-        option { color: #ffffff; background-color: #0f172a; padding: 10px; }
+        optgroup { color: #facc15; background-color: #090d16; font-weight: bold; font-size: 14px; }
+        option { color: #ffffff; background-color: #0f172a; padding: 12px; font-size: 14px; font-weight: 600; }
 
         .price-badge-box {
-            background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(56, 189, 248, 0.15));
-            border: 1px solid rgba(168, 85, 247, 0.3); padding: 14px; border-radius: 18px; margin-top: 18px; text-align: center;
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(56, 189, 248, 0.2));
+            border: 1px solid rgba(168, 85, 247, 0.4); padding: 16px; border-radius: 20px; margin-top: 20px; text-align: center;
         }
 
-        .price-text { font-size: 28px; font-weight: 800; color: #facc15; }
+        .price-text { font-size: 32px; font-weight: 800; color: #facc15; }
 
         .qr-box {
             text-align: center; margin: 18px 0; background: rgba(0, 0, 0, 0.5);
@@ -97,14 +111,14 @@
 
         .btn-action {
             background: linear-gradient(135deg, #a855f7, #ec4899); color: white;
-            border: none; padding: 16px; border-radius: 18px; cursor: pointer;
-            font-weight: 800; width: 100%; margin-top: 20px; font-size: 15px;
+            border: none; padding: 18px; border-radius: 20px; cursor: pointer;
+            font-weight: 800; width: 100%; margin-top: 20px; font-size: 16px;
             box-shadow: 0 10px 30px rgba(236, 72, 153, 0.4);
         }
 
         .utr-help-link {
             display: inline-flex; align-items: center; gap: 4px; color: #38bdf8;
-            font-size: 11px; font-weight: 700; text-decoration: underline; cursor: pointer; margin-top: 6px; margin-left: 4px;
+            font-size: 12px; font-weight: 700; text-decoration: underline; cursor: pointer; margin-top: 8px; margin-left: 4px;
         }
 
         .utr-guide-box {
@@ -143,9 +157,9 @@
     </div>
 
     <div class="card">
-        <div style="font-size: 16px; font-weight: 700; color: #f8fafc; margin-bottom: 16px;">🚀 Place New Order</div>
+        <div style="font-size: 16px; font-weight: 700; color: #f8fafc; margin-bottom: 16px;">🚀 Select Service Package</div>
         
-        <label for="package">Select Service Package:</label>
+        <label for="package">Choose Service & Quantity:</label>
         <select id="package" onchange="handleServiceChange()">
             
             <optgroup label="⚠️ 1. Fake Followers (ID: 524) [Drop Aagum]">
@@ -162,6 +176,8 @@
                 <option value="Views - 2K Views (₹20)" data-service-id="2115" data-qty="2000" data-price="20">2K Views — ₹20</option>
                 <option value="Views - 5K Views (₹25)" data-service-id="2115" data-qty="5000" data-price="25">5K Views — ₹25</option>
                 <option value="Views - 10K Views (₹30)" data-service-id="2115" data-qty="10000" data-price="30">10K Views — ₹30</option>
+                <option value="Views - 50K Views (₹60)" data-service-id="2115" data-qty="50000" data-price="60">50K Views — ₹60</option>
+                <option value="Views - 100K Views (₹110)" data-service-id="2115" data-qty="100000" data-price="110">100K Views — ₹110</option>
             </optgroup>
 
             <optgroup label="❤️ 4. Post Likes (ID: 2117)">
@@ -169,37 +185,44 @@
                 <option value="Likes - 1K Likes (₹20)" data-service-id="2117" data-qty="1000" data-price="20">1K Likes — ₹20</option>
             </optgroup>
 
-            <optgroup label="💬 5. Comments Section">
-                <option value="Positive Emoji Comments (₹10)" data-service-id="475" data-qty="10" data-price="10" data-type="custom">10 Positive Emoji Comments — ₹10</option>
-                <option value="Custom Comments (₹15)" data-service-id="476" data-qty="10" data-price="15" data-type="custom">10 Custom Comments — ₹15</option>
+            <optgroup label="😍 5. Positive Emoji Comments (ID: 475)">
+                <option value="Positive Emoji Comments - 50 (₹10)" data-service-id="475" data-qty="50" data-price="10" data-type="custom">50 Positive Emoji Comments — ₹10</option>
+                <option value="Positive Emoji Comments - 500 (₹30)" data-service-id="475" data-qty="500" data-price="30" data-type="custom">500 Positive Emoji Comments — ₹30</option>
+                <option value="Positive Emoji Comments - 1K (₹80)" data-service-id="475" data-qty="1000" data-price="80" data-type="custom">1K Positive Emoji Comments — ₹80</option>
             </optgroup>
 
-            <optgroup label="⚡ 6. Story Views (ID: 2134)">
+            <optgroup label="💬 6. Custom Comments (ID: 476)">
+                <option value="Custom Comments - 20 (₹3)" data-service-id="476" data-qty="20" data-price="3" data-type="custom">20 Custom Comments — ₹3</option>
+                <option value="Custom Comments - 40 (₹6)" data-service-id="476" data-qty="40" data-price="6" data-type="custom">40 Custom Comments — ₹6</option>
+                <option value="Custom Comments - 100 (₹20)" data-service-id="476" data-qty="100" data-price="20" data-type="custom">100 Custom Comments — ₹20</option>
+            </optgroup>
+
+            <optgroup label="⚡ 7. Story Views (ID: 2134)">
                 <option value="Story Views - 200 (₹10)" data-service-id="2134" data-qty="200" data-price="10">200 Story Views — ₹10</option>
                 <option value="Story Views - 1K (₹25)" data-service-id="2134" data-qty="1000" data-price="25">1K Story Views — ₹25</option>
             </optgroup>
 
-            <optgroup label="📌 7. Post Saves (ID: 505)">
+            <optgroup label="📌 8. Post Saves (ID: 505)">
                 <option value="Post Saves - 500 (₹5)" data-service-id="505" data-qty="500" data-price="5">500 Saves — ₹5</option>
                 <option value="Post Saves - 1K (₹20)" data-service-id="505" data-qty="1000" data-price="20">1000 Saves — ₹20</option>
             </optgroup>
 
-            <optgroup label="🔄 8. Post Shares (ID: 2129)">
+            <optgroup label="🔄 9. Post Shares (ID: 2129)">
                 <option value="Post Shares - 1K (₹5)" data-service-id="2129" data-qty="1000" data-price="5">1K Shares — ₹5</option>
                 <option value="Post Shares - 5K (₹7)" data-service-id="2129" data-qty="5000" data-price="7">5K Shares — ₹7</option>
                 <option value="Post Shares - 10K (₹15)" data-service-id="2129" data-qty="10000" data-price="15">10K Shares — ₹15</option>
             </optgroup>
 
-            <optgroup label="🔁 9. Instagram Repost (ID: 2127)">
+            <optgroup label="🔁 10. Instagram Repost (ID: 2127)">
                 <option value="Repost - 500 (₹30)" data-service-id="2127" data-qty="500" data-price="30">500 Reposts — ₹30</option>
                 <option value="Repost - 1K (₹60)" data-service-id="2127" data-qty="1000" data-price="60">1K Reposts — ₹60</option>
             </optgroup>
 
         </select>
 
-        <div id="customCommentsBox" style="display: none;">
-            <label for="customCommentsInput">Enter Custom Comments (1 comment per line):</label>
-            <textarea id="customCommentsInput" rows="4" placeholder="Super post bro! 🔥&#10;Love this ✨&#10;Awesome content ❤️"></textarea>
+        <div id="customCommentsBox" style="display: none; margin-top: 10px;">
+            <label for="customCommentsInput">Type Your Custom Comments (1 line = 1 comment):</label>
+            <textarea id="customCommentsInput" rows="4" placeholder="Super post bro! 🔥&#10;Love this content ✨&#10;Awesome reels ❤️"></textarea>
         </div>
 
         <div class="price-badge-box">
@@ -236,19 +259,20 @@
 <div class="modal" id="priceModal">
     <div class="modal-content">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <h3 style="margin: 0; color: var(--primary);">📋 Price List</h3>
+            <h3 style="margin: 0; color: var(--primary);">📋 Full Price List</h3>
             <span style="cursor: pointer; font-size: 20px; color: #f43f5e;" onclick="closePriceList()">✖</span>
         </div>
         <table class="history-table">
             <thead>
-                <tr><th>Category</th><th>Qty</th><th>Price</th></tr>
+                <tr><th>Service</th><th>Qty Options</th><th>Price</th></tr>
             </thead>
             <tbody>
                 <tr><td>Fake Followers (524)</td><td>200 / 1K</td><td>₹20 / ₹83</td></tr>
                 <tr><td>Non Drop Followers (528)</td><td>200 / 1K</td><td>₹35 / ₹140</td></tr>
-                <tr><td>Views (2115)</td><td>2K / 5K / 10K</td><td>₹20 / ₹25 / ₹30</td></tr>
+                <tr><td>Views (2115)</td><td>2K / 5K / 10K / 50K / 100K</td><td>₹20 / ₹25 / ₹30 / ₹60 / ₹110</td></tr>
                 <tr><td>Likes (2117)</td><td>500 / 1K</td><td>₹10 / ₹20</td></tr>
-                <tr><td>Comments (475 / 476)</td><td>10 Emoji / Custom</td><td>₹10 / ₹15</td></tr>
+                <tr><td>Emoji Comments (475)</td><td>50 / 500 / 1K</td><td>₹10 / ₹30 / ₹80</td></tr>
+                <tr><td>Custom Comments (476)</td><td>20 / 40 / 100</td><td>₹3 / ₹6 / ₹20</td></tr>
                 <tr><td>Story Views (2134)</td><td>200 / 1K</td><td>₹10 / ₹25</td></tr>
                 <tr><td>Saves (505)</td><td>500 / 1K</td><td>₹5 / ₹20</td></tr>
                 <tr><td>Shares (2129)</td><td>1K / 5K / 10K</td><td>₹5 / ₹7 / ₹15</td></tr>
