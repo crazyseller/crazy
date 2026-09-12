@@ -9,9 +9,8 @@ CORS(app)
 BOT_TOKEN = "8986935279:AAFjOyHX7fnZRKTqOZudUxyJCQjcu3_ChMk"
 CHAT_ID = "8435445040"
 SMM_API_KEY = "38f043592c2e479b5a70a51b7aada85c"
-SMM_API_URL = "https://smmaddaa.in/api/v2"
+SMM_API_URL = "https://smmaddaa.com/api/v2"
 
-# Local Storage (In-memory)
 pending_orders = {}
 chat_messages = {}
 
@@ -32,17 +31,16 @@ def handle_order():
     data = request.json or {}
     package_name = data.get('packageName', 'N/A')
     price = float(data.get('price', 0.0))
+    smm_cost = float(data.get('cost', 0.0))
     insta_link = str(data.get('instaLink', 'N/A')).strip()
     txn_id = str(data.get('txnId', 'N/A')).strip()
     service_id = str(data.get('serviceId', 'N/A')).strip()
     quantity = int(data.get('quantity', 1000))
     
     ref_id = f"CS{random.randint(1000, 9999)}"
-    smm_cost = round(price * 0.165, 2)
     profit = round(price - smm_cost, 2)
     smm_balance = get_smm_balance()
 
-    # Save details
     pending_orders[ref_id] = {
         "service_id": service_id,
         "link": insta_link,
@@ -88,7 +86,6 @@ def handle_order():
 def telegram_webhook():
     update = request.json or {}
 
-    # Handle Button Clicks
     if "callback_query" in update:
         callback = update["callback_query"]
         callback_id = callback.get("id")
@@ -97,7 +94,6 @@ def telegram_webhook():
         chat_id = callback["message"]["chat"]["id"]
         original_text = callback["message"].get("text", "")
 
-        # 1. First notify Telegram that button click was received (Prevents button loading error)
         requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/answerCallbackQuery", json={"callback_query_id": callback_id})
 
         if data.startswith("accept_"):
@@ -122,12 +118,10 @@ def telegram_webhook():
                 except Exception as e:
                     status_text = f"\n\n⚠️ SMM Error: {str(e)}"
                 
-                # Cleanup
                 del pending_orders[ref_id]
             else:
                 status_text = "\n\n⚠️ SERVER EXPIRED: Render app slept/restarted. Re-check on SMM manually!"
 
-            # Edit Original Telegram Message
             requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/editMessageText", json={
                 "chat_id": chat_id,
                 "message_id": message_id,
@@ -145,21 +139,6 @@ def telegram_webhook():
                 "text": original_text + "\n\n🔴 STATUS: Rejected by Admin!"
             })
 
-    # Handle Live Chat Replies from Admin
-    elif "message" in update and "reply_to_message" in update["message"]:
-        msg = update["message"]
-        reply_to = msg["reply_to_message"].get("text", "")
-        admin_text = msg.get("text", "")
-        
-        if "💬 Live Chat (" in reply_to:
-            try:
-                session_id = reply_to.split("💬 Live Chat (")[1].split(")")[0]
-                if session_id not in chat_messages:
-                    chat_messages[session_id] = []
-                chat_messages[session_id].append({"sender": "admin", "text": admin_text})
-            except Exception:
-                pass
-
     return jsonify({"status": "ok"}), 200
 
 @app.route('/send-admin', methods=['POST'])
@@ -175,11 +154,6 @@ def send_admin():
         "text": f"💬 Live Chat ({session_id}):\n{message}"
     })
     return jsonify({"status": "sent"})
-
-@app.route('/get-messages/<session_id>', methods=['GET'])
-def get_messages(session_id):
-    messages = chat_messages.get(session_id, [])
-    return jsonify({"messages": messages})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
