@@ -3,6 +3,7 @@ from flask_cors import CORS
 import cloudscraper
 import requests
 import random
+import json
 
 app = Flask(__name__)
 CORS(app)
@@ -12,11 +13,22 @@ CHAT_ID = "8435445040"
 SMM_API_KEY = "38f043592c2e479b5a70a51b7aada85c"
 SMM_API_URL = "https://smmadda.com/api/v2"
 
-# Create a Cloudscraper instance to bypass Cloudflare block
 scraper = cloudscraper.create_scraper()
 
 pending_orders = {}
 chat_messages = {}
+
+def safe_json_response(res):
+    try:
+        # Check if response text is empty or starts with HTML tags (<html, <!DOCTYPE)
+        text = res.text.strip()
+        if not text or text.startswith('<') or '<html>' in text.lower():
+            print(f"SMM HTML/Blank Response Received: {text[:200]}")
+            return {"error": "SMM Server returned HTML block instead of JSON"}
+        return res.json()
+    except json.JSONDecodeError:
+        print(f"JSON Decode Failed. Raw text was: {res.text[:200]}")
+        return {"error": "Invalid JSON from SMM"}
 
 def get_smm_balance():
     try:
@@ -25,13 +37,12 @@ def get_smm_balance():
             'action': 'balance'
         }, timeout=10)
         
-        print("SMM Balance Raw Response:", res.text)
-        data = res.json()
+        data = safe_json_response(res)
         if isinstance(data, dict):
             return float(data.get('balance', data.get('funds', 0.0)))
         return 0.0
     except Exception as e:
-        print(f"Balance parse error: {e}")
+        print(f"Balance error: {e}")
         return 0.0
 
 @app.route('/', methods=['GET'])
@@ -123,14 +134,13 @@ def telegram_webhook():
                         'quantity': order['quantity']
                     }, timeout=15)
                     
-                    print("SMM Add Order Raw Response:", res.text)
-                    smm_res = res.json()
+                    smm_res = safe_json_response(res)
                     
                     if isinstance(smm_res, dict) and ('order' in smm_res or 'orderID' in smm_res):
                         oid = smm_res.get('order', smm_res.get('orderID'))
                         status_text = f"\n\n🟢 STATUS: Approved & Placed on SMM Panel!\n🎯 SMM Order ID: {oid}"
                     else:
-                        err_msg = smm_res.get('error', 'Unknown Error') if isinstance(smm_res, dict) else 'Invalid JSON response'
+                        err_msg = smm_res.get('error', 'SMM Blocked or HTML Response')
                         status_text = f"\n\n⚠️ SMM REJECTED: {err_msg}"
                 except Exception as e:
                     status_text = f"\n\n⚠️ SMM Connection Error: {str(e)}"
