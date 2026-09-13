@@ -1,4 +1,5 @@
 import os
+import random
 import requests
 from flask import Flask, jsonify, request
 from flask_cors import CORS
@@ -6,13 +7,10 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-# Credentials & Configurations
-TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "7749453995:AAFpEw7OqQ4c_W4r39-g4B4sM1E6bL6_Fw8")
-TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "5251662991")
-SMM_API_URL = "https://smm-world.in/api/v2"  # Unoda SMM Panel API URL
-SMM_API_KEY = os.getenv(
-    "SMM_API_KEY", "c0a1a59be99f18fbc6728b49c8173d81"
-
+TELEGRAM_BOT_TOKEN = "7749453995:AAFpEw7OqQ4c_W4r39-g4B4sM1E6bL6_Fw8"
+TELEGRAM_CHAT_ID = "5251662991"
+SMM_API_URL = "https://smm-world.in/api/v2"
+SMM_API_KEY = "c0a1a59be99f18fbc6728b49c8173d81"
 
 
 def send_telegram_message(text):
@@ -39,12 +37,8 @@ def place_order():
   insta_link = data.get("instaLink")
   txn_id = data.get("txnId")
 
-  # Generate Ref ID
-  import random
-
   ref_id = f"CS{random.randint(1000, 9999)}"
 
-  # Forward order to SMM Panel API
   smm_status = "Pending"
   smm_error_msg = ""
   smm_balance_text = "N/A"
@@ -61,7 +55,6 @@ def place_order():
     response = requests.post(SMM_API_URL, data=smm_payload, timeout=15)
     raw_text = response.text.strip()
 
-    # Check if SMM returned HTML instead of JSON
     if raw_text.startswith("<") or "html" in raw_text.lower():
       smm_status = "REJECTED"
       smm_error_msg = "SMM Server returned HTML block (Cloudflare/Error)"
@@ -80,7 +73,6 @@ def place_order():
         smm_status = "REJECTED"
         smm_error_msg = "Invalid JSON format received"
 
-    # Fetch SMM Balance
     bal_payload = {"key": SMM_API_KEY, "action": "balance"}
     bal_res = requests.post(SMM_API_URL, data=bal_payload, timeout=10)
     if not bal_res.text.strip().startswith("<"):
@@ -92,10 +84,8 @@ def place_order():
     smm_status = "REJECTED"
     smm_error_msg = str(e)
 
-  # Calculate Profit
   profit = float(price) - float(cost)
 
-  # Format Telegram Alert Message
   tg_msg = (
       f"🚨 <b>NEW ORDER RECEIVED</b> 🚨\n\n"
       f"🆔 <b>Ref ID:</b> {ref_id}\n"
