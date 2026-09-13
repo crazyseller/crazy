@@ -14,11 +14,45 @@ SMM_API_KEY = "c0a1a59be99f18fbc6728b49c8173d81"
 
 scraper = cloudscraper.create_scraper()
 
+# Storage for pending orders awaiting click
+PENDING_ORDERS = {}
+
+
+def get_smm_balance():
+  try:
+    payload = {"key": SMM_API_KEY, "action": "balance"}
+    res = scraper.post(SMM_API_URL, data=payload, timeout=10)
+    data = res.json()
+    if "balance" in data:
+      return float(data["balance"])
+  except Exception as e:
+    print(f"Balance Fetch Error: {e}")
+  return 0.00
+
+
+def place_smm_order(service_id, link, quantity):
+  try:
+    payload = {
+        "key": SMM_API_KEY,
+        "action": "add",
+        "service": service_id,
+        "link": link,
+        "quantity": quantity,
+    }
+    res = scraper.post(SMM_API_URL, data=payload, timeout=15)
+    data = res.json()
+    if "order" in data:
+      return str(data["order"])
+    elif "error" in data:
+      return f"Error: {data['error']}"
+  except Exception as e:
+    print(f"SMM API Error: {e}")
+  return "Failed"
+
 
 def send_telegram_message_with_buttons(text, ref_id):
   try:
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
-    # Create Accept and Reject Inline Buttons
     keyboard = {
         "inline_keyboard": [
             [
@@ -51,24 +85,19 @@ def send_telegram_plain_message(text):
     print(f"Telegram Error: {e}")
 
 
-# Temporary storage for pending orders in memory
-PENDING_ORDERS = {}
-
-
 @app.route("/order", methods=["POST"])
 def place_order():
   data = request.json
   package_name = data.get("packageName")
   service_id = data.get("serviceId")
   quantity = data.get("quantity")
-  price = data.get("price")
-  cost = data.get("cost")
+  price = float(data.get("price"))
+  cost = float(data.get("cost"))
   insta_link = data.get("instaLink")
   txn_id = data.get("txnId")
 
   ref_id = f"CS{random.randint(1000, 9999)}"
 
-  # Store order details temporarily so we can process it when you click Accept
   PENDING_ORDERS[ref_id] = {
       "package_name": package_name,
       "service_id": service_id,
@@ -79,9 +108,8 @@ def place_order():
       "txn_id": txn_id,
   }
 
-  profit = float(price) - float(cost)
+  profit = price - cost
 
-  # Send message with buttons (Doesn't go to SMM yet!)
   tg_msg = (
       f"🚨 <b>NEW ORDER VERIFICATION PENDING</b> 🚨\n\n"
       f"🆔 <b>Ref ID:</b> {ref_id}\n"
@@ -89,25 +117,73 @@ def place_order():
       f"🔗 <b>Link:</b> {insta_link}\n"
       f"🔢 <b>UTR:</b> {txn_id}\n\n"
       f"--- 💰 <b>PROFIT</b> ---\n"
-      f"💵 <b>Paid:</b> ₹{price} | 📉 <b>Cost:</b> ₹{cost}\n"
+      f"💵 <b>Paid:</b> ₹{price:.2f} | 📉 <b>Cost:</b> ₹{cost:.2f}\n"
       f"📈 <b>Profit:</b> ₹{profit:.2f}\n\n"
-      f"👉 <i>Check payment UTR in bank and click below:</i>"
+      f"👉 <i>Check UTR in bank and click below to process:</i>"
   )
 
   send_telegram_message_with_buttons(tg_msg, ref_id)
 
-  return jsonify(
-      {
-          "status": "success",
-          "refId": ref_id,
-          "message": "Order received! Waiting for admin approval.",
-      }
-  )
+  return jsonify({
+      "status": "success",
+      "refId": ref_id,
+      "message": "Order received! Waiting for admin approval.",
+  })
 
 
-# Webhook endpoint for Telegram Button Clicks (Optional/Advanced, requires bot webhook setup or polling)
-# NOTE: To make buttons work automatically via webhook, you need to configure Telegram Webhook or handle updates.
-# If you just want a simple alert, check below note.
+@app.route("/telegram-webhook", methods=["POST"])
+def telegram_webhook():
+  update = request.json
+  if "callback_query" in update:
+    callback = update["callback_query"]
+    data = callback["data"]
+    chat_id = callback["message"]["chat"]["id"]
+    message_id = callback["message"]["message_id"]
+
+    parts = data.split("_")
+    action_type = parts[0]
+    ref_id = parts[1]
+
+    if ref_id in PENDING_ORDERS:
+      order = PENDING_ORDERS[ref_id]
+
+      if action_type == "acc":
+        smm_order_id = place_smm_order(
+            order["service_id"], order["insta_link"], order["quantity"]
+        )
+        current_balance = get_smm_balance()
+        profit = order["price"] - order["cost"]
+
+        final_msg = (
+            f"🚨 <b>NEW ORDER RECEIVED</b> 🚨\n\n"
+            f"🆔 <b>Ref ID:</b> {ref_id}\n"
+            f"📦 <b>Package:</b> {order['package_name']}\n"
+            f"🔗 <b>Link:</b> {order['insta_link']}\n"
+            f"🔢 <b>UTR:</b> {order['txn_id']}\n\n"
+            f"--- 💰 <b>PROFIT COMPARISON</b> ---\n"
+            f"💵 <b>Customer Paid:</b> ₹{order['price']:.2f}\n"
+            f"📉 <b>SMM Cost:</b> ₹{order['cost']:.2f}\n"
+            f"📈 <b>Your Profit:</b> ₹{profit:.2f}\n\n"
+            f"💳 <b>SMM Balance:</b> ₹{current_balance:.4f} INR\n\n"
+            f"🟢 <b>STATUS: Approved & Placed on SMM Addaa!</b>\n"
+            f"🎯 <b>SMM Order ID:</b> {smm_order_id}"
+        )
+
+        send_telegram_plain_message(final_msg)
+        del PENDING_ORDERS[ref_id]
+
+      elif action_type == "rej":
+        reject_msg = (
+            f"❌ <b>ORDER REJECTED</b>\n\n"
+            f"🆔 <b>Ref ID:</b> {ref_id}\n"
+            f"📦 <b>Package:</b> {order['package_name']}\n"
+            f"🔢 <b>UTR:</b> {order['txn_id']}\n\n"
+            f"🔴 <b>Status:</b> Payment Verification Failed / Rejected."
+        )
+        send_telegram_plain_message(reject_msg)
+        del PENDING_ORDERS[ref_id]
+
+  return jsonify({"status": "ok"})
 
 
 @app.route("/send-admin", methods=["POST"])
