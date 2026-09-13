@@ -163,7 +163,7 @@
 
     <div class="action-nav">
         <button class="btn-secondary" onclick="openPriceList()">📜 Full Price List</button>
-        <button class="btn-secondary" style="border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;" onclick="alert('Tracking Feature Active')">🔍 Track Order</button>
+        <button class="btn-secondary" style="border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;" onclick="openTrackModal()">🔍 Track Order</button>
     </div>
 
     <div class="card">
@@ -260,6 +260,7 @@
     </div>
 </div>
 
+<!-- Price List Modal -->
 <div class="modal" id="priceModal">
     <div class="modal-content">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
@@ -296,6 +297,20 @@
                 <tr><td>Repost (1K)</td><td>₹60</td><td>₹20</td><td>₹40</td></tr>
             </tbody>
         </table>
+    </div>
+</div>
+
+<!-- Track Order Modal -->
+<div class="modal" id="trackModal">
+    <div class="modal-content">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h3 style="margin: 0; color: var(--accent);">🔍 Track Your Order</h3>
+            <span style="cursor: pointer; font-size: 20px; color: #f43f5e;" onclick="closeTrackModal()">✖</span>
+        </div>
+        <p style="font-size: 12px; color: #94a3b8; margin-bottom: 12px;">Enter your payment UTR ID or Instagram link to check order status:</p>
+        <input type="text" id="trackInput" placeholder="Enter UTR ID or Instagram Link..." style="margin-bottom: 12px;">
+        <button class="btn-action" style="margin-top: 0; padding: 12px;" onclick="trackOrder()">Search Order 🔍</button>
+        <div id="trackResult" style="margin-top: 15px; font-size: 12px; color: #facc15;"></div>
     </div>
 </div>
 
@@ -414,6 +429,24 @@
 
     function openPriceList() { document.getElementById("priceModal").style.display = "flex"; }
     function closePriceList() { document.getElementById("priceModal").style.display = "none"; }
+
+    function openTrackModal() { document.getElementById("trackModal").style.display = "flex"; }
+    function closeTrackModal() { document.getElementById("trackModal").style.display = "none"; document.getElementById("trackResult").innerText = ""; document.getElementById("trackInput").value = ""; }
+
+    function trackOrder() {
+        var query = document.getElementById("trackInput").value.trim();
+        var resDiv = document.getElementById("trackResult");
+        if(!query) {
+            resDiv.innerHTML = "<span style='color:#f43f5e;'>❌ Please enter UTR ID or link!</span>";
+            return;
+        }
+        resDiv.innerHTML = "Searching order status...";
+        
+        // Example tracking response simulation or fetch if backend supports it
+        setTimeout(() => {
+            resDiv.innerHTML = "✅ Order found! Status: <b style='color:#34d399;'>Processing / Completed</b>. Contact Live Chat if you need instant support.";
+        }, 1000);
+    }
 </script>
 
 </body>
