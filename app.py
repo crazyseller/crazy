@@ -9,7 +9,6 @@ CORS(app)
 BOT_TOKEN = "8986935279:AAFjOyHX7fnZRKTqOZudUxyJCQjcu3_ChMk"
 CHAT_ID = "8435445040"
 SMM_API_KEY = "38f043592c2e479b5a70a51b7aada85c"
-# Correct SMM Panel API URL
 SMM_API_URL = "https://smmadda.com/api/v2"
 
 pending_orders = {}
@@ -21,12 +20,13 @@ def get_smm_balance():
             'key': SMM_API_KEY, 
             'action': 'balance'
         }, timeout=10)
+        print("SMM Balance Raw Response:", res.text) # Render logs la check pannalam
         data = res.json()
         if isinstance(data, dict):
             return float(data.get('balance', data.get('funds', 0.0)))
         return 0.0
     except Exception as e:
-        print(f"Balance error: {e}")
+        print(f"Balance parse error: {e}")
         return 0.0
 
 @app.route('/', methods=['GET'])
@@ -110,13 +110,16 @@ def telegram_webhook():
             
             if order:
                 try:
-                    smm_res = requests.post(SMM_API_URL, data={
+                    res = requests.post(SMM_API_URL, data={
                         'key': SMM_API_KEY,
                         'action': 'add',
                         'service': order['service_id'],
                         'link': order['link'],
                         'quantity': order['quantity']
-                    }, timeout=15).json()
+                    }, timeout=15)
+                    
+                    print("SMM Add Order Raw Response:", res.text)
+                    smm_res = res.json()
                     
                     if isinstance(smm_res, dict) and ('order' in smm_res or 'orderID' in smm_res):
                         oid = smm_res.get('order', smm_res.get('orderID'))
@@ -125,12 +128,12 @@ def telegram_webhook():
                         err_msg = smm_res.get('error', 'Unknown Error') if isinstance(smm_res, dict) else 'Invalid JSON response'
                         status_text = f"\n\n⚠️ SMM REJECTED: {err_msg}"
                 except Exception as e:
-                    status_text = f"\n\n⚠️ SMM Connection Error: {str(e)}"
+                    status_text = f"\n\n⚠️ SMM Connection Error (Not JSON): {str(e)}"
                 
                 if ref_id in pending_orders:
                     del pending_orders[ref_id]
             else:
-                status_text = "\n\n⚠️ SERVER EXPIRED: Render app slept/restarted. Re-check on SMM manually!"
+                status_text = "\n\n⚠️ SERVER EXPIRED: Render app slept/restarted."
 
             requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/editMessageText", json={
                 "chat_id": chat_id,
