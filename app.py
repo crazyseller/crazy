@@ -10,12 +10,10 @@ CORS(app)
 TELEGRAM_BOT_TOKEN = "8986935279:AAFjOyHX7fnZRKTqOZudUxyJCQjcu3_ChMk"
 TELEGRAM_CHAT_ID = "8435445040"
 SMM_API_URL = "https://smmaddaa.in/api/v2"
-# Restored your correct original API Key
 SMM_API_KEY = "c0a1a59be99f18fbc6728b49c8173d81"
 
 scraper = cloudscraper.create_scraper()
 
-# Storage for pending orders awaiting click
 PENDING_ORDERS = {}
 
 def get_smm_balance():
@@ -41,10 +39,8 @@ def place_smm_order(service_id, link, quantity):
             'link': link,
             'quantity': quantity
         }
-        print(f"Sending to SMM Addaa: {payload}")
         res = scraper.post(SMM_API_URL, data=payload, timeout=15)
         data = res.json()
-        print(f"SMM Response: {data}")
         if "order" in data:
             return str(data["order"])
         elif "error" in data:
@@ -70,8 +66,7 @@ def send_telegram_message_with_buttons(text, ref_id):
             "parse_mode": "HTML",
             "reply_markup": keyboard
         }
-        res = scraper.post(url, json=payload, timeout=10)
-        print(f"Telegram Button Msg Sent: {res.json()}")
+        scraper.post(url, json=payload, timeout=10)
     except Exception as e:
         print(f"Telegram Error: {e}")
 
@@ -119,8 +114,7 @@ def place_order():
         f"🔗 <b>Link:</b> {insta_link}\n"
         f"🔢 <b>UTR:</b> {txn_id}\n\n"
         f"--- 💰 <b>PROFIT</b> ---\n"
-        f"💵 <b>Paid:</b> ₹{price:.2f} 
-        f"📉 <b>Cost:</b> ₹{cost:.2f}\n"
+        f"💵 <b>Paid:</b> ₹{price:.2f} | 📉 <b>Cost:</b> ₹{cost:.2f}\n"
         f"📈 <b>Profit:</b> ₹{profit:.2f}\n\n"
         f"👉 <i>Check UTR in bank and click below to process:</i>"
     )
@@ -132,17 +126,11 @@ def place_order():
 @app.route('/telegram-webhook', methods=['POST'])
 def telegram_webhook():
     update = request.json
-    print(f"Webhook Received: {update}")
-    
     if "callback_query" in update:
         callback = update["callback_query"]
         data = callback["data"]
-        chat_id = callback["message"]["chat"]["id"]
-        message_id = callback["message"]["message_id"]
-
-        parts = data.split("_")
-        action_type = parts[0]
-        ref_id = parts[1]
+        ref_id = data.split("_")[1]
+        action_type = data.split("_")[0]
 
         if ref_id in PENDING_ORDERS:
             order = PENDING_ORDERS[ref_id]
@@ -166,7 +154,6 @@ def telegram_webhook():
                     f"🟢 <b>STATUS: Approved & Placed on SMM Addaa!</b>\n"
                     f"🎯 <b>SMM Order ID:</b> {smm_order_id}"
                 )
-
                 send_telegram_plain_message(final_msg)
                 del PENDING_ORDERS[ref_id]
 
