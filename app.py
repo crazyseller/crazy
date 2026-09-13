@@ -1,16 +1,19 @@
 import os
 import random
-import requests
+import cloudscraper
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
 
-TELEGRAM_BOT_TOKEN = "7749453995:AAFpEw7OqQ4c_W4r39-g4B4sM1E6bL6_Fw8"
-TELEGRAM_CHAT_ID = "5251662991"
-SMM_API_URL = "https://smm-world.in/api/v2"
+# Updated Credentials as you provided
+TELEGRAM_BOT_TOKEN = "8986935279:AAFjOyHX7fnZRKTqOZudUxyJCQjcu3_ChMk"
+TELEGRAM_CHAT_ID = "8435445040"
+SMM_API_URL = "https://smmaddaa.in/api/v2"
 SMM_API_KEY = "c0a1a59be99f18fbc6728b49c8173d81"
+
+scraper = cloudscraper.create_scraper()
 
 
 def send_telegram_message(text):
@@ -21,7 +24,7 @@ def send_telegram_message(text):
         "text": text,
         "parse_mode": "HTML",
     }
-    requests.post(url, json=payload, timeout=10)
+    scraper.post(url, json=payload, timeout=10)
   except Exception as e:
     print(f"Telegram Error: {e}")
 
@@ -52,7 +55,7 @@ def place_order():
         "quantity": quantity,
     }
 
-    response = requests.post(SMM_API_URL, data=smm_payload, timeout=15)
+    response = scraper.post(SMM_API_URL, data=smm_payload, timeout=15)
     raw_text = response.text.strip()
 
     if raw_text.startswith("<") or "html" in raw_text.lower():
@@ -74,7 +77,7 @@ def place_order():
         smm_error_msg = "Invalid JSON format received"
 
     bal_payload = {"key": SMM_API_KEY, "action": "balance"}
-    bal_res = requests.post(SMM_API_URL, data=bal_payload, timeout=10)
+    bal_res = scraper.post(SMM_API_URL, data=bal_payload, timeout=10)
     if not bal_res.text.strip().startswith("<"):
       bal_json = bal_res.json()
       if "balance" in bal_json:
@@ -100,7 +103,7 @@ def place_order():
   )
 
   if smm_status.startswith("Success"):
-    tg_msg += f"\n✅ <b>SMM Status:</b> {smm_status}"
+    tg_msg += f"\n🟢 <b>STATUS:</b> Approved & Placed on SMM Addaa!\n🎯 <b>SMM Order ID:</b> {smm_status.split(': ')[1][:-1]}"
   else:
     tg_msg += f"\n⚠️ <b>SMM REJECTED:</b> {smm_error_msg}"
 
