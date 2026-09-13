@@ -16,7 +16,7 @@ chat_messages = {}
 
 def get_smm_balance():
     try:
-        res = requests.post(SMM_API_URL, data={'key': SMM_API_KEY, 'action': 'balance'}, timeout=5)
+        res = requests.post(SMM_API_URL, data={'key': SMM_API_KEY, 'action': 'balance'}, timeout=10)
         data = res.json()
         return float(data.get('balance', 0.0))
     except Exception:
@@ -96,6 +96,7 @@ def telegram_webhook():
 
         requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/answerCallbackQuery", json={"callback_query_id": callback_id})
 
+        status_text = ""
         if data.startswith("accept_"):
             ref_id = data.replace("accept_", "")
             order = pending_orders.get(ref_id)
@@ -108,17 +109,18 @@ def telegram_webhook():
                         'service': order['service_id'],
                         'link': order['link'],
                         'quantity': order['quantity']
-                    }, timeout=10).json()
+                    }, timeout=15).json()
                     
-                    if 'order' in smm_res:
+                    if isinstance(smm_res, dict) and 'order' in smm_res:
                         status_text = f"\n\n🟢 STATUS: Approved & Placed on SMM Addaa!\n🎯 SMM Order ID: {smm_res['order']}"
                     else:
-                        err_msg = smm_res.get('error', 'Unknown Error')
+                        err_msg = smm_res.get('error', 'Unknown Error') if isinstance(smm_res, dict) else 'Invalid JSON response'
                         status_text = f"\n\n⚠️ SMM REJECTED: {err_msg}"
                 except Exception as e:
-                    status_text = f"\n\n⚠️ SMM Error: {str(e)}"
+                    status_text = f"\n\n⚠️ SMM Connection Error: {str(e)}"
                 
-                del pending_orders[ref_id]
+                if ref_id in pending_orders:
+                    del pending_orders[ref_id]
             else:
                 status_text = "\n\n⚠️ SERVER EXPIRED: Render app slept/restarted. Re-check on SMM manually!"
 
@@ -149,10 +151,15 @@ def send_admin():
     if session_id not in chat_messages:
         chat_messages[session_id] = []
     chat_messages[session_id].append({"sender": "user", "text": message})
-    requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage", json={
-        "chat_id": CHAT_ID,
-        "text": f"💬 Live Chat ({session_id}):\n{message}"
-    })
+    
+    try:
+        requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage", json={
+            "chat_id": CHAT_ID,
+            "text": f"💬 Live Chat ({session_id}):\n{message}"
+        }, timeout=8)
+    except Exception as e:
+        print(f"Chat error: {e}")
+        
     return jsonify({"status": "sent"})
 
 if __name__ == '__main__':
