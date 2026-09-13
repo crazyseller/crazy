@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import cloudscraper
 import requests
 import random
 
@@ -11,16 +12,20 @@ CHAT_ID = "8435445040"
 SMM_API_KEY = "38f043592c2e479b5a70a51b7aada85c"
 SMM_API_URL = "https://smmadda.com/api/v2"
 
+# Create a Cloudscraper instance to bypass Cloudflare block
+scraper = cloudscraper.create_scraper()
+
 pending_orders = {}
 chat_messages = {}
 
 def get_smm_balance():
     try:
-        res = requests.post(SMM_API_URL, data={
+        res = scraper.post(SMM_API_URL, data={
             'key': SMM_API_KEY, 
             'action': 'balance'
         }, timeout=10)
-        print("SMM Balance Raw Response:", res.text) # Render logs la check pannalam
+        
+        print("SMM Balance Raw Response:", res.text)
         data = res.json()
         if isinstance(data, dict):
             return float(data.get('balance', data.get('funds', 0.0)))
@@ -110,7 +115,7 @@ def telegram_webhook():
             
             if order:
                 try:
-                    res = requests.post(SMM_API_URL, data={
+                    res = scraper.post(SMM_API_URL, data={
                         'key': SMM_API_KEY,
                         'action': 'add',
                         'service': order['service_id'],
@@ -128,7 +133,7 @@ def telegram_webhook():
                         err_msg = smm_res.get('error', 'Unknown Error') if isinstance(smm_res, dict) else 'Invalid JSON response'
                         status_text = f"\n\n⚠️ SMM REJECTED: {err_msg}"
                 except Exception as e:
-                    status_text = f"\n\n⚠️ SMM Connection Error (Not JSON): {str(e)}"
+                    status_text = f"\n\n⚠️ SMM Connection Error: {str(e)}"
                 
                 if ref_id in pending_orders:
                     del pending_orders[ref_id]
