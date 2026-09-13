@@ -9,17 +9,24 @@ CORS(app)
 BOT_TOKEN = "8986935279:AAFjOyHX7fnZRKTqOZudUxyJCQjcu3_ChMk"
 CHAT_ID = "8435445040"
 SMM_API_KEY = "38f043592c2e479b5a70a51b7aada85c"
-SMM_API_URL = "https://smmaddaa.com/api/v2"
+# Correct SMM Panel API URL
+SMM_API_URL = "https://smmadda.com/api/v2"
 
 pending_orders = {}
 chat_messages = {}
 
 def get_smm_balance():
     try:
-        res = requests.post(SMM_API_URL, data={'key': SMM_API_KEY, 'action': 'balance'}, timeout=10)
+        res = requests.post(SMM_API_URL, data={
+            'key': SMM_API_KEY, 
+            'action': 'balance'
+        }, timeout=10)
         data = res.json()
-        return float(data.get('balance', 0.0))
-    except Exception:
+        if isinstance(data, dict):
+            return float(data.get('balance', data.get('funds', 0.0)))
+        return 0.0
+    except Exception as e:
+        print(f"Balance error: {e}")
         return 0.0
 
 @app.route('/', methods=['GET'])
@@ -111,8 +118,9 @@ def telegram_webhook():
                         'quantity': order['quantity']
                     }, timeout=15).json()
                     
-                    if isinstance(smm_res, dict) and 'order' in smm_res:
-                        status_text = f"\n\n🟢 STATUS: Approved & Placed on SMM Addaa!\n🎯 SMM Order ID: {smm_res['order']}"
+                    if isinstance(smm_res, dict) and ('order' in smm_res or 'orderID' in smm_res):
+                        oid = smm_res.get('order', smm_res.get('orderID'))
+                        status_text = f"\n\n🟢 STATUS: Approved & Placed on SMM Panel!\n🎯 SMM Order ID: {oid}"
                     else:
                         err_msg = smm_res.get('error', 'Unknown Error') if isinstance(smm_res, dict) else 'Invalid JSON response'
                         status_text = f"\n\n⚠️ SMM REJECTED: {err_msg}"
