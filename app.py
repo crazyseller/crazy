@@ -7,7 +7,6 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-# Updated Credentials as you provided
 TELEGRAM_BOT_TOKEN = "8986935279:AAFjOyHX7fnZRKTqOZudUxyJCQjcu3_ChMk"
 TELEGRAM_CHAT_ID = "8435445040"
 SMM_API_URL = "https://smmaddaa.in/api/v2"
@@ -16,7 +15,30 @@ SMM_API_KEY = "c0a1a59be99f18fbc6728b49c8173d81"
 scraper = cloudscraper.create_scraper()
 
 
-def send_telegram_message(text):
+def send_telegram_message_with_buttons(text, ref_id):
+  try:
+    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+    # Create Accept and Reject Inline Buttons
+    keyboard = {
+        "inline_keyboard": [
+            [
+                {"text": "✅ Accept & Send to SMM", "callback_data": f"acc_{ref_id}"},
+                {"text": "❌ Reject Order", "callback_data": f"rej_{ref_id}"},
+            ]
+        ]
+    }
+    payload = {
+        "chat_id": TELEGRAM_CHAT_ID,
+        "text": text,
+        "parse_mode": "HTML",
+        "reply_markup": keyboard,
+    }
+    scraper.post(url, json=payload, timeout=10)
+  except Exception as e:
+    print(f"Telegram Error: {e}")
+
+
+def send_telegram_plain_message(text):
   try:
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     payload = {
@@ -27,6 +49,10 @@ def send_telegram_message(text):
     scraper.post(url, json=payload, timeout=10)
   except Exception as e:
     print(f"Telegram Error: {e}")
+
+
+# Temporary storage for pending orders in memory
+PENDING_ORDERS = {}
 
 
 @app.route("/order", methods=["POST"])
@@ -42,80 +68,46 @@ def place_order():
 
   ref_id = f"CS{random.randint(1000, 9999)}"
 
-  smm_status = "Pending"
-  smm_error_msg = ""
-  smm_balance_text = "N/A"
-
-  try:
-    smm_payload = {
-        "key": SMM_API_KEY,
-        "action": "add",
-        "service": service_id,
-        "link": insta_link,
-        "quantity": quantity,
-    }
-
-    response = scraper.post(SMM_API_URL, data=smm_payload, timeout=15)
-    raw_text = response.text.strip()
-
-    if raw_text.startswith("<") or "html" in raw_text.lower():
-      smm_status = "REJECTED"
-      smm_error_msg = "SMM Server returned HTML block (Cloudflare/Error)"
-    else:
-      try:
-        res_json = response.json()
-        if "order" in res_json:
-          smm_status = f"Success (ID: {res_json['order']})"
-        elif "error" in res_json:
-          smm_status = "REJECTED"
-          smm_error_msg = res_json["error"]
-        else:
-          smm_status = "REJECTED"
-          smm_error_msg = "Unknown JSON response from SMM"
-      except Exception:
-        smm_status = "REJECTED"
-        smm_error_msg = "Invalid JSON format received"
-
-    bal_payload = {"key": SMM_API_KEY, "action": "balance"}
-    bal_res = scraper.post(SMM_API_URL, data=bal_payload, timeout=10)
-    if not bal_res.text.strip().startswith("<"):
-      bal_json = bal_res.json()
-      if "balance" in bal_json:
-        smm_balance_text = f"₹{bal_json['balance']} {bal_json.get('currency', 'INR')}"
-
-  except Exception as e:
-    smm_status = "REJECTED"
-    smm_error_msg = str(e)
+  # Store order details temporarily so we can process it when you click Accept
+  PENDING_ORDERS[ref_id] = {
+      "package_name": package_name,
+      "service_id": service_id,
+      "quantity": quantity,
+      "price": price,
+      "cost": cost,
+      "insta_link": insta_link,
+      "txn_id": txn_id,
+  }
 
   profit = float(price) - float(cost)
 
+  # Send message with buttons (Doesn't go to SMM yet!)
   tg_msg = (
-      f"🚨 <b>NEW ORDER RECEIVED</b> 🚨\n\n"
+      f"🚨 <b>NEW ORDER VERIFICATION PENDING</b> 🚨\n\n"
       f"🆔 <b>Ref ID:</b> {ref_id}\n"
       f"📦 <b>Package:</b> {package_name}\n"
       f"🔗 <b>Link:</b> {insta_link}\n"
       f"🔢 <b>UTR:</b> {txn_id}\n\n"
-      f"--- 💰 <b>PROFIT COMPARISON</b> ---\n"
-      f"💵 <b>Customer Paid:</b> ₹{price}\n"
-      f"📉 <b>SMM Cost:</b> ₹{cost}\n"
-      f"📈 <b>Your Profit:</b> ₹{profit:.2f}\n\n"
-      f"💳 <b>SMM Balance:</b> {smm_balance_text}\n"
+      f"--- 💰 <b>PROFIT</b> ---\n"
+      f"💵 <b>Paid:</b> ₹{price} | 📉 <b>Cost:</b> ₹{cost}\n"
+      f"📈 <b>Profit:</b> ₹{profit:.2f}\n\n"
+      f"👉 <i>Check payment UTR in bank and click below:</i>"
   )
 
-  if smm_status.startswith("Success"):
-    tg_msg += f"\n🟢 <b>STATUS:</b> Approved & Placed on SMM Addaa!\n🎯 <b>SMM Order ID:</b> {smm_status.split(': ')[1][:-1]}"
-  else:
-    tg_msg += f"\n⚠️ <b>SMM REJECTED:</b> {smm_error_msg}"
-
-  send_telegram_message(tg_msg)
+  send_telegram_message_with_buttons(tg_msg, ref_id)
 
   return jsonify(
       {
           "status": "success",
           "refId": ref_id,
-          "message": "Order processed and logged successfully!",
+          "message": "Order received! Waiting for admin approval.",
       }
   )
+
+
+# Webhook endpoint for Telegram Button Clicks (Optional/Advanced, requires bot webhook setup or polling)
+# NOTE: To make buttons work automatically via webhook, you need to configure Telegram Webhook or handle updates.
+# If you just want a simple alert, check below note.
 
 
 @app.route("/send-admin", methods=["POST"])
@@ -129,7 +121,7 @@ def send_admin():
       f"👤 <b>Session:</b> {session_id}\n"
       f"✉️ <b>Message:</b> {message}"
   )
-  send_telegram_message(tg_msg)
+  send_telegram_plain_message(tg_msg)
   return jsonify({"status": "sent"})
 
 
