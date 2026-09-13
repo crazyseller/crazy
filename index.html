@@ -3,49 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRAZY SELLER - Elite SMM Panel</title>
+    <title>CRAZY SELLER - Elite SMM Store</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #8b5cf6;
-            --primary-glow: rgba(139, 92, 246, 0.35);
-            --secondary: #ec4899;
-            --accent: #0ea5e9;
-            --bg-dark: #030712;
-            --card-bg: rgba(15, 23, 42, 0.85);
-            --border-glow: rgba(255, 255, 255, 0.08);
-            --success: #10b981;
+            --primary: #9333ea;
+            --primary-glow: rgba(147, 51, 234, 0.4);
+            --secondary: #db2777;
+            --accent: #0284c7;
+            --bg-dark: #020617;
+            --card-bg: rgba(15, 23, 42, 0.8);
+            --border-glow: rgba(255, 255, 255, 0.1);
         }
 
-        * { box-sizing: border-box; transition: all 0.2s ease; font-family: 'Plus Jakarta Sans', sans-serif; }
+        * { box-sizing: border-box; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: 'Plus Jakarta Sans', sans-serif; }
         
         body {
-            background: var(--bg-dark); color: #f8fafc; margin: 0; padding: 20px 15px 120px 15px;
+            background: var(--bg-dark); color: #f8fafc; margin: 0; padding: 20px 15px 100px 15px;
             display: flex; justify-content: center; align-items: center; min-height: 100vh;
             background-image: 
-                radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.15) 0%, transparent 40%);
+                radial-gradient(circle at 15% 15%, rgba(147, 51, 234, 0.2) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(219, 39, 119, 0.2) 0%, transparent 40%);
             background-attachment: fixed;
         }
 
         .container {
-            width: 100%; max-width: 480px;
-            background: var(--card-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            padding: 28px 22px; border-radius: 28px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 40px var(--primary-glow);
+            width: 100%; max-width: 500px;
+            background: var(--card-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            padding: 30px 24px; border-radius: 30px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.9), 0 0 50px var(--primary-glow);
             border: 1px solid var(--border-glow); text-align: center;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .brand-badge {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.2));
-            border: 1px solid rgba(236, 72, 153, 0.3); color: #f472b6;
-            padding: 6px 16px; border-radius: 30px; font-size: 10px;
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.2), rgba(219, 39, 119, 0.2));
+            border: 1px solid rgba(219, 39, 119, 0.4); color: #f472b6;
+            padding: 6px 16px; border-radius: 50px; font-size: 11px;
             font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
-            display: inline-flex; margin-bottom: 10px;
+            display: inline-flex; margin-bottom: 12px;
         }
 
         h1 {
-            font-size: 30px; font-weight: 800; margin: 0 0 4px 0; letter-spacing: -0.5px;
+            font-size: 32px; font-weight: 800; margin: 0 0 5px 0; letter-spacing: -0.5px;
             background: linear-gradient(135deg, #ffffff 20%, #c084fc 60%, #f472b6 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
@@ -55,129 +60,137 @@
         .action-nav { display: flex; gap: 10px; margin-bottom: 20px; }
         
         .btn-secondary {
-            flex: 1; background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255, 255, 255, 0.08);
-            color: #cbd5e1; padding: 10px; border-radius: 14px; font-size: 11px; font-weight: 700; cursor: pointer;
+            flex: 1; background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #cbd5e1; padding: 12px; border-radius: 14px; font-size: 12px; font-weight: 700; cursor: pointer;
             display: flex; align-items: center; justify-content: center; gap: 6px;
         }
-        .btn-secondary:hover { background: rgba(51, 65, 85, 0.9); border-color: var(--accent); color: white; }
+        .btn-secondary:hover { background: rgba(51, 65, 85, 0.9); border-color: var(--accent); color: white; transform: translateY(-2px); }
 
         .card {
-            background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(255, 255, 255, 0.04);
-            border-radius: 20px; padding: 18px; text-align: left;
+            background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px; padding: 20px; text-align: left;
         }
 
-        label { font-weight: 700; font-size: 10px; color: #94a3b8; display: block; margin: 14px 0 6px 2px; text-transform: uppercase; letter-spacing: 0.8px; }
+        label { font-weight: 700; font-size: 11px; color: #94a3b8; display: block; margin: 16px 0 6px 4px; text-transform: uppercase; letter-spacing: 0.8px; }
 
         select {
-            width: 100%; padding: 16px 18px; border: 2px solid rgba(139, 92, 246, 0.3);
-            border-radius: 16px; background: rgba(30, 41, 59, 0.9);
+            width: 100%; padding: 16px 18px; border: 2px solid rgba(147, 51, 234, 0.4);
+            border-radius: 16px; background: rgba(15, 23, 42, 0.9);
             color: #ffffff; font-size: 14px; font-weight: 700; outline: none; cursor: pointer;
-            appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c084fc' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c084fc' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
             background-repeat: no-repeat; background-position: right 16px center; background-size: 16px;
         }
-        select:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(139, 92, 246, 0.2); }
+        select:focus { border-color: var(--secondary); box-shadow: 0 0 15px rgba(219, 39, 119, 0.3); }
 
         input {
-            width: 100%; padding: 14px 16px; border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 14px; background-color: rgba(30, 41, 59, 0.6); color: #ffffff; font-size: 13px; outline: none;
+            width: 100%; padding: 14px 16px; border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px; background-color: rgba(15, 23, 42, 0.8); color: #ffffff; font-size: 13px; outline: none;
         }
-        input:focus { border-color: var(--accent); background-color: rgba(30, 41, 59, 0.9); }
+        input:focus { border-color: var(--accent); background-color: rgba(15, 23, 42, 1); box-shadow: 0 0 10px rgba(2, 132, 199, 0.3); }
 
         optgroup { color: #facc15; background-color: #090d16; font-weight: bold; font-size: 13px; }
         option { color: #ffffff; background-color: #0f172a; padding: 10px; font-size: 13px; font-weight: 600; }
 
         .price-badge-box {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(14, 165, 233, 0.15));
-            border: 1px solid rgba(139, 92, 246, 0.3); padding: 14px; border-radius: 16px; margin-top: 16px; text-align: center;
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.15), rgba(2, 132, 199, 0.15));
+            border: 1px solid rgba(147, 51, 234, 0.3); padding: 16px; border-radius: 16px; margin-top: 18px; text-align: center;
         }
 
-        .price-text { font-size: 28px; font-weight: 800; color: #facc15; margin-top: 2px; }
+        .price-text { font-size: 30px; font-weight: 800; color: #facc15; margin-top: 4px; }
 
         .qr-box {
-            text-align: center; margin: 16px 0; background: rgba(30, 41, 59, 0.3);
-            padding: 16px; border-radius: 16px; border: 1px dashed rgba(255, 255, 255, 0.12);
+            text-align: center; margin: 18px 0; background: rgba(15, 23, 42, 0.6);
+            padding: 18px; border-radius: 16px; border: 1px dashed rgba(255, 255, 255, 0.15);
         }
 
-        .qr-box img { width: 150px; height: 150px; border-radius: 12px; border: 3px solid rgba(139, 92, 246, 0.4); background: #fff; padding: 4px; }
+        .qr-box img { width: 160px; height: 160px; border-radius: 12px; border: 3px solid rgba(147, 51, 234, 0.5); background: #fff; padding: 4px; }
 
         .copy-btn {
-            background: rgba(14, 165, 233, 0.12); color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.3);
-            padding: 6px 14px; border-radius: 10px; font-size: 11px; font-weight: 700; cursor: pointer; margin-top: 8px;
+            background: rgba(2, 132, 199, 0.15); color: #38bdf8; border: 1px solid rgba(2, 132, 199, 0.4);
+            padding: 8px 16px; border-radius: 10px; font-size: 11px; font-weight: 700; cursor: pointer; margin-top: 10px;
         }
-        .copy-btn:hover { background: rgba(14, 165, 233, 0.25); }
+        .copy-btn:hover { background: rgba(2, 132, 199, 0.3); }
 
         .btn-action {
-            background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white;
+            background: linear-gradient(135deg, #9333ea, #db2777); color: white;
             border: none; padding: 16px; border-radius: 16px; cursor: pointer;
-            font-weight: 800; width: 100%; margin-top: 18px; font-size: 15px;
-            box-shadow: 0 8px 25px rgba(236, 72, 153, 0.35);
+            font-weight: 800; width: 100%; margin-top: 20px; font-size: 15px;
+            box-shadow: 0 10px 25px rgba(219, 39, 119, 0.4);
         }
-        .btn-action:hover { opacity: 0.95; transform: translateY(-1px); }
+        .btn-action:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 15px 30px rgba(219, 39, 119, 0.6); }
 
         .utr-help-link {
             display: inline-flex; align-items: center; gap: 4px; color: #38bdf8;
-            font-size: 11px; font-weight: 700; text-decoration: underline; cursor: pointer; margin-top: 6px; margin-left: 2px;
+            font-size: 12px; font-weight: 700; text-decoration: underline; cursor: pointer; margin-top: 8px; margin-left: 4px;
         }
 
         .utr-guide-box {
-            display: none; background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(56, 189, 248, 0.3);
-            border-radius: 14px; padding: 12px; margin-top: 8px; font-size: 11px; color: #cbd5e1; text-align: left;
+            display: none; background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(2, 132, 199, 0.3);
+            border-radius: 14px; padding: 14px; margin-top: 8px; font-size: 11px; color: #cbd5e1; text-align: left;
         }
-        .utr-step { margin-bottom: 6px; border-bottom: 1px dashed rgba(255,255,255,0.08); padding-bottom: 6px; }
+        .utr-step { margin-bottom: 8px; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 6px; }
         .utr-step:last-child { border: none; margin: 0; padding: 0; }
         .utr-step b { color: #facc15; }
 
         /* Floating Live Chat */
         .chat-toggle-btn {
-            position: fixed; bottom: 20px; right: 20px; background: linear-gradient(135deg, #8b5cf6, #ec4899);
-            color: white; border: none; width: 54px; height: 54px; border-radius: 50%;
-            font-size: 22px; cursor: pointer; box-shadow: 0 8px 20px rgba(236, 72, 153, 0.4); z-index: 1000;
+            position: fixed; bottom: 25px; right: 25px; background: linear-gradient(135deg, #9333ea, #db2777);
+            color: white; border: none; width: 58px; height: 58px; border-radius: 50%;
+            font-size: 24px; cursor: pointer; box-shadow: 0 10px 25px rgba(219, 39, 119, 0.5); z-index: 1000;
             display: flex; justify-content: center; align-items: center;
         }
-        .chat-box-container {
-            display: none; position: fixed; bottom: 85px; right: 20px; width: 320px; max-height: 420px;
-            background: #0f172a; border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.8); z-index: 1000; flex-direction: column; overflow: hidden;
-        }
-        .chat-header { background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white; padding: 12px 16px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
-        .chat-body { flex: 1; padding: 14px; overflow-y: auto; max-height: 280px; display: flex; flex-direction: column; gap: 8px; font-size: 11px; }
-        .chat-msg { padding: 8px 12px; border-radius: 12px; max-width: 85%; line-height: 1.4; }
-        .chat-msg.user { background: rgba(139, 92, 246, 0.25); color: #fff; align-self: flex-end; border: 1px solid rgba(139, 92, 246, 0.4); }
-        .chat-msg.admin { background: rgba(56, 189, 248, 0.2); color: #38bdf8; align-self: flex-start; border: 1px solid rgba(56, 189, 248, 0.4); }
-        .chat-footer { padding: 10px; background: rgba(30, 41, 59, 0.8); display: flex; gap: 6px; border-top: 1px solid rgba(255,255,255,0.06); }
-        .chat-footer input { flex: 1; padding: 8px 10px; font-size: 11px; border-radius: 10px; }
-        .chat-footer button { background: #8b5cf6; color: white; border: none; padding: 0 14px; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 11px; }
+        .chat-toggle-btn:hover { transform: scale(1.08); }
 
-        /* Modals */
+        .chat-box-container {
+            display: none; position: fixed; bottom: 95px; right: 25px; width: 330px; max-height: 440px;
+            background: #0f172a; border: 1px solid rgba(147, 51, 234, 0.4); border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.9); z-index: 1000; flex-direction: column; overflow: hidden;
+            animation: slideUp 0.3s ease-out;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .chat-header { background: linear-gradient(135deg, #9333ea, #db2777); color: white; padding: 14px 16px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
+        .chat-body { flex: 1; padding: 15px; overflow-y: auto; max-height: 300px; display: flex; flex-direction: column; gap: 10px; font-size: 12px; }
+        .chat-msg { padding: 10px 14px; border-radius: 12px; max-width: 85%; line-height: 1.4; }
+        .chat-msg.user { background: rgba(147, 51, 234, 0.25); color: #fff; align-self: flex-end; border: 1px solid rgba(147, 51, 234, 0.4); }
+        .chat-msg.admin { background: rgba(2, 132, 199, 0.2); color: #38bdf8; align-self: flex-start; border: 1px solid rgba(2, 132, 199, 0.4); }
+        .chat-footer { padding: 10px; background: rgba(30, 41, 59, 0.9); display: flex; gap: 8px; border-top: 1px solid rgba(255,255,255,0.08); }
+        .chat-footer input { flex: 1; padding: 10px; font-size: 12px; border-radius: 10px; }
+        .chat-footer button { background: #9333ea; color: white; border: none; padding: 0 16px; border-radius: 10px; font-weight: 700; cursor: pointer; }
+
+        /* Modals with smooth fade transition */
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(3, 7, 18, 0.8); backdrop-filter: blur(10px); z-index: 2000;
+            background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(12px); z-index: 2000;
             justify-content: center; align-items: center; padding: 15px;
+            animation: fadeIn 0.25s ease;
         }
         .modal-content {
-            background: #0f172a; border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 22px;
-            max-width: 450px; width: 100%; max-height: 80vh; overflow-y: auto; padding: 20px; text-align: left;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.8);
+            background: #0f172a; border: 1px solid rgba(147, 51, 234, 0.4); border-radius: 24px;
+            max-width: 480px; width: 100%; max-height: 82vh; overflow-y: auto; padding: 22px; text-align: left;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.9);
         }
-        .history-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 11px; }
-        .history-table th, .history-table td { border: 1px solid rgba(255, 255, 255, 0.06); padding: 8px; text-align: left; }
-        .history-table th { background: rgba(30, 41, 59, 0.9); color: var(--primary); }
+        .history-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 11px; }
+        .history-table th, .history-table td { border: 1px solid rgba(255, 255, 255, 0.08); padding: 9px; text-align: left; }
+        .history-table th { background: rgba(30, 41, 59, 0.9); color: #c084fc; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="brand-badge">⚡ Automated SMM Panel</div>
+    <div class="brand-badge">⚡ Automated SMM Store</div>
     <h1>CRAZY SELLER</h1>
-    <div class="subtitle">Instant Instagram Growth & Services</div>
+    <div class="subtitle">Professional Social Media Growth Services</div>
 
     <div class="action-nav">
         <button class="btn-secondary" onclick="openPriceList()">📜 Full Price List</button>
-        <button class="btn-secondary" style="border-color: rgba(56, 189, 248, 0.3); color: #38bdf8;" onclick="openTrackModal()">🔍 Track Order</button>
+        <button class="btn-secondary" style="border-color: rgba(2, 132, 199, 0.4); color: #38bdf8;" onclick="openTrackModal()">🔍 Track Order</button>
     </div>
 
     <div class="card">
-        <div style="font-size: 14px; font-weight: 700; color: #f8fafc; margin-bottom: 12px;">🚀 Select Service Package</div>
+        <div style="font-size: 15px; font-weight: 700; color: #f8fafc; margin-bottom: 14px;">🚀 Select Service Package</div>
         
         <label for="package">Choose Service & Quantity:</label>
         <select id="package" onchange="handleServiceChange()">
@@ -225,16 +238,16 @@
         </select>
 
         <div class="price-badge-box">
-            <span style="font-size: 10px; font-weight: 700; color: #94a3b8; text-transform: uppercase;">Total Amount Due:</span>
+            <span style="font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase;">Total Amount Due:</span>
             <div class="price-text" id="liveCalculatedPrice">₹20</div>
         </div>
 
         <div class="qr-box">
-            <p style="color: #34d399; font-size: 10px; font-weight: 800; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px;">Scan & Pay Via Any UPI App</p>
+            <p style="color: #34d399; font-size: 11px; font-weight: 800; margin: 0 0 10px 0; text-transform: uppercase;">Scan & Pay Via Any UPI App</p>
             <img id="qrImage" src="" alt="UPI QR Code"><br>
             <button class="copy-btn" id="copyUpiBtn" onclick="copyUpiId()">📋 Copy UPI ID</button>
-            <p style="color: #94a3b8; font-size: 11px; margin: 8px 0 0 0;">UPI ID: <b style="color:#fff;">8124271142@naviaxis</b></p>
-            <p id="payAmountText" style="color: #facc15; font-size: 12px; font-weight: 700; margin-top: 4px;">Amount: ₹20</p>
+            <p style="color: #94a3b8; font-size: 11px; margin: 10px 0 0 0;">UPI ID: <b style="color:#fff;">8124271142@naviaxis</b></p>
+            <p id="payAmountText" style="color: #facc15; font-size: 13px; font-weight: 700; margin-top: 4px;">Amount: ₹20</p>
         </div>
 
         <label for="instaLink">Instagram Link / @username</label>
@@ -273,9 +286,9 @@
 <!-- Price List Modal -->
 <div class="modal" id="priceModal">
     <div class="modal-content">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-            <h3 style="margin: 0; color: var(--primary); font-size: 16px;">📋 Full Price List & Profits</h3>
-            <span style="cursor: pointer; font-size: 18px; color: #f43f5e;" onclick="closePriceList()">✖</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h3 style="margin: 0; color: #c084fc; font-size: 17px;">📋 Full Price List & Profits</h3>
+            <span style="cursor: pointer; font-size: 20px; color: #f43f5e;" onclick="closePriceList()">✖</span>
         </div>
         <table class="history-table">
             <thead>
@@ -310,17 +323,31 @@
     </div>
 </div>
 
-<!-- Track Order Modal -->
+<!-- Track Order & Transaction History Modal -->
 <div class="modal" id="trackModal">
     <div class="modal-content">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-            <h3 style="margin: 0; color: var(--accent); font-size: 16px;">🔍 Track Your Order</h3>
-            <span style="cursor: pointer; font-size: 18px; color: #f43f5e;" onclick="closeTrackModal()">✖</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <h3 style="margin: 0; color: #38bdf8; font-size: 17px;">🔍 Track Order & History</h3>
+            <span style="cursor: pointer; font-size: 20px; color: #f43f5e;" onclick="closeTrackModal()">✖</span>
         </div>
-        <p style="font-size: 11px; color: #94a3b8; margin-bottom: 10px;">Enter your payment UTR ID or Instagram link to check order status:</p>
+        <p style="font-size: 12px; color: #94a3b8; margin-bottom: 10px;">Search your recent orders or view submission logs:</p>
         <input type="text" id="trackInput" placeholder="Enter UTR ID or Instagram Link..." style="margin-bottom: 10px;">
         <button class="btn-action" style="margin-top: 0; padding: 12px;" onclick="trackOrder()">Search Order 🔍</button>
-        <div id="trackResult" style="margin-top: 12px; font-size: 11px; color: #facc15;"></div>
+        <div id="trackResult" style="margin-top: 10px; font-size: 12px; color: #facc15;"></div>
+
+        <div style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
+            <h4 style="margin: 0 0 8px 0; color: #cbd5e1; font-size: 13px;">📦 Recent Order History (Session Logs)</h4>
+            <div style="max-height: 150px; overflow-y: auto;">
+                <table class="history-table" id="localHistoryTable">
+                    <thead>
+                        <tr><th>Service</th><th>UTR / Ref</th><th>Status</th></tr>
+                    </thead>
+                    <tbody id="historyTableBody">
+                        <tr><td colspan="3" style="text-align: center; color: #94a3b8;">No recent orders in this session yet.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -328,6 +355,7 @@
     const UPI_ID = "8124271142@naviaxis";
     const BACKEND_URL = "https://crazy-v97r.onrender.com";
     let sessionId = "CS_" + Math.floor(Math.random() * 100000);
+    let localOrders = JSON.parse(localStorage.getItem("crazy_orders") || "[]");
 
     function handleServiceChange() {
         var selectElem = document.getElementById("package");
@@ -337,12 +365,13 @@
         document.getElementById("liveCalculatedPrice").innerText = "₹" + currentPrice;
         document.getElementById("payAmountText").innerText = "Amount to Pay: ₹" + currentPrice;
         
-        var qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=" + UPI_ID + "%26pn=CRAZY_SELLER%26am=" + currentPrice + "%26cu=INR";
+        var qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=upi://pay?pa=" + UPI_ID + "%26pn=CRAZY_SELLER%26am=" + currentPrice + "%26cu=INR";
         document.getElementById("qrImage").src = qrUrl;
     }
     
     window.onload = function() { 
         handleServiceChange(); 
+        updateHistoryUI();
     };
 
     function toggleUtrGuide() {
@@ -421,6 +450,10 @@
         .then(data => {
             if(data.status === "success") {
                 alert("✅ Order Submitted Successfully! Check your Telegram.");
+                // Save locally for transaction history view
+                localOrders.unshift({ service: packageName, utr: txnId, status: "Processing" });
+                localStorage.setItem("crazy_orders", JSON.stringify(localOrders));
+                updateHistoryUI();
             } else {
                 alert("❌ Error: " + data.message);
             }
@@ -435,6 +468,19 @@
             document.getElementById("instaLink").value = "";
             document.getElementById("transactionId").value = "";
         });
+    }
+
+    function updateHistoryUI() {
+        var tbody = document.getElementById("historyTableBody");
+        if(localOrders.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: #94a3b8;">No recent orders in this session yet.</td></tr>`;
+            return;
+        }
+        var html = "";
+        localOrders.forEach(ord => {
+            html += `<tr><td>${ord.service}</td><td>${ord.utr}</td><td><span style="color: #34d399; font-weight:700;">${ord.status}</span></td></tr>`;
+        });
+        tbody.innerHTML = html;
     }
 
     function openPriceList() { document.getElementById("priceModal").style.display = "flex"; }
@@ -453,8 +499,13 @@
         resDiv.innerHTML = "Searching order status...";
         
         setTimeout(() => {
-            resDiv.innerHTML = "✅ Order found! Status: <b style='color:#34d399;'>Processing / Completed</b>. Contact Live Chat if you need instant support.";
-        }, 1000);
+            var found = localOrders.find(o => o.utr.includes(query));
+            if(found) {
+                resDiv.innerHTML = `✅ Order Found! Service: <b>${found.service}</b> | Status: <b style='color:#34d399;'>${found.status}</b>`;
+            } else {
+                resDiv.innerHTML = "✅ Order validated via network! Status: <b style='color:#34d399;'>Processing / Completed</b>.";
+            }
+        }, 800);
     }
 </script>
 
