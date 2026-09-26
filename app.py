@@ -11,10 +11,13 @@ TELEGRAM_BOT_TOKEN = "8986935279:AAFjOyHX7fnZRKTqOZudUxyJCQjcu3_ChMk"
 TELEGRAM_CHAT_ID = "8435445040"
 SMM_API_URL = "https://smmaddaa.in/api/v2"
 SMM_API_KEY = "c0a1a59be99f18fbc6728b49c8173d81"
+ADMIN_SECRET_PASS = "crazyadmin123"  # Change this password for your mobile admin panel
 
 scraper = cloudscraper.create_scraper()
 
-PENDING_ORDERS = {}
+# Mock Database for testing (Can be upgraded to Firestore/MongoDB easily)
+USERS_WALLET = {} # { "user@email.com": balance }
+ORDERS_DB = []
 
 def get_smm_balance():
     try:
@@ -49,28 +52,7 @@ def place_smm_order(service_id, link, quantity):
         print(f"SMM API Error: {e}")
     return "Failed"
 
-def send_telegram_message_with_buttons(text, ref_id):
-    try:
-        url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
-        keyboard = {
-            "inline_keyboard": [
-                [
-                    {"text": "✅ Accept & Send to SMM", "callback_data": f"acc_{ref_id}"},
-                    {"text": "❌ Reject Order", "callback_data": f"rej_{ref_id}"}
-                ]
-            ]
-        }
-        payload = {
-            "chat_id": TELEGRAM_CHAT_ID,
-            "text": text,
-            "parse_mode": "HTML",
-            "reply_markup": keyboard
-        }
-        scraper.post(url, json=payload, timeout=10)
-    except Exception as e:
-        print(f"Telegram Error: {e}")
-
-def send_telegram_plain_message(text):
+def send_telegram_message(text):
     try:
         url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
         payload = {
@@ -91,102 +73,68 @@ def place_order():
     price = float(data.get("price"))
     cost = float(data.get("cost"))
     insta_link = data.get("instaLink")
-    txn_id = data.get("txnId")
+    txn_id = data.get("txnId", "N/A")
+    user_email = data.get("userEmail", "guest@user.com")
 
     ref_id = f"CS{random.randint(1000, 9999)}"
+    profit = round(price - cost, 2)
 
-    PENDING_ORDERS[ref_id] = {
-        "package_name": package_name,
-        "service_id": service_id,
-        "quantity": quantity,
-        "price": price,
-        "cost": cost,
-        "insta_link": insta_link,
-        "txn_id": txn_id
-    }
+    # Check SMM Balance first
+    smm_bal = get_smm_balance()
+    
+    # Place order on SMM Addaa automatically
+    smm_order_id = place_smm_order(service_id, insta_link, quantity)
+    
+    status = "Approved & Placed on SMM Addaa!" if not smm_order_id.startswith("Error") and smm_order_id != "Failed" else "Failed / Low Balance"
 
-    profit = price - cost
-
+    # Format Telegram Message as requested
     tg_msg = (
-        f"🚨 <b>NEW ORDER VERIFICATION PENDING</b> 🚨\n\n"
+        f"🚨 <b>NEW ORDER RECEIVED</b> 🚨\n\n"
         f"🆔 <b>Ref ID:</b> {ref_id}\n"
-        f"📦 <b>Package:</b> {package_name}\n"
+        f"📦 <b>Package:</b> {package_name} (₹{price}) (ID: {service_id})\n"
         f"🔗 <b>Link:</b> {insta_link}\n"
         f"🔢 <b>UTR:</b> {txn_id}\n\n"
-        f"--- 💰 <b>PROFIT</b> ---\n"
-        f"💵 <b>Paid:</b> ₹{price:.2f} | 📉 <b>Cost:</b> ₹{cost:.2f}\n"
-        f"📈 <b>Profit:</b> ₹{profit:.2f}\n\n"
-        f"👉 <i>Check UTR in bank and click below to process:</i>"
+        f"--- 💰 <b>PROFIT COMPARISON</b> ---\n"
+        f"💵 <b>Customer Paid:</b> ₹{price:.2f}\n"
+        f"📉 <b>SMM Cost:</b> ₹{cost:.2f}\n"
+        f"📈 <b>Your Profit:</b> ₹{profit:.2f}\n\n"
+        f"💳 <b>SMM Balance:</b> ₹{smm_bal:.2f}\n\n"
+        f"🟢 <b>STATUS:</b> {status}\n"
+        f"🎯 <b>SMM Order ID:</b> {smm_order_id}"
     )
 
-    send_telegram_message_with_buttons(tg_msg, ref_id)
+    send_telegram_message(tg_msg)
 
-    return jsonify({"status": "success", "refId": ref_id, "message": "Order received! Waiting for admin approval."})
+    # Save to orders database
+    order_record = {
+        "ref_id": ref_id,
+        "package": package_name,
+        "link": insta_link,
+        "price": price,
+        "status": status,
+        "smm_id": smm_order_id,
+        "user": user_email
+    }
+    ORDERS_DB.append(order_record)
 
-@app.route('/telegram-webhook', methods=['POST'])
-def telegram_webhook():
-    update = request.json
-    if "callback_query" in update:
-        callback = update["callback_query"]
-        data = callback["data"]
-        ref_id = data.split("_")[1]
-        action_type = data.split("_")[0]
+    return jsonify({"status": "success", "ref_id": ref_id, "smm_id": smm_order_id})
 
-        if ref_id in PENDING_ORDERS:
-            order = PENDING_ORDERS[ref_id]
-
-            if action_type == "acc":
-                smm_order_id = place_smm_order(order['service_id'], order['insta_link'], order['quantity'])
-                current_balance = get_smm_balance()
-                profit = order['price'] - order['cost']
-
-                final_msg = (
-                    f"🚨 <b>NEW ORDER RECEIVED</b> 🚨\n\n"
-                    f"🆔 <b>Ref ID:</b> {ref_id}\n"
-                    f"📦 <b>Package:</b> {order['package_name']}\n"
-                    f"🔗 <b>Link:</b> {order['insta_link']}\n"
-                    f"🔢 <b>UTR:</b> {order['txn_id']}\n\n"
-                    f"--- 💰 <b>PROFIT COMPARISON</b> ---\n"
-                    f"💵 <b>Customer Paid:</b> ₹{order['price']:.2f}\n"
-                    f"📉 <b>SMM Cost:</b> ₹{order['cost']:.2f}\n"
-                    f"📈 <b>Your Profit:</b> ₹{profit:.2f}\n\n"
-                    f"💳 <b>SMM Balance:</b> ₹{current_balance:.4f} INR\n\n"
-                    f"🟢 <b>STATUS: Approved & Placed on SMM Addaa!</b>\n"
-                    f"🎯 <b>SMM Order ID:</b> {smm_order_id}"
-                )
-                send_telegram_plain_message(final_msg)
-                del PENDING_ORDERS[ref_id]
-
-            elif action_type == "rej":
-                reject_msg = (
-                    f"❌ <b>ORDER REJECTED</b>\n\n"
-                    f"🆔 <b>Ref ID:</b> {ref_id}\n"
-                    f"📦 <b>Package:</b> {order['package_name']}\n"
-                    f"🔢 <b>UTR:</b> {order['txn_id']}\n\n"
-                    f"🔴 <b>Status:</b> Payment Verification Failed / Rejected."
-                )
-                send_telegram_plain_message(reject_msg)
-                del PENDING_ORDERS[ref_id]
-
-    return jsonify({"status": "ok"})
-
-@app.route('/send-admin', methods=['POST'])
-def send_admin():
+@app.route('/complaint', methods=['POST'])
+def handle_complaint():
     data = request.json
-    session_id = data.get("sessionId")
+    user = data.get("user")
     message = data.get("message")
     
-    tg_msg = (
-        f"💬 <b>LIVE CHAT MESSAGE</b> 💬\n\n"
-        f"👤 <b>Session:</b> {session_id}\n"
-        f"✉️ <b>Message:</b> {message}"
-    )
-    send_telegram_plain_message(tg_msg)
-    return jsonify({"status": "sent"})
+    tg_msg = f"⚠️ <b>NEW COMPLAINT / SUPPORT TICKET</b>\n👤 <b>User:</b> {user}\n💬 <b>Message:</b> {message}"
+    send_telegram_message(tg_msg)
+    return jsonify({"status": "success"})
 
-@app.route('/', methods=['GET'])
-def home():
-    return "CRAZY SELLER Backend is Live and Running!"
+@app.route('/admin/login', methods=['POST'])
+def admin_login():
+    data = request.json
+    if data.get("password") == ADMIN_SECRET_PASS:
+        return jsonify({"status": "success", "orders": ORDERS_DB, "smm_balance": get_smm_balance()})
+    return jsonify({"status": "error", "message": "Invalid Password"}), 401
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
