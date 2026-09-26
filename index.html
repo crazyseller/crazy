@@ -12,7 +12,7 @@
             --secondary: #db2777;
             --accent: #0284c7;
             --bg-dark: #020617;
-            --card-bg: rgba(15, 23, 42, 0.8);
+            --card-bg: rgba(15, 23, 42, 0.85);
             --border-glow: rgba(255, 255, 255, 0.1);
         }
 
@@ -33,12 +33,6 @@
             padding: 30px 24px; border-radius: 30px;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.9), 0 0 50px var(--primary-glow);
             border: 1px solid var(--border-glow); text-align: center;
-            animation: fadeIn 0.6s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .brand-badge {
@@ -145,11 +139,6 @@
             display: none; position: fixed; bottom: 95px; right: 25px; width: 330px; max-height: 440px;
             background: #0f172a; border: 1px solid rgba(147, 51, 234, 0.4); border-radius: 20px;
             box-shadow: 0 25px 50px rgba(0,0,0,0.9); z-index: 1000; flex-direction: column; overflow: hidden;
-            animation: slideUp 0.3s ease-out;
-        }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
         }
         .chat-header { background: linear-gradient(135deg, #9333ea, #db2777); color: white; padding: 14px 16px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
         .chat-body { flex: 1; padding: 15px; overflow-y: auto; max-height: 300px; display: flex; flex-direction: column; gap: 10px; font-size: 12px; }
@@ -160,12 +149,11 @@
         .chat-footer input { flex: 1; padding: 10px; font-size: 12px; border-radius: 10px; }
         .chat-footer button { background: #9333ea; color: white; border: none; padding: 0 16px; border-radius: 10px; font-weight: 700; cursor: pointer; }
 
-        /* Modals with smooth fade transition */
+        /* Modals */
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(12px); z-index: 2000;
             justify-content: center; align-items: center; padding: 15px;
-            animation: fadeIn 0.25s ease;
         }
         .modal-content {
             background: #0f172a; border: 1px solid rgba(147, 51, 234, 0.4); border-radius: 24px;
@@ -206,34 +194,10 @@
                 <option value="Views - 2K Views" data-sid="2115" data-qty="2000" data-price="20" data-cost="2">2K Views — ₹20</option>
                 <option value="Views - 5K Views" data-sid="2115" data-qty="5000" data-price="25" data-cost="3">5K Views — ₹25</option>
                 <option value="Views - 10K Views" data-sid="2115" data-qty="10000" data-price="30" data-cost="5">10K Views — ₹30</option>
-                <option value="Views - 50K Views" data-sid="2115" data-qty="50000" data-price="60" data-cost="15">50K Views — ₹60</option>
-                <option value="Views - 100K Views" data-sid="2115" data-qty="100000" data-price="110" data-cost="30">100K Views — ₹110</option>
             </optgroup>
             <optgroup label="❤️ 4. Post Likes (ID: 2117)">
                 <option value="Likes - 500 Likes" data-sid="2117" data-qty="500" data-price="10" data-cost="2">500 Likes — ₹10</option>
                 <option value="Likes - 1K Likes" data-sid="2117" data-qty="1000" data-price="20" data-cost="3.30">1K Likes — ₹20</option>
-            </optgroup>
-            <optgroup label="😍 5. Positive Emoji Comments (ID: 475)">
-                <option value="Comments - 50 Comments" data-sid="475" data-qty="50" data-price="10" data-cost="3">50 Positive Emoji Comments — ₹10</option>
-                <option value="Comments - 500 Comments" data-sid="475" data-qty="500" data-price="30" data-cost="10">500 Positive Emoji Comments — ₹30</option>
-                <option value="Comments - 1K Comments" data-sid="475" data-qty="1000" data-price="80" data-cost="25">1K Positive Emoji Comments — ₹80</option>
-            </optgroup>
-            <optgroup label="⚡ 6. Story Views (ID: 2134)">
-                <option value="Story Views - 200" data-sid="2134" data-qty="200" data-price="10" data-cost="2">200 Story Views — ₹10</option>
-                <option value="Story Views - 1K" data-sid="2134" data-qty="1000" data-price="25" data-cost="6">1K Story Views — ₹25</option>
-            </optgroup>
-            <optgroup label="📌 7. Post Saves (ID: 505)">
-                <option value="Post Saves - 500" data-sid="505" data-qty="500" data-price="5" data-cost="1">500 Saves — ₹5</option>
-                <option value="Post Saves - 1K" data-sid="505" data-qty="1000" data-price="20" data-cost="4">1000 Saves — ₹20</option>
-            </optgroup>
-            <optgroup label="🔄 8. Post Shares (ID: 2129)">
-                <option value="Post Shares - 1K" data-sid="2129" data-qty="1000" data-price="5" data-cost="1">1K Shares — ₹5</option>
-                <option value="Post Shares - 5K" data-sid="2129" data-qty="5000" data-price="7" data-cost="2">5K Shares — ₹7</option>
-                <option value="Post Shares - 10K" data-sid="2129" data-qty="10000" data-price="15" data-cost="4">10K Shares — ₹15</option>
-            </optgroup>
-            <optgroup label="🔁 9. Instagram Repost (ID: 2127)">
-                <option value="Repost - 500" data-sid="2127" data-qty="500" data-price="30" data-cost="10">500 Reposts — ₹30</option>
-                <option value="Repost - 1K" data-sid="2127" data-qty="1000" data-price="60" data-cost="20">1K Reposts — ₹60</option>
             </optgroup>
         </select>
 
@@ -296,47 +260,27 @@
             </thead>
             <tbody>
                 <tr><td>Fake Followers (200)</td><td>₹20</td><td>₹5</td><td>₹15</td></tr>
-                <tr><td>Fake Followers (1K)</td><td>₹83</td><td>₹20</td><td>₹63</td></tr>
-                <tr><td>Non Drop (200)</td><td>₹35</td><td>₹10</td><td>₹25</td></tr>
                 <tr><td>Non Drop (1K)</td><td>₹140</td><td>₹45</td><td>₹95</td></tr>
                 <tr><td>Views (2K)</td><td>₹20</td><td>₹2</td><td>₹18</td></tr>
-                <tr><td>Views (5K)</td><td>₹25</td><td>₹3</td><td>₹22</td></tr>
-                <tr><td>Views (10K)</td><td>₹30</td><td>₹5</td><td>₹25</td></tr>
-                <tr><td>Views (50K)</td><td>₹60</td><td>₹15</td><td>₹45</td></tr>
-                <tr><td>Views (100K)</td><td>₹110</td><td>₹30</td><td>₹80</td></tr>
-                <tr><td>Likes (500)</td><td>₹10</td><td>₹2</td><td>₹8</td></tr>
                 <tr><td>Likes (1K)</td><td>₹20</td><td>₹3.30</td><td>₹16.70</td></tr>
-                <tr><td>Comments (50)</td><td>₹10</td><td>₹3</td><td>₹7</td></tr>
-                <tr><td>Comments (500)</td><td>₹30</td><td>₹10</td><td>₹20</td></tr>
-                <tr><td>Comments (1K)</td><td>₹80</td><td>₹25</td><td>₹55</td></tr>
-                <tr><td>Story Views (200)</td><td>₹10</td><td>₹2</td><td>₹8</td></tr>
-                <tr><td>Story Views (1K)</td><td>₹25</td><td>₹6</td><td>₹19</td></tr>
-                <tr><td>Saves (500)</td><td>₹5</td><td>₹1</td><td>₹4</td></tr>
-                <tr><td>Saves (1K)</td><td>₹20</td><td>₹4</td><td>₹16</td></tr>
-                <tr><td>Shares (1K)</td><td>₹5</td><td>₹1</td><td>₹4</td></tr>
-                <tr><td>Shares (5K)</td><td>₹7</td><td>₹2</td><td>₹5</td></tr>
-                <tr><td>Shares (10K)</td><td>₹15</td><td>₹4</td><td>₹11</td></tr>
-                <tr><td>Repost (500)</td><td>₹30</td><td>₹10</td><td>₹20</td></tr>
-                <tr><td>Repost (1K)</td><td>₹60</td><td>₹20</td><td>₹40</td></tr>
             </tbody>
         </table>
     </div>
 </div>
 
-<!-- Track Order & Transaction History Modal -->
+<!-- Track Order Modal -->
 <div class="modal" id="trackModal">
     <div class="modal-content">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
             <h3 style="margin: 0; color: #38bdf8; font-size: 17px;">🔍 Track Order & History</h3>
             <span style="cursor: pointer; font-size: 20px; color: #f43f5e;" onclick="closeTrackModal()">✖</span>
         </div>
-        <p style="font-size: 12px; color: #94a3b8; margin-bottom: 10px;">Search your recent orders or view submission logs:</p>
         <input type="text" id="trackInput" placeholder="Enter UTR ID or Instagram Link..." style="margin-bottom: 10px;">
         <button class="btn-action" style="margin-top: 0; padding: 12px;" onclick="trackOrder()">Search Order 🔍</button>
         <div id="trackResult" style="margin-top: 10px; font-size: 12px; color: #facc15;"></div>
 
         <div style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
-            <h4 style="margin: 0 0 8px 0; color: #cbd5e1; font-size: 13px;">📦 Recent Order History (Session Logs)</h4>
+            <h4 style="margin: 0 0 8px 0; color: #cbd5e1; font-size: 13px;">📦 Recent Order History</h4>
             <div style="max-height: 150px; overflow-y: auto;">
                 <table class="history-table" id="localHistoryTable">
                     <thead>
@@ -353,7 +297,7 @@
 
 <script>
     const UPI_ID = "8124271142@naviaxis";
-    const BACKEND_URL = "https://crazy-v97r.onrender.com";
+    const BACKEND_URL = ""; // Empty if hosted on same domain / Render
     let sessionId = "CS_" + Math.floor(Math.random() * 100000);
     let localOrders = JSON.parse(localStorage.getItem("crazy_orders") || "[]");
 
@@ -450,7 +394,6 @@
         .then(data => {
             if(data.status === "success") {
                 alert("✅ Order Submitted Successfully! Check your Telegram.");
-                // Save locally for transaction history view
                 localOrders.unshift({ service: packageName, utr: txnId, status: "Processing" });
                 localStorage.setItem("crazy_orders", JSON.stringify(localOrders));
                 updateHistoryUI();
@@ -459,7 +402,7 @@
             }
         })
         .catch(err => {
-            alert("❌ Connection Error: Backend might be waking up. Try again in 5 seconds.");
+            alert("❌ Connection Error: Try again.");
             console.log(err);
         })
         .finally(() => {
@@ -485,19 +428,14 @@
 
     function openPriceList() { document.getElementById("priceModal").style.display = "flex"; }
     function closePriceList() { document.getElementById("priceModal").style.display = "none"; }
-
     function openTrackModal() { document.getElementById("trackModal").style.display = "flex"; }
     function closeTrackModal() { document.getElementById("trackModal").style.display = "none"; document.getElementById("trackResult").innerText = ""; document.getElementById("trackInput").value = ""; }
 
     function trackOrder() {
         var query = document.getElementById("trackInput").value.trim();
         var resDiv = document.getElementById("trackResult");
-        if(!query) {
-            resDiv.innerHTML = "<span style='color:#f43f5e;'>❌ Please enter UTR ID or link!</span>";
-            return;
-        }
+        if(!query) { resDiv.innerHTML = "<span style='color:#f43f5e;'>❌ Please enter UTR ID or link!</span>"; return; }
         resDiv.innerHTML = "Searching order status...";
-        
         setTimeout(() => {
             var found = localOrders.find(o => o.utr.includes(query));
             if(found) {
