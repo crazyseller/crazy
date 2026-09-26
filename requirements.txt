@@ -1,6 +1,0 @@
-flask
-flask-cors
-requests
-cloudscraper
-gunicorn
-firebase-admin
