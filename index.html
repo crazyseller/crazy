@@ -12,7 +12,7 @@
             --secondary: #db2777;
             --accent: #0284c7;
             --bg-dark: #020617;
-            --card-bg: rgba(15, 23, 42, 0.8);
+            --card-bg: rgba(15, 23, 42, 0.85);
             --border-glow: rgba(255, 255, 255, 0.1);
         }
 
@@ -160,7 +160,7 @@
         .chat-footer input { flex: 1; padding: 10px; font-size: 12px; border-radius: 10px; }
         .chat-footer button { background: #9333ea; color: white; border: none; padding: 0 16px; border-radius: 10px; font-weight: 700; cursor: pointer; }
 
-        /* Modals with smooth fade transition */
+        /* Modals */
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(12px); z-index: 2000;
@@ -353,7 +353,7 @@
 
 <script>
     const UPI_ID = "8124271142@naviaxis";
-    const BACKEND_URL = "https://crazy-v97r.onrender.com";
+    const BACKEND_URL = ""; // Empty string for same host, or put your Render URL if hosted separately
     let sessionId = "CS_" + Math.floor(Math.random() * 100000);
     let localOrders = JSON.parse(localStorage.getItem("crazy_orders") || "[]");
 
@@ -450,7 +450,6 @@
         .then(data => {
             if(data.status === "success") {
                 alert("✅ Order Submitted Successfully! Check your Telegram.");
-                // Save locally for transaction history view
                 localOrders.unshift({ service: packageName, utr: txnId, status: "Processing" });
                 localStorage.setItem("crazy_orders", JSON.stringify(localOrders));
                 updateHistoryUI();
