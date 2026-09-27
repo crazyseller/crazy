@@ -1,10 +1,14 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const TelegramBot = require('node-telegram-bot-api');
 
 const app = express();
 app.use(express.json());
 app.use(cors());
+
+// Serve HTML frontend directly from root folder
+app.use(express.static(path.join(__dirname)));
 
 // --- CONFIGURATIONS ---
 const TELEGRAM_BOT_TOKEN = "8986935279:AAFjOyHX7fnZRKTqOZudUxyJCQjcu3_ChMk";
@@ -14,7 +18,6 @@ const SMM_API_KEY = "85cceded0707c2e48ede121db223869f";
 
 const bot = new TelegramBot(TELEGRAM_BOT_TOKEN, { polling: true });
 
-// Memory storage to avoid Telegram callback 64-byte length limit bug
 let pendingOrders = {};
 let activeSessions = {}; 
 
@@ -24,7 +27,6 @@ app.post('/order', async (req, res) => {
         const { packageName, serviceId, quantity, price, cost, instaLink, txnId } = req.body;
         const refId = "CS" + Math.floor(1000 + Math.random() * 9000);
 
-        // Store full details in memory to prevent URL query truncation
         pendingOrders[refId] = { packageName, serviceId, quantity, price, cost, instaLink, txnId };
 
         const profit = (price - (cost || 0)).toFixed(2);
@@ -87,7 +89,6 @@ bot.on('callback_query', async (query) => {
         }
 
         try {
-            // Fetch SMM Balance first
             const balanceRes = await fetch(SMM_API_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -96,7 +97,6 @@ bot.on('callback_query', async (query) => {
             const balanceData = await balanceRes.json();
             const smmBalance = balanceData.balance ? `₹${balanceData.balance}` : "N/A";
 
-            // Push order to SMM Addaa API
             const smmRes = await fetch(SMM_API_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -111,7 +111,6 @@ bot.on('callback_query', async (query) => {
             const smmData = await smmRes.json();
 
             if (smmData.order) {
-                const profit = (order.price - (order.cost || 0)).toFixed(2);
                 const updatedMsg = query.message.text + 
                     `\n\n💳 SMM Balance: ${smmBalance}` +
                     `\n🟢 STATUS: Approved & Placed on SMM Addaa!` +
