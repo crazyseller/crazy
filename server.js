@@ -7,17 +7,30 @@ app.use(express.json());
 app.use(cors());
 app.use(express.static(path.join(__dirname)));
 
-// --- CONFIGURATIONS ---
 const TELEGRAM_BOT_TOKEN = "8986935279:AAFjOyHX7fnZRKTqOZudUxyJCQjcu3_ChMk";
 const ADMIN_CHAT_ID = "8435445040"; 
 const SMM_API_URL = "https://smmaddaa.in/api/v2";
 const SMM_API_KEY = "c585e62bf7ce7f2dd357695249f96af1";
 
 const bot = new TelegramBot(TELEGRAM_BOT_TOKEN, { polling: true });
-
 let pendingOrders = {};
 
-// 1. Order Endpoint (Frontend to Backend)
+// Check SMM Balance Endpoint
+app.get('/balance', async (req, res) => {
+    try {
+        const params = new URLSearchParams();
+        params.append('key', SMM_API_KEY);
+        params.append('action', 'balance');
+
+        const response = await fetch(SMM_API_URL, { method: 'POST', body: params });
+        const data = await response.json();
+        res.json(data);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Order Endpoint
 app.post('/order', async (req, res) => {
     try {
         const { packageName, serviceId, quantity, price, cost, instaLink, txnId } = req.body;
@@ -28,8 +41,7 @@ app.post('/order', async (req, res) => {
         const profit = (price - (cost || 0)).toFixed(2);
         const message = `🚨 *NEW SMM ORDER RECEIVED!*\n\n` +
                         `🆔 Ref ID: \`${refId}\`\n` +
-                        `📦 Package: ${packageName} (₹${price})\n` +
-                        `🔗 Link: ${instaLink}\n` +
+                        `📦 Package: ${packageName} (₹${price})\n` +                         `🔗 Link: ${instaLink}\n` +
                         `🔢 UTR: \`${txnId}\`\n\n` +
                         `--- 💰 PROFIT COMPARISON ---\n` +
                         `💵 Customer Paid: ₹${price}\n` +
@@ -39,8 +51,7 @@ app.post('/order', async (req, res) => {
         const keyboard = {
             inline_keyboard: [
                 [
-                    { text: "✅ Accept & Push", callback_data: `accept_${refId}` },
-                    { text: "❌ Reject", callback_data: `reject_${refId}` }
+                    { text: "✅ Accept & Push", callback_data: `accept_${refId}` },                     { text: "❌ Reject", callback_data: `reject_${refId}` }
                 ]
             ]
         };
@@ -53,7 +64,7 @@ app.post('/order', async (req, res) => {
     }
 });
 
-// 2. Live Chat Endpoint
+// Live Chat Endpoint
 app.post('/send-admin', async (req, res) => {
     try {
         const { sessionId, message } = req.body;
@@ -65,9 +76,9 @@ app.post('/send-admin', async (req, res) => {
     }
 });
 
-// 3. Telegram Button Click Handler (Accept/Reject)
+// Telegram Button Click Handler
 bot.on('callback_query', async (query) => {
-    const actionData = query.data; // e.g. "accept_CS1234" or "reject_CS1234"
+    const actionData = query.data; 
     const chatId = query.message.chat.id;
     const messageId = query.message.message_id;
 
@@ -81,7 +92,6 @@ bot.on('callback_query', async (query) => {
 
     if (action === 'accept') {
         try {
-            // SMM Addaa API Request Body
             const params = new URLSearchParams();
             params.append('key', SMM_API_KEY);
             params.append('action', 'add');
@@ -89,24 +99,18 @@ bot.on('callback_query', async (query) => {
             params.append('link', order.instaLink);
             params.append('quantity', order.quantity);
 
-            // Fetch SMM Provider API
-            const response = await fetch(SMM_API_URL, {
-                method: 'POST',
-                body: params
-            });
+            const response = await fetch(SMM_API_URL, { method: 'POST', body: params });
             const smmResult = await response.json();
 
             if (smmResult.order) {
-                // Success pushing to SMM
                 await bot.editMessageText(
                     query.message.text + `\n\n✅ *Status:* ACCEPTED & PUSHED TO SMM!\n🚀 SMM Order ID: \`${smmResult.order}\``,
                     { chat_id: chatId, message_id: messageId, parse_mode: 'Markdown' }
                 );
                 delete pendingOrders[refId];
             } else {
-                // API returned error
                 await bot.answerCallbackQuery(query.id, { text: "❌ SMM Error: " + (smmResult.error || "Failed") });
-                await bot.sendMessage(chatId, `⚠️️ Failed to push order ${refId} to SMM Addaa: ${JSON.stringify(smmResult)}`);
+                await bot.sendMessage(chatId, `⚠ Failed to push order ${refId} to SMM Addaa: ${JSON.stringify(smmResult)}`);
             }
         } catch (err) {
             console.error("SMM API Fetch Error:", err);
