@@ -21,7 +21,7 @@ const bot = new TelegramBot(TELEGRAM_BOT_TOKEN, { polling: true });
 let pendingOrders = {};
 let activeSessions = {}; 
 
-// 1. Order Endpoint
+// 1. Order Endpoint (Frontend to Backend)
 app.post('/order', async (req, res) => {
     try {
         const { packageName, serviceId, quantity, price, cost, instaLink, txnId } = req.body;
@@ -73,74 +73,62 @@ app.post('/send-admin', async (req, res) => {
     }
 });
 
-// Telegram Button Click Handler
+// 3. Telegram Button Click Handler (Accept / Reject)
 bot.on('callback_query', async (query) => {
     const data = query.data;
     const chatId = query.message.chat.id;
     const messageId = query.message.message_id;
 
-    if (data.startsWith('accept_')) {
-        const refId = data.split('_')[1];
-        const order = pendingOrders[refId];
+    const [action, refId] = data.split('_');
 
-        if (!order) {
-            await bot.answerCallbackQuery(query.id, { text: "❌ Order data expired or not found!" });
-            return;
-        }
+    if (!pendingOrders[refId]) {
+        await bot.answerCallbackQuery(query.id, { text: "⚠️ Order data expired or not found!" });
+        return;
+    }
 
+    const order = pendingOrders[refId];
+
+    if (action === 'accept') {
         try {
-            const balanceRes = await fetch(SMM_API_URL, {
+            // SMM Addaa API Request parameters (URLSearchParams)
+            const params = new URLSearchParams();
+            params.append('key', SMM_API_KEY);
+            params.append('action', 'add');
+            params.append('service', order.serviceId);
+            params.append('link', order.instaLink);
+            params.append('quantity', order.quantity);
+
+            // Fetch SMM Provider API
+            const response = await fetch(SMM_API_URL, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: new URLSearchParams({ key: SMM_API_KEY, action: 'balance' })
+                body: params
             });
-            const balanceData = await balanceRes.json();
-            const smmBalance = balanceData.balance ? `₹${balanceData.balance}` : "N/A";
+            const result = await response.json();
 
-            const smmRes = await fetch(SMM_API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: new URLSearchParams({
-                    key: SMM_API_KEY,
-                    action: 'add',
-                    service: order.serviceId,
-                    link: order.instaLink,
-                    quantity: order.quantity
-                })
-            });
-            const smmData = await smmRes.json();
-
-            if (smmData.order) {
-                const updatedMsg = query.message.text + 
-                    `\n\n💳 SMM Balance: ${smmBalance}` +
-                    `\n🟢 STATUS: Approved & Placed on SMM Addaa!` +
-                    `\n🎯 SMM Order ID: ${smmData.order}`;
-
-                await bot.editMessageText(updatedMsg, {
-                    chat_id: chatId,
-                    message_id: messageId,
-                    parse_mode: 'Markdown'
-                });
-                await bot.answerCallbackQuery(query.id, { text: "✅ Order successfully placed on SMM Addaa!" });
+            if (result.order) {
+                await bot.editMessageText(
+                    query.message.text + `\n\n✅ **STATUS: ACCEPTED & PUSHED TO SMM**\n🆔 SMM Order ID: \`${result.order}\``,
+                    { chat_id: chatId, message_id: messageId, parse_mode: 'Markdown' }
+                );
             } else {
-                await bot.answerCallbackQuery(query.id, { text: "❌ SMM API Error: " + (smmData.error || "Failed") });
+                await bot.editMessageText(
+                    query.message.text + `\n\n❌ **SMM ERROR:** ${result.error || 'Unknown error'}`,
+                    { chat_id: chatId, message_id: messageId, parse_mode: 'Markdown' }
+                );
             }
         } catch (err) {
             console.error(err);
-            await bot.answerCallbackQuery(query.id, { text: "❌ Network error connecting to SMM API." });
+            await bot.answerCallbackQuery(query.id, { text: "❌ API Connection Failed!" });
         }
-    } 
-    else if (data.startsWith('reject_')) {
-        const refId = data.split('_')[1];
-        const updatedMsg = query.message.text + `\n\n🔴 STATUS: Rejected by Admin`;
-
-        await bot.editMessageText(updatedMsg, {
-            chat_id: chatId,
-            message_id: messageId,
-            parse_mode: 'Markdown'
-        });
-        await bot.answerCallbackQuery(query.id, { text: "Order rejected." });
+    } else if (action === 'reject') {
+        await bot.editMessageText(
+            query.message.text + `\n\n❌ **STATUS: REJECTED BY ADMIN**`,
+            { chat_id: chatId, message_id: messageId, parse_mode: 'Markdown' }
+        );
     }
+
+    delete pendingOrders[refId];
+    await bot.answerCallbackQuery(query.id);
 });
 
 const PORT = process.env.PORT || 3000;
