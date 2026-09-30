@@ -2,12 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const TelegramBot = require('node-telegram-bot-api');
-
 const app = express();
 app.use(express.json());
 app.use(cors());
-
-// Serve HTML frontend directly from root folder
 app.use(express.static(path.join(__dirname)));
 
 // --- CONFIGURATIONS ---
@@ -29,8 +26,7 @@ app.post('/order', async (req, res) => {
         pendingOrders[refId] = { packageName, serviceId, quantity, price, cost, instaLink, txnId };
 
         const profit = (price - (cost || 0)).toFixed(2);
-
-        const message = `🚨 **NEW SMM ORDER RECEIVED!**\n\n` +
+        const message = `🚨 *NEW SMM ORDER RECEIVED!*\n\n` +
                         `🆔 Ref ID: \`${refId}\`\n` +
                         `📦 Package: ${packageName} (₹${price})\n` +
                         `🔗 Link: ${instaLink}\n` +
@@ -39,7 +35,7 @@ app.post('/order', async (req, res) => {
                         `💵 Customer Paid: ₹${price}\n` +
                         `📉 SMM Cost: ₹${cost || 0}\n` +
                         `📈 Your Profit: ₹${profit}`;
-
+        
         const keyboard = {
             inline_keyboard: [
                 [
@@ -48,7 +44,7 @@ app.post('/order', async (req, res) => {
                 ]
             ]
         };
-
+        
         await bot.sendMessage(ADMIN_CHAT_ID, message, { parse_mode: 'Markdown', reply_markup: keyboard });
         res.json({ status: "success", message: "Order sent to Telegram!" });
     } catch (error) {
@@ -61,35 +57,31 @@ app.post('/order', async (req, res) => {
 app.post('/send-admin', async (req, res) => {
     try {
         const { sessionId, message } = req.body;
-        const chatMsg = `💬 **Live Support Message**\n👤 Session: \`${sessionId}\`\n✉️ Message: ${message}`;
-        
+        const chatMsg = `💬 *Live Support Message*\nSession: \`${sessionId}\`\nMessage: ${message}`;
         await bot.sendMessage(ADMIN_CHAT_ID, chatMsg, { parse_mode: 'Markdown' });
         res.json({ status: "success" });
     } catch (error) {
-        console.error("Chat Error:", error);
-        res.status(500).json({ status: "error" });
+        res.status(500).json({ status: "error", message: error.message });
     }
 });
 
-// 3. Telegram Button Click Handler (Accept / Reject)
+// 3. Telegram Button Click Handler (Accept/Reject)
 bot.on('callback_query', async (query) => {
-    try {
-        const data = query.data;
-        const chatId = query.message.chat.id;
-        const messageId = query.message.message_id;
+    const actionData = query.data; // e.g. "accept_CS1234" or "reject_CS1234"
+    const chatId = query.message.chat.id;
+    const messageId = query.message.message_id;
 
-        const underscoreIndex = data.indexOf('_');
-        const action = data.substring(0, underscoreIndex);
-        const refId = data.substring(underscoreIndex + 1);
+    const [action, refId] = actionData.split('_');
+    const order = pendingOrders[refId];
 
-        if (!pendingOrders[refId]) {
-            await bot.answerCallbackQuery(query.id, { text: "⚠️ Order data expired or not found!" });
-            return;
-        }
+    if (!order) {
+        await bot.answerCallbackQuery(query.id, { text: "⚠️ Order expired or already processed!" });
+        return;
+    }
 
-        const order = pendingOrders[refId];
-
-        if (action === 'accept') {
+    if (action === 'accept') {
+        try {
+            // SMM Addaa API Request Body
             const params = new URLSearchParams();
             params.append('key', SMM_API_KEY);
             params.append('action', 'add');
@@ -97,40 +89,36 @@ bot.on('callback_query', async (query) => {
             params.append('link', order.instaLink);
             params.append('quantity', order.quantity);
 
-            // Fetch with strict form-urlencoded headers for SMM Addaa API
+            // Fetch SMM Provider API
             const response = await fetch(SMM_API_URL, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
                 body: params
             });
-            const result = await response.json();
-            console.log("SMM Response:", result);
+            const smmResult = await response.json();
 
-            if (result.order) {
+            if (smmResult.order) {
+                // Success pushing to SMM
                 await bot.editMessageText(
-                    query.message.text + `\n\n✅ **STATUS: ACCEPTED & PUSHED TO SMM**\n🆔 SMM Order ID: \`${result.order}\``,
+                    query.message.text + `\n\n✅ *Status:* ACCEPTED & PUSHED TO SMM!\n🚀 SMM Order ID: \`${smmResult.order}\``,
                     { chat_id: chatId, message_id: messageId, parse_mode: 'Markdown' }
                 );
+                delete pendingOrders[refId];
             } else {
-                await bot.editMessageText(
-                    query.message.text + `\n\n❌ **SMM ERROR:** ${result.error || 'Unknown error'}`,
-                    { chat_id: chatId, message_id: messageId, parse_mode: 'Markdown' }
-                );
+                // API returned error
+                await bot.answerCallbackQuery(query.id, { text: "❌ SMM Error: " + (smmResult.error || "Failed") });
+                await bot.sendMessage(chatId, `⚠️️ Failed to push order ${refId} to SMM Addaa: ${JSON.stringify(smmResult)}`);
             }
-        } else if (action === 'reject') {
-            await bot.editMessageText(
-                query.message.text + `\n\n❌ **STATUS: REJECTED BY ADMIN**`,
-                { chat_id: chatId, message_id: messageId, parse_mode: 'Markdown' }
-            );
+        } catch (err) {
+            console.error("SMM API Fetch Error:", err);
+            await bot.answerCallbackQuery(query.id, { text: "❌ Network error connecting to SMM API!" });
         }
-
+    } else if (action === 'reject') {
+        await bot.editMessageText(
+            query.message.text + `\n\n❌ *Status:* REJECTED by Admin`,
+            { chat_id: chatId, message_id: messageId, parse_mode: 'Markdown' }
+        );
         delete pendingOrders[refId];
-        await bot.answerCallbackQuery(query.id);
-    } catch (err) {
-        console.error("Callback Error:", err);
-        await bot.answerCallbackQuery(query.id, { text: "❌ Error processing request!" });
+        await bot.answerCallbackQuery(query.id, { text: "Order Rejected." });
     }
 });
 
