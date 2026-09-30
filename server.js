@@ -14,7 +14,7 @@ app.use(express.static(path.join(__dirname)));
 const TELEGRAM_BOT_TOKEN = "8986935279:AAFjOyHX7fnZRKTqOZudUxyJCQjcu3_ChMk";
 const ADMIN_CHAT_ID = "8435445040"; 
 const SMM_API_URL = "https://smmaddaa.in/api/v2";
-const SMM_API_KEY = "c585e62bf7ce7f2dd357695249f96af1"; // Puthu API key updated here!
+const SMM_API_KEY = "c585e62bf7ce7f2dd357695249f96af1";
 
 const bot = new TelegramBot(TELEGRAM_BOT_TOKEN, { polling: true });
 
@@ -52,7 +52,7 @@ app.post('/order', async (req, res) => {
         await bot.sendMessage(ADMIN_CHAT_ID, message, { parse_mode: 'Markdown', reply_markup: keyboard });
         res.json({ status: "success", message: "Order sent to Telegram!" });
     } catch (error) {
-        console.error(error);
+        console.error("Order API Error:", error);
         res.status(500).json({ status: "error", message: error.message });
     }
 });
@@ -66,7 +66,7 @@ app.post('/send-admin', async (req, res) => {
         await bot.sendMessage(ADMIN_CHAT_ID, chatMsg, { parse_mode: 'Markdown' });
         res.json({ status: "success" });
     } catch (error) {
-        console.error(error);
+        console.error("Chat Error:", error);
         res.status(500).json({ status: "error" });
     }
 });
@@ -97,11 +97,16 @@ bot.on('callback_query', async (query) => {
             params.append('link', order.instaLink);
             params.append('quantity', order.quantity);
 
+            // Fetch with strict form-urlencoded headers for SMM Addaa API
             const response = await fetch(SMM_API_URL, {
                 method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
                 body: params
             });
             const result = await response.json();
+            console.log("SMM Response:", result);
 
             if (result.order) {
                 await bot.editMessageText(
@@ -124,7 +129,7 @@ bot.on('callback_query', async (query) => {
         delete pendingOrders[refId];
         await bot.answerCallbackQuery(query.id);
     } catch (err) {
-        console.error(err);
+        console.error("Callback Error:", err);
         await bot.answerCallbackQuery(query.id, { text: "❌ Error processing request!" });
     }
 });
