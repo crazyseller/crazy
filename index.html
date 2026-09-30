@@ -353,7 +353,12 @@
 
 <script>
     const UPI_ID = "8124271142@naviaxis";
-    const BACKEND_URL = ""; // Empty string for same host, or put your Render URL if hosted separately
+    
+    // ⚠️ IMPORTANT: If your frontend is hosted separately from backend (e.g., Vercel/Netlify), 
+    // put your full Render backend URL here like: "https://your-app.onrender.com"
+    // If backend and frontend are hosted together on Render, leave it as "" (empty string).
+    const BACKEND_URL = ""; 
+
     let sessionId = "CS_" + Math.floor(Math.random() * 100000);
     let localOrders = JSON.parse(localStorage.getItem("crazy_orders") || "[]");
 
@@ -410,7 +415,13 @@
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ sessionId: sessionId, message: text })
-        }).catch(err => console.log(err));
+        })
+        .then(res => res.json())
+        .catch(err => {
+            console.log("Chat error:", err);
+            chatBody.innerHTML += `<div class="chat-msg admin" style="color:#f43f5e;">⚠️ Failed to send message. Server might be waking up.</div>`;
+            chatBody.scrollTop = chatBody.scrollHeight;
+        });
     }
 
     function submitOrder() {
