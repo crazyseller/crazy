@@ -7,10 +7,8 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// Serve HTML frontend directly from root folder
 app.use(express.static(path.join(__dirname)));
 
-// --- CONFIGURATIONS ---
 const TELEGRAM_BOT_TOKEN = "8986935279:AAFjOyHX7fnZRKTqOZudUxyJCQjcu3_ChMk";
 const ADMIN_CHAT_ID = "8435445040"; 
 const SMM_API_URL = "https://smmaddaa.in/api/v2";
@@ -19,16 +17,15 @@ const SMM_API_KEY = "85cceded0707c2e48ede121db223869f";
 const bot = new TelegramBot(TELEGRAM_BOT_TOKEN, { polling: true });
 
 let pendingOrders = {};
-let activeSessions = {}; 
+let activeSessions = {}; // Maps sessionId -> Telegram Chat ID or reverse
 
-// 1. Order Endpoint (Frontend to Backend)
+// 1. Order Endpoint
 app.post('/order', async (req, res) => {
     try {
         const { packageName, serviceId, quantity, price, cost, instaLink, txnId } = req.body;
         const refId = "CS" + Math.floor(1000 + Math.random() * 9000);
 
         pendingOrders[refId] = { packageName, serviceId, quantity, price, cost, instaLink, txnId };
-
         const profit = (price - (cost || 0)).toFixed(2);
 
         const message = `🚨 **NEW SMM ORDER RECEIVED!**\n\n` +
@@ -58,11 +55,11 @@ app.post('/order', async (req, res) => {
     }
 });
 
-// 2. Live Chat Endpoint
+// 2. Live Chat from Customer to Telegram
 app.post('/send-admin', async (req, res) => {
     try {
         const { sessionId, message } = req.body;
-        activeSessions[sessionId] = ADMIN_CHAT_ID;
+        activeSessions[ADMIN_CHAT_ID] = sessionId; // Track current active session
 
         const chatMsg = `💬 **Live Support Message**\n👤 Session: \`${sessionId}\`\n✉️ Message: ${message}`;
         await bot.sendMessage(ADMIN_CHAT_ID, chatMsg, { parse_mode: 'Markdown' });
@@ -73,7 +70,38 @@ app.post('/send-admin', async (req, res) => {
     }
 });
 
-// 3. Telegram Button Click Handler (Accept / Reject)
+// 3. SMM Balance Check Endpoint for Frontend
+app.get('/balance', async (req, res) => {
+    try {
+        const params = new URLSearchParams();
+        params.append('key', SMM_API_KEY);
+        params.append('action', 'balance');
+
+        const response = await fetch(SMM_API_URL, { method: 'POST', body: params });
+        const result = await response.json();
+
+        res.json({ status: "success", balance: result.balance || "0.00", currency: result.currency || "INR" });
+    } catch (err) {
+        res.status(500).json({ status: "error", balance: "N/A" });
+    }
+});
+
+// 4. Telegram Message Handler (For Admin Replies & Callback buttons)
+bot.on('message', async (msg) => {
+    if (msg.chat.id.toString() === ADMIN_CHAT_ID && msg.reply_to_message) {
+        // If admin replies to a message in Telegram, parse session and send back (Simulated or store-based)
+        // For simplicity, we can broadcast or use active session mapping
+        const repliedText = msg.reply_to_message.text;
+        const match = repliedText ? repliedText.match(/Session:\s*`([^`]+)`/) : null;
+        
+        if (match && match[1]) {
+            const targetSession = match[1];
+            // Here you can store message in memory to pull via a polling endpoint from frontend if needed!
+            console.log(`Admin replied to session ${targetSession}:${msg.text}`);
+        }
+    }
+});
+
 bot.on('callback_query', async (query) => {
     const data = query.data;
     const chatId = query.message.chat.id;
@@ -82,7 +110,7 @@ bot.on('callback_query', async (query) => {
     const [action, refId] = data.split('_');
 
     if (!pendingOrders[refId]) {
-        await bot.answerCallbackQuery(query.id, { text: "⚠️ Order data expired or not found!" });
+        await bot.answerCallbackQuery(query.id, { text: "⚠️ Order expired!" });
         return;
     }
 
@@ -90,7 +118,6 @@ bot.on('callback_query', async (query) => {
 
     if (action === 'accept') {
         try {
-            // SMM Addaa API Request parameters (URLSearchParams)
             const params = new URLSearchParams();
             params.append('key', SMM_API_KEY);
             params.append('action', 'add');
@@ -98,31 +125,26 @@ bot.on('callback_query', async (query) => {
             params.append('link', order.instaLink);
             params.append('quantity', order.quantity);
 
-            // Fetch SMM Provider API
-            const response = await fetch(SMM_API_URL, {
-                method: 'POST',
-                body: params
-            });
+            const response = await fetch(SMM_API_URL, { method: 'POST', body: params });
             const result = await response.json();
 
             if (result.order) {
                 await bot.editMessageText(
-                    query.message.text + `\n\n✅ **STATUS: ACCEPTED & PUSHED TO SMM**\n🆔 SMM Order ID: \`${result.order}\``,
+                    query.message.text + `\n\n✅ **STATUS: ACCEPTED & PUSHED**\n🆔 SMM ID: \`${result.order}\``,
                     { chat_id: chatId, message_id: messageId, parse_mode: 'Markdown' }
                 );
             } else {
                 await bot.editMessageText(
-                    query.message.text + `\n\n❌ **SMM ERROR:** ${result.error || 'Unknown error'}`,
+                    query.message.text + `\n\n❌ **SMM ERROR:** ${result.error || 'Failed'}`,
                     { chat_id: chatId, message_id: messageId, parse_mode: 'Markdown' }
                 );
             }
         } catch (err) {
-            console.error(err);
-            await bot.answerCallbackQuery(query.id, { text: "❌ API Connection Failed!" });
+            await bot.answerCallbackQuery(query.id, { text: "❌ API Failed!" });
         }
     } else if (action === 'reject') {
         await bot.editMessageText(
-            query.message.text + `\n\n❌ **STATUS: REJECTED BY ADMIN**`,
+            query.message.text + `\n\n❌ **STATUS: REJECTED**`,
             { chat_id: chatId, message_id: messageId, parse_mode: 'Markdown' }
         );
     }
