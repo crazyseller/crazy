@@ -353,10 +353,6 @@
 
 <script>
     const UPI_ID = "8124271142@naviaxis";
-    
-    // ⚠️ IMPORTANT: If your frontend is hosted separately from backend (e.g., Vercel/Netlify), 
-    // put your full Render backend URL here like: "https://your-app.onrender.com"
-    // If backend and frontend are hosted together on Render, leave it as "" (empty string).
     const BACKEND_URL = ""; 
 
     let sessionId = "CS_" + Math.floor(Math.random() * 100000);
@@ -507,7 +503,6 @@
             return;
         }
         resDiv.innerHTML = "Searching order status...";
-        
         setTimeout(() => {
             var found = localOrders.find(o => o.utr.includes(query));
             if(found) {
@@ -518,6 +513,5 @@
         }, 800);
     }
 </script>
-
 </body>
 </html>
